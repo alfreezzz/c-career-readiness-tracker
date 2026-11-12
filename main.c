@@ -18,49 +18,165 @@ int main(){
         scanf("%249[^\n]s", command);
         getchar();
 
-        start(command);
-
-        if(strcmp(getcw(), "SUBMIT") == 0){
-            inc(command);
-            if(strcmp(getcw(), "TO") == 0){
-
-            } else {
-                error(0);
-            }
-        } else if (strcmp(getcw(), "CHANGE") == 0){
-
-        } else if (strcmp(getcw(), "REMOVE") == 0){
-            inc(command);
-            if(strcmp(getcw(), "FROM") == 0){
-
-            } else {
-                error(0);
-            }
-        } else if (strcmp(getcw(), "PRESENT") == 0){
-            inc(command);
-            if(strcmp(getcw(), "FROM") == 0){
-
-            } else {
-                error(0);
-            }
-        } else if (strcmp(getcw(), "HELP") == 0){
-
-        } else if(strcmp(getcw(), "EXIT") == 0){
-            exit = true;
-        } else if (strcmp(getcw(), "jangan") == 0){
-            inc(command);
-            if(strcmp(getcw(), "lupa") == 0){
-                inc(command);
-                if(strcmp(getcw(), "berkah") == 0){
+        if(command[strlen(command) - 1] == '$'){
+            start(command);
+            
+            if(strcmp(getcw(), "SUBMIT") == 0){
+                if(eop(command) == 0){
                     inc(command);
-                    if(strcmp(getcw(), "dan") == 0){
-                        inc(command);
-                        if(strcmp(getcw(), "bahagia") == 0){
+                    if(strcmp(getcw(), "TO") == 0){
+                        if(eop(command) == 0){
                             inc(command);
-                            if(strcmp(getcw(), "hari") == 0){
+                            if(eop(command) == 0){
+                                if(strcmp(getcw(), "tposition") == 0){
+                                    return 0;
+                                } else if (strcmp(getcw(), "tskill") == 0){
+                                    return 1;
+                                } else if (strcmp(getcw(), "ttarget") == 0){
+                                    return 2;
+                                } else if (strcmp(getcw(), "torganization") == 0){
+                                    return 3;
+                                } else if (strcmp(getcw(), "tcertificate") == 0){
+                                    return 4;
+                                } else if (strcmp(getcw(), "tcategory") == 0){
+                                    postCategory(command);
+                                } else if (strcmp(getcw(), "tproject") == 0){
+                                    return 6;
+                                }
+                            } else {
+                                error(5);
+                            }
+                        } else {
+                            error(3);
+                        }
+                    } else {
+                        error(0);
+                    }
+                } else {
+                    error(10);
+                }
+            } else if (strcmp(getcw(), "CHANGE") == 0){
+                if(eop(command) == 0){
+                    inc(command);
+                    if(eop(command) == 0){
+                        if(strcmp(getcw(), "tposition") == 0){
+                            return 0;
+                        } else if (strcmp(getcw(), "tskill") == 0){
+                            return 1;
+                        } else if (strcmp(getcw(), "ttarget") == 0){
+                            return 2;
+                        } else if (strcmp(getcw(), "torganization") == 0){
+                            return 3;
+                        } else if (strcmp(getcw(), "tcertificate") == 0){
+                            return 4;
+                        } else if (strcmp(getcw(), "tcategory") == 0){
+                            return 5;
+                        } else if (strcmp(getcw(), "tproject") == 0){
+                            return 6;
+                        }
+                    } else {
+                        error(8);
+                    }
+                } else {
+                    error(3);
+                }
+            } else if (strcmp(getcw(), "REMOVE") == 0){
+                if(eop(command) == 0){
+                    inc(command);
+                    if(strcmp(getcw(), "FROM") == 0){
+                        if(eop(command) == 0){
+                            inc(command);
+                            if(eop(command) == 0){
+                                if(strcmp(getcw(), "tposition") == 0){
+                                    return 0;
+                                } else if (strcmp(getcw(), "tskill") == 0){
+                                    return 1;
+                                } else if (strcmp(getcw(), "ttarget") == 0){
+                                    return 2;
+                                } else if (strcmp(getcw(), "torganization") == 0){
+                                    return 3;
+                                } else if (strcmp(getcw(), "tcertificate") == 0){
+                                    return 4;
+                                } else if (strcmp(getcw(), "tcategory") == 0){
+                                    return 5;
+                                } else if (strcmp(getcw(), "tproject") == 0){
+                                    return 6;
+                                }
+                            } else {
+                                error(9);
+                            }
+                        } else {
+                            error(3);
+                        }
+                    } else {
+                        error(0);
+                    }
+                } else {
+                    error(10);
+                }
+            } else if (strcmp(getcw(), "PRESENT") == 0){
+                if(eop(command) == 0){
+                    inc(command);
+                    if(strcmp(getcw(), "FROM") == 0){
+                        if(eop(command) == 0){
+                            inc(command);
+                            if(eop(command) == 1){
+                                if(strcmp(getcw(), "tposition") == 0){
+                                    return 0;
+                                } else if (strcmp(getcw(), "tskill") == 0){
+                                    return 1;
+                                } else if (strcmp(getcw(), "ttarget") == 0){
+                                    return 2;
+                                } else if (strcmp(getcw(), "torganization") == 0){
+                                    return 3;
+                                } else if (strcmp(getcw(), "tcertificate") == 0){
+                                    return 4;
+                                } else if (strcmp(getcw(), "tcategory") == 0){
+                                    return 5;
+                                } else if (strcmp(getcw(), "tproject") == 0){
+                                    return 6;
+                                }
+                            } else {
+                                error(0);
+                            }
+                        } else {
+                            error(3);
+                        }
+                    } else {
+                        error(0);
+                    }
+                } else {
+                    error(10);
+                }
+            } else if (strcmp(getcw(), "HELP") == 0){
+
+            } else if(strcmp(getcw(), "EXIT") == 0){
+                if(eop(command) == 1){
+                    exit = true;
+                } else {
+                    error(0);
+                }
+            } else if (strcmp(getcw(), "jangan") == 0){
+                inc(command);
+                if(strcmp(getcw(), "lupa") == 0){
+                    inc(command);
+                    if(strcmp(getcw(), "berkah") == 0){
+                        inc(command);
+                        if(strcmp(getcw(), "dan") == 0){
+                            inc(command);
+                            if(strcmp(getcw(), "bahagia") == 0){
                                 inc(command);
-                                if(strcmp(getcw(), "ini") == 0){
-                                    break;
+                                if(strcmp(getcw(), "hari") == 0){
+                                    inc(command);
+                                    if(strcmp(getcw(), "ini") == 0){
+                                        if(eop(command) == 1){
+                                            exit = true;
+                                        } else {
+                                            error(0);
+                                        }
+                                    } else {
+                                        error(0);
+                                    }
                                 } else {
                                     error(0);
                                 }
@@ -80,7 +196,10 @@ int main(){
                 error(0);
             }
         } else {
-            error(0);
+            error(2);
+        }
+        if(!exit){
+            printf("\n");
         }
     } while(!exit);
 
