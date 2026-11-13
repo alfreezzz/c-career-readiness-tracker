@@ -27,24 +27,26 @@ int main(){
                     if(strcmp(getcw(), "TO") == 0){
                         if(eop(command) == 0){
                             inc(command);
-                            if(eop(command) == 0){
-                                if(strcmp(getcw(), "tposition") == 0){
-                                    return 0;
-                                } else if (strcmp(getcw(), "tskill") == 0){
-                                    return 1;
-                                } else if (strcmp(getcw(), "ttarget") == 0){
-                                    return 2;
-                                } else if (strcmp(getcw(), "torganization") == 0){
-                                    return 3;
-                                } else if (strcmp(getcw(), "tcertificate") == 0){
-                                    return 4;
-                                } else if (strcmp(getcw(), "tcategory") == 0){
+                            if(strcmp(getcw(), "tposition") == 0){
+                                return 0;
+                            } else if (strcmp(getcw(), "tskill") == 0){
+                                return 1;
+                            } else if (strcmp(getcw(), "ttarget") == 0){
+                                return 2;
+                            } else if (strcmp(getcw(), "torganization") == 0){
+                                return 3;
+                            } else if (strcmp(getcw(), "tcertificate") == 0){
+                                return 4;
+                            } else if (strcmp(getcw(), "tcategory") == 0){
+                                if(eop(command) == 0){
                                     postCategory(command);
-                                } else if (strcmp(getcw(), "tproject") == 0){
-                                    return 6;
+                                } else {
+                                    error(5);
                                 }
+                            } else if (strcmp(getcw(), "tproject") == 0){
+                                return 6;
                             } else {
-                                error(5);
+                                error(1);
                             }
                         } else {
                             error(3);
@@ -58,24 +60,26 @@ int main(){
             } else if (strcmp(getcw(), "CHANGE") == 0){
                 if(eop(command) == 0){
                     inc(command);
-                    if(eop(command) == 0){
-                        if(strcmp(getcw(), "tposition") == 0){
-                            return 0;
-                        } else if (strcmp(getcw(), "tskill") == 0){
-                            return 1;
-                        } else if (strcmp(getcw(), "ttarget") == 0){
-                            return 2;
-                        } else if (strcmp(getcw(), "torganization") == 0){
-                            return 3;
-                        } else if (strcmp(getcw(), "tcertificate") == 0){
-                            return 4;
-                        } else if (strcmp(getcw(), "tcategory") == 0){
-                            return 5;
-                        } else if (strcmp(getcw(), "tproject") == 0){
-                            return 6;
+                    if(strcmp(getcw(), "tposition") == 0){
+                        return 0;
+                    } else if (strcmp(getcw(), "tskill") == 0){
+                        return 1;
+                    } else if (strcmp(getcw(), "ttarget") == 0){
+                        return 2;
+                    } else if (strcmp(getcw(), "torganization") == 0){
+                        return 3;
+                    } else if (strcmp(getcw(), "tcertificate") == 0){
+                        return 4;
+                    } else if (strcmp(getcw(), "tcategory") == 0){
+                        if(eop(command) == 0){
+                            updateCategory(command);
+                        } else {
+                            error(13);
                         }
+                    } else if (strcmp(getcw(), "tproject") == 0){
+                        return 6;
                     } else {
-                        error(8);
+                        error(1);
                     }
                 } else {
                     error(3);
@@ -86,24 +90,26 @@ int main(){
                     if(strcmp(getcw(), "FROM") == 0){
                         if(eop(command) == 0){
                             inc(command);
-                            if(eop(command) == 0){
-                                if(strcmp(getcw(), "tposition") == 0){
-                                    return 0;
-                                } else if (strcmp(getcw(), "tskill") == 0){
-                                    return 1;
-                                } else if (strcmp(getcw(), "ttarget") == 0){
-                                    return 2;
-                                } else if (strcmp(getcw(), "torganization") == 0){
-                                    return 3;
-                                } else if (strcmp(getcw(), "tcertificate") == 0){
-                                    return 4;
-                                } else if (strcmp(getcw(), "tcategory") == 0){
-                                    return 5;
-                                } else if (strcmp(getcw(), "tproject") == 0){
-                                    return 6;
+                            if(strcmp(getcw(), "tposition") == 0){
+                                return 0;
+                            } else if (strcmp(getcw(), "tskill") == 0){
+                                return 1;
+                            } else if (strcmp(getcw(), "ttarget") == 0){
+                                return 2;
+                            } else if (strcmp(getcw(), "torganization") == 0){
+                                return 3;
+                            } else if (strcmp(getcw(), "tcertificate") == 0){
+                                return 4;
+                            } else if (strcmp(getcw(), "tcategory") == 0){
+                                if(eop(command) == 0){
+                                    deleteCategory(command);
+                                } else {
+                                    error(9);
                                 }
+                            } else if (strcmp(getcw(), "tproject") == 0){
+                                return 6;
                             } else {
-                                error(9);
+                                error(1);
                             }
                         } else {
                             error(3);

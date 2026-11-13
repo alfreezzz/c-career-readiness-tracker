@@ -19,7 +19,7 @@ void error(int code){
             break;
         }
         case 2: {
-            printf(RED "masukkin eop nya ($) di akhir perintah woy\n" DEFAULT);
+            printf(RED "masukkin eop nya (%c) di akhir perintah woy\n", EOP, DEFAULT);
             break;
         }
         case 3: {
@@ -54,6 +54,22 @@ void error(int code){
             printf(RED "query nya kurang lengkap woy\n" DEFAULT);
             break;    
         }
+        case 11: {
+            printf(RED "data tidak ditemukan woy\n" DEFAULT);
+            break;    
+        }
+        case 12: {
+            printf(RED "data kosong woy\n" DEFAULT);
+            break;    
+        }
+        case 13: {
+            printf(RED "masukkan nilai yang akan diubah woy\n" DEFAULT);
+            break;    
+        }
+        case 14: {
+            printf(RED "melebihi query woy\n" DEFAULT);
+            break;    
+        }
         default: {
             printf(RED "gada query itu woy\n" DEFAULT);
             break;
@@ -62,7 +78,7 @@ void error(int code){
 }
 
 int eop(char ribbon[]){
-    if(ribbon[indeks] == '$'){
+    if(ribbon[indeks] == EOP){
         return 1;
     } else {
         return 0;
@@ -75,11 +91,12 @@ void start(char ribbon[]){
     while(ribbon[indeks] == ' '){
         indeks++;
     }
-    while((ribbon[indeks] != ' ') && (ribbon[indeks] != '$')){
+    while((ribbon[indeks] != ' ') && (ribbon[indeks] != EOP)){
         cw[wordLen] = ribbon[indeks];
         wordLen++;
         indeks++;
     }
+    cw[wordLen] = '\0';
 }
 
 void reset(){
@@ -92,7 +109,7 @@ void inc(char ribbon[]){
     while(ribbon[indeks] == ' '){
         indeks++;
     }
-    while((ribbon[indeks] != ' ') && (ribbon[indeks] != '$')){
+    while((ribbon[indeks] != ' ') && (ribbon[indeks] != EOP)){
         cw[wordLen] = ribbon[indeks];
         wordLen++;
         indeks++;
@@ -117,11 +134,10 @@ void postCategory(char command[]){
     FILE *categoryTable;
     categoryTable = fopen("tables/tcategory.dat", "r");
     
-    printf("mulai proses memasukkan isi file ke array\n");
     fscanf(categoryTable, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
 
     if(strcmp(record.id, "XXXXXXXX") == 0 || strcmp(record.id, "") == 0){
-        printf("arsip kosong\n");
+        error(12);
     } else {
         do{
             strcpy(temp[recordSum].id, record.id);
@@ -206,13 +222,172 @@ void postCategory(char command[]){
                 }
                 fprintf(categoryTable, "XXXXXXXX XXX XXXXX XXXXX");
                 fclose(categoryTable);
-                
-                printf("memasukkan data selesai\n");
             }
         } else {
             error(6);
         }
     } else {
         error(4);
+    }
+}
+void updateCategory(char command[]){
+    int recordSum = 0;
+    category temp[100];
+    category record, new;
+
+    FILE *categoryTable;
+    categoryTable = fopen("tables/tcategory.dat", "r");
+
+    fscanf(categoryTable, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
+    
+    if(strcmp(record.id, "XXXXXXXX") == 0 || strcmp(record.id, "") == 0){
+        error(12);
+    } else {
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].name, record.name);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(categoryTable, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, "XXXXXXXX") != 0);
+    }
+    fclose(categoryTable);
+    
+    inc(command);
+    char search[50];
+    strcpy(search, getcw());
+    
+    if(eop(command) == 0){
+        int i = 0;
+        bool isFound = false;
+        while(!isFound && i < recordSum){
+            if(strcmp(temp[i].id, search) == 0){
+                isFound = true;
+            } else {
+                i++;
+            }
+        }
+        
+        if(!isFound){
+            error(11);
+        } else {
+            if(eop(command) == 0){
+                inc(command);
+                if(eop(command) == 1){
+                    strcpy(new.name, getcw());
+                    strcpy(new.updatedAt, "Nov-13-2026");
+    
+                    strcpy(temp[i].name, new.name);
+                    strcpy(temp[i].updatedAt, new.updatedAt);
+                    printf("perubahan data selesai\n");
+                } else {
+                    error(6);
+                }
+            } else {
+                error(13);
+            }
+        }
+    
+        // flush ke file
+        categoryTable = fopen("tables/tcategory.dat", "w");
+        for(int i = 0; i < recordSum; i++){
+            fprintf(categoryTable, "%s %s %s %s\n", temp[i].id, temp[i].name, temp[i].createdAt, temp[i].updatedAt);
+        }
+        fprintf(categoryTable, "XXXXXXXX XXX XXXXX XXXXX");
+        fclose(categoryTable);
+    } else {
+        error(13);
+    }
+}
+
+void deleteCategory(char command[]){
+    int recordSum = 0;
+    category temp[100];
+    category record, new;
+
+    FILE *tableCategory;
+    tableCategory = fopen("tables/tcategory.dat", "r");
+
+    fscanf(tableCategory, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
+    
+    if(strcmp(record.id, "XXXXXXXX") == 0){
+        error(12);
+    } else {
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].name, record.name);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(tableCategory, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, "XXXXXXXX") != 0);
+    }
+    fclose(tableCategory);
+    
+    inc(command);
+    char search[50];
+    strcpy(search, getcw());
+    
+    if(eop(command) == 1){
+        int idx = 0;
+        bool isFound = false;
+        while(!isFound && idx < recordSum){
+            if(strcmp(temp[idx].id, search) == 0){
+                isFound = true;
+            } else {
+                idx++;
+            }
+        }
+        
+        if(!isFound){
+            error(11);
+        } else {
+            // kondisi memasukkan ke dalam array
+            if(idx == 0){
+                // rekaman baru di paling depan
+                // geser semua isi array ke belakang
+                for(int i = 0; i < recordSum - 1; i++){
+                    strcpy(temp[i].id, temp[i+1].id);
+                    strcpy(temp[i].name, temp[i+1].name);
+                    strcpy(temp[i].createdAt, temp[i+1].createdAt);
+                    strcpy(temp[i].updatedAt, temp[i+1].updatedAt);
+                }
+                recordSum--;
+            } else if (idx == recordSum - 1){
+                // rekaman baru di belakang
+                recordSum--;
+            } else {
+                // rekaman baru memiliki posisi di tengah
+                int i = 0;
+                bool isStopped = false;
+                // cari posisi
+                while((i < recordSum) && !isStopped){
+                    if(i >= idx){
+                        isStopped = true;
+                    } else {
+                        i++;
+                    }
+                }
+                for(int j = i; j < recordSum - 1; j++){
+                    strcpy(temp[j].id, temp[j+1].id);
+                    strcpy(temp[j].name, temp[j+1].name);
+                    strcpy(temp[j].createdAt, temp[j+1].createdAt);
+                    strcpy(temp[j].updatedAt, temp[j+1].updatedAt);
+                }
+                recordSum--;
+            }
+            printf("data berhasil dihapus\n");
+        }
+
+        // flush ke file
+        tableCategory = fopen("tables/tcategory.dat", "w");
+        for(int i = 0; i < recordSum; i++){
+            fprintf(tableCategory, "%s %s %s %s\n", temp[i].id, temp[i].name, temp[i].createdAt, temp[i].updatedAt);
+        }
+        fprintf(tableCategory, "XXXXXXXX XXX XXXXX XXXXX");
+        fclose(tableCategory);
+    } else {
+        error(14);
     }
 }

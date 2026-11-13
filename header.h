@@ -19,10 +19,11 @@
 #define WHITE   "\033[37m"  // warna putih
 
 #define TABLETEMPLATE char id[10], createdAt[15], updatedAt[15]
+#define EOP '$'
 
 typedef struct{
     TABLETEMPLATE;
-    char name[255];
+    char name[50];
 } category;
 
 // variabel untuk mesin kata
@@ -44,3 +45,5 @@ int gettable();
 
 // category
 void postCategory(char command[]);
+void updateCategory(char command[]);
+void deleteCategory(char command[]);
