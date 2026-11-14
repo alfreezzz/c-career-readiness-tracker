@@ -31,6 +31,7 @@ This project consists of 8 tables:
 
 ## Run the project
 ```bash
+chcp.com 65001
 gcc *.c -o main && ./main.exe
 ```
 
