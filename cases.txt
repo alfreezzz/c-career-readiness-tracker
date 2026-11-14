@@ -1,2 +1,4 @@
+chcp.com 65001
 gcc *.c -o main && ./main.exe
 
+jangan lupa berkah dan bahagia hari ini$

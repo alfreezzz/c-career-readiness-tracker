@@ -30,14 +30,14 @@
 #define BWHITE   "\e[1;37m"  // warna putih
 
 // makro warna background
-// #define BGBLACK   "\e[0;40m"  // warna hitam
-// #define BGRED     "\e[0;41m"  // warna merah
-// #define BGGREEN   "\e[0;42m"  // warna hijau
-// #define BGYELLOW  "\e[0;43m"  // warna kuning
-// #define BGBLUE    "\e[0;44m"  // warna biru
-// #define BGPURPLE  "\e[0;45m"  // warna ungu
-// #define BGCYAN    "\e[0;46m"  // warna cyan
-// #define BGWHITE   "\e[0;47m"  // warna putih
+// #define BGBLACK   "\e[0;100m"  // warna hitam
+// #define BGRED     "\e[0;101m"  // warna merah
+// #define BGGREEN   "\e[0;102m"  // warna hijau
+// #define BGYELLOW  "\e[0;103m"  // warna kuning
+// #define BGBLUE    "\e[0;104m"  // warna biru
+// #define BGPURPLE  "\e[0;105m"  // warna ungu
+// #define BGCYAN    "\e[0;106m"  // warna cyan
+// #define BGWHITE   "\e[0;107m"  // warna putih
 
 #define TABLETEMPLATE char id[10], createdAt[20], updatedAt[20] // makro template tabel
 #define EOP '$'                                                 // makro simbol EOP (End Of Process)
@@ -59,6 +59,7 @@ void guideTitle();
 void guideNotes();
 void guide();
 void in();
+void out();
 
 // response
 void success(int code);

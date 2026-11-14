@@ -218,7 +218,7 @@ int main(){
                                                             inc(command);
                                                             if(strcmp(getcw(), "ini") == 0){
                                                                 if(eop(command) == 1){
-                                                                    printf("mantap\n");
+                                                                    out();
                                                                     exit = true;
                                                                 } else {
                                                                     error(14);

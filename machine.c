@@ -52,7 +52,7 @@ void guide(){
     printf("|                                                                                                    |\n");
     printf("|   "BGREEN"2. Master Data"CYAN"                                                                                   |\n");
     printf("|      - "BYELLOW"Posisi"CYAN"         : "BLUE"tposition"CYAN"     (id, nama, tanggal_dibuat, tanggal_diubah)                   |\n");
-    printf("|      - "BYELLOW"Keahlian"CYAN"       : "BLUE"tskill"CYAN"        (id, nama, kecakapan, tanggal dibuat, tanggal_diubah)        |\n");
+    printf("|      - "BYELLOW"Keahlian"CYAN"       : "BLUE"tskill"CYAN"        (id, nama, kecakapan, tanggal_dibuat, tanggal_diubah)        |\n");
     printf("|      - "BYELLOW"Target"CYAN"         : "BLUE"ttarget"CYAN"       (id, id_posisi, id_skill, sudah_dikuasai, tanggal_dibuat,"CYAN"    |\n");
     printf("|                                        tanggal_diubah)                                             |\n");
     printf("|      - "BYELLOW"Organisasi"CYAN"     : "BLUE"torganization"CYAN" (id, nama, tanggal_dibuat, tanggal_diubah)                   |\n");
@@ -92,18 +92,63 @@ void in(){
     printf(" █████   █████ █████  █████     █████    ▒▒██████ ▒▒██████   █████████  █████████  █████████  █████████\n");
     printf("▒▒▒▒▒   ▒▒▒▒▒ ▒▒▒▒▒  ▒▒▒▒▒     ▒▒▒▒▒      ▒▒▒▒▒▒   ▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒ \n");
     printf("\n" BPURPLE);
-    printf("         _ _  ______                                                                  _ _ \n");
-    printf("        ( | ) |  ___|                                                                ( | )\n");
-    printf("         V V  | |_ ___   ___ _   _ ___    ___  _ __     ___ __ _ _ __ ___  ___ _ __   V V \n");
-    printf("              |  _/ _ \\ / __| | | / __|  / _ \\| '_ \\   / __/ _` | '__/ _ \\/ _ \\ '__|      \n");
-    printf("              | || (_) | (__| |_| \\__ \\ | (_) | | | | | (_| (_| | | |  __/  __/ |_        \n");
-    printf("              \\_| \\___/ \\___|\\__,_|___/  \\___/|_| |_|  \\___\\__,_|_|  \\___|\\___|_( )       \n");
-    printf("                                                                                |/        \n");
+    printf("         _ _  ______                                                                  _ _              \n");
+    printf("        ( | ) |  ___|                                                                ( | )             \n");
+    printf("         V V  | |_ ___   ___ _   _ ___    ___  _ __     ___ __ _ _ __ ___  ___ _ __   V V              \n");
+    printf("              |  _/ _ \\ / __| | | / __|  / _ \\| '_ \\   / __/ _` | '__/ _ \\/ _ \\ '__|              \n");
+    printf("              | || (_) | (__| |_| \\__ \\ | (_) | | | | | (_| (_| | | |  __/  __/ |_                   \n");
+    printf("              \\_| \\___/ \\___|\\__,_|___/  \\___/|_| |_|  \\___\\__,_|_|  \\___|\\___|_( )           \n");
+    printf("                                                                                |/                     \n");
     printf("                                                                                                   v1.0\n");
     printf("=======================================================================================================\n" DEFAULT);
     printf("\n");
 
     guide();
+    printf("\n");
+}
+
+void out(){
+    printf(RED"                                           &     &                                                                                \n");
+    printf("                        &#   &&   &#       #&    &    &                                                                           \n");
+    printf("                        #GP5YJJJJ5GB       &BP5YYYYY5B#                                                                           \n");
+    printf("                       B"BWHITE"7:^7?J5#P^:~"RED"P&   &#"BWHITE"?:^7?J5BP~:"RED"~P                                                                          \n");
+    printf("                     &5"BWHITE"::::"BBLACK"      "BWHITE"::::?"RED"#  P"BWHITE"::::"BBLACK"      "BWHITE":::"RED"7#          "BRED"_           _       _        __     __                        \n"RED);
+    printf("                     G"BWHITE"::::"BBLACK"        "BWHITE":::::"RED"BB"BWHITE"^:::"BBLACK"        "BWHITE"::::"RED"J#        "BRED"| |         | |     | |       \\ \\   / /                        \n"RED);
+    printf("                     P"BWHITE":::::"BBLACK"      "BWHITE"::::::"RED"#G"BWHITE":::::"BBLACK"      "BWHITE":::::"RED"~#        "BRED"| |     __ _| | __ _| | __ _   \\ \\_/ /__ _   _  ___ _   _  ___ \n"RED);
+    printf("                     B"BWHITE"::::::::::::::::"RED"5BB"BWHITE"^:::::::::::::::"RED"J         "BRED"| |    / _` | |/ _` | |/ _` |   \\   / _ \\ | | |/ _ \\ | | |/ _ \\\n");
+    printf("                     &"RED"P"BWHITE"^:::::::::::::"RED"JBPGP"BWHITE"^:::::::::::::"RED"?#"BRED"#&       | |___| (_| | | (_| | | (_| |    | |  __/ |_| |  __/ |_| |  __/\n");
+    printf("                   &#B"RED"BG"BWHITE"?~^^^^^^:^^"RED"75GPPPGGJ"BWHITE"~^^^^^^^^^"RED"75GGGB#"BRED"&&    |______\\__,_|_|\\__,_|_|\\__,_|    |_|\\___|\\__, |\\___|\\__, |\\___|\n");
+    printf("                &##"RED"BGPPPGGPYJ??JY5GGPPPPPPPGGPYJ??JY5GGPPPPPGGB"BRED"#&                                            __/ |      __/ |     \n");
+    printf("              &#"RED"BGPPPPPPPPPGGGGGGGPPPPPPPPPPPGGGGGGGGPPPPPPPPPPGB"BRED"#&                                         |___/      |___/      \n");
+    printf("            ##"RED"BGPPP5P5Y5PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPY5P5PPPGB"BRED"##           \n");
+    printf("           #"RED"BBPPPPP5555PG&         "BWHITE"#~:^:~:::^G"RED"           &G5Y5PPPPPGB"BRED"B&         \n");
+    printf("         &##"RED"GPPPPPPP5PPPP&         "BWHITE"&~^:^~::^:B"RED"          #GPP5PPPPPPPPB"BRED"B#        \n");
+    printf("        &#"RED"BPPPPPPPPPPPPPP#          "BWHITE"#P5G B5PB"RED"         #GPPPPPPPPPPPPPPB"BRED"#&       \n");
+    printf("       &#"RED"BPPPPPPPPPPPPPPPB                          &GPPPPPPPPPPPPPPPPP"BRED"B#B&&&   \n");
+    printf(" #&&&&#B#GG"RED"PPPPPPPPPPPPPPP&                       &GPPPPPPPPPPPPPPPPGG"BRED"BBBB"RED"GBB"BRED"B#&\n");
+    printf(" #G"RED"PPP"BRED"GGGG"RED"BBBGPPPPPPPPPPPPG    "BRED"&&&#######&"RED"     &#GPPPPPPPPPPPPPPPP"BRED"BBBGG"RED"PPPPPPP"BRED"#&\n");
+    printf(" #B"RED"PPPPPPPPP"BRED"GGG"RED"PPPPPPPPPPPPB&"BRED"##BBBBBBBBBBB#&"RED" &BGPPPPPPPPPPPPPPPPPPGPPPPPPPPPP"BRED"BB \n");
+    printf(" &&#GP"RED"PPPPPPPPPPPPPPPPPPPPPP"RED"G"BRED"BBBBBBBBBBBBBB"RED"GGPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"BRED"G#   \n");
+    printf("    #B"RED"PPPPPPPPPPPPPPPPPP"BRED"GGGGG"RED"G"BRED"BBBBBBBBBBB"RED"GG"BRED"GGGGGG"RED"PPPPPPPPPPPPPPPPPPPPPPPPG#"BRED"#&   \n");
+    printf("     G#"RED"GPPPPPPPPPPPPPP"BRED"GGGGGGGG"RED"GBBBBBBBBBG"BRED"GBGGGGGGGG"RED"PPPPPPPPPPPPPPPPPPPPPPG"BRED"#&    \n");
+    printf("     G#"RED"PPPPPPPPPPPPPPP"BRED"GGGGGGGGGP5PPPPP5YYJPGGGGGGGG"RED"PPPPPPPPPPPPPPPPPPPPPPP"BRED"#&    \n");
+    printf("     ##"RED"PPPPPPPPPPPPPPPPPP"BRED"GGGGGGJ???YYYJ???5GGGGGG"RED"PPPPPPPPPPPPPPPPPPPPPPPPP"BRED"##    \n");
+    printf("     B#"RED"GPPPPPPPPPPPPPPPPPPPPPP"BRED"G5JY5"RED"PPPPPP5PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"BRED"##    \n");
+    printf("     ##"RED"GPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPG"BRED"##    \n");
+    printf("     ##"RED"GPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"BRED"##     \n");
+    printf("     &#"RED"BPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPG"BRED"##     \n");
+    printf("      B#"RED"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"BRED"##      \n");
+    printf("      ##"RED"GPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPG"BRED"##      \n");
+    printf("      &#"RED"BPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"BRED"##      \n");
+    printf("       ##"RED"GPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPG"BRED"##     \n");
+    printf("        #B"RED"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPB"BRED"#&   \n");
+    printf("        #B"RED"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"BRED"G#    \n");
+    printf("       &#"RED"GPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPGG"BRED"##    \n");
+    printf("       &#"RED"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPGGGBB"BRED"##&      \n");
+    printf("      &#"RED"GPPPPPPPPPPPPPPPPPPPPPPPPGGBBB"BRED"######BBBBBBBBBBBBBBBBB#B###&&&&&         \n");
+    printf("      ##"RED"PPPPPPPPPPPPPPPPPGGG"BRED"BB###&&&&&                                          \n");
+    printf("      &#"RED"GPPPPPPPPGGGG"BRED"BB###&&&                                                   \n");
+    printf("       "BRED"&#BBBBBBB#B#&&&                                                          \n"DEFAULT);
 }
 
 void success(int code){
