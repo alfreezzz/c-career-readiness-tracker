@@ -19,7 +19,7 @@ This project consists of 8 tables:
 2. `skills` {id, name, proficiency, createdAt, updatedAt}
 3. `targets` {id, positionId, skillId, isSkilled, createdAt, updatedAt}
 4. `organizations` {id, name, createdAt, updatedAt}
-5. `certificates` {id, name, issuerId, startDate, endDate, credentialId, url createdAt, updatedAt} 
+5. `certificates` {id, name, issuerId, startDate, endDate, credentialId, url, createdAt, updatedAt} 
 6. `experiences` {id, organizationId, positionId, startDate, endDate, createdAt, updatedAt}
 7. `categories` {id, name, createdAt, updatedAt}
 8. `projects` {id, name, url, finishedDate, categoryId createdAt, updatedAt}

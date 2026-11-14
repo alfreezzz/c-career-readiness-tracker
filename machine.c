@@ -15,14 +15,70 @@ void timeStamp(char buffer[]){
     strftime(buffer, 100, "%Y-%m-%dT%H:%M:%S", t);
 }
 
+void guideTitle(){
+    printf(BWHITE"                                  ╔═══*.·:·.☽✧    ✦✦    ✧☾.·:·.*═══╗                                  \n");
+    printf(BYELLOW"⋆"CYAN"﹥━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"BWHITE"║         " BGREEN "* guide book *" BWHITE "         ║"CYAN"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━﹤"BYELLOW"⋆\n" CYAN);
+    printf("∨                                 "BWHITE"╚═══*.·:·.☽✧    ✦✦    ✧☾.·:·.*═══╝"CYAN"                                 ∨\n");
+}
+
+void guideNotes(){
+    printf("|   "BRED"CATATAN PENTING!!"CYAN"                                                                                |\n");
+    printf("|   "BYELLOW"1."WHITE" SELALU AKHIRI PERINTAH DENGAN TANDA DOLLAR ("YELLOW"$"WHITE")"CYAN"                                                |\n");
+    printf("|   "BYELLOW"2."WHITE" Jika argumen berisi lebih dari satu kata, maka gunakanlah penulisan tanpa spasi dengan"CYAN"        |\n");
+    printf("|      "WHITE"format camel case ("BLACK"cth."WHITE" "BLUE"WebDeveloper"WHITE")"CYAN"                                                         |\n");
+    printf("|   "BYELLOW"3."WHITE" Tidak perlu menambahkan argumen untuk mengisi data "BLACK"tanggal_dibuat"WHITE" dan data "BLACK"tanggal_diubah"CYAN"     |\n");
+    printf("|   "BYELLOW"4."WHITE" Jika ingin menambahkan data yang berasal dari tabel lain, pastikan bahwa "BLUE"ID"WHITE" tersebut ada"CYAN"      |\n");
+    printf("|      "WHITE"di dalam tabel yang bersangkutan"CYAN"                                                              |\n");
+    printf("|                                                                                                    |\n");
+    printf("∧                                                                                                    ∧\n");
+    printf(BYELLOW"⋆"CYAN"﹥━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━﹤"BYELLOW"⋆\n" DEFAULT);
+}
+
 void guide(){
-    printf(CYAN"                                 ╔═══*.·:·.☽✧    ✦✦    ✧☾.·:·.*═══╗                                 \n");
-    printf("⋆﹥━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━║         " BYELLOW "* guide book *" CYAN "         ║━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━﹤⋆\n");
-    printf("|                                ╚═══*.·:·.☽✧    ✦✦    ✧☾.·:·.*═══╝                                |\n");
-    printf("|                                                                                                  |\n");
-    printf("|   1.                                                                                             |\n");
-    printf("|                                                                                                  |\n");
-    printf("⋆﹥━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━﹤⋆\n");
+    guideTitle();
+
+    printf("|                                                                                                    |\n");
+    printf("|   "BLUE"DBMS ini digunakan untuk mencatat data terkait target pekerjaan dan kesiapan kondisi saat ini"CYAN"    |\n");
+    printf("|   "BLUE"untuk mencapai target tersebut"CYAN"                                                                   |\n");
+    printf("|                                                                                                    |\n");
+    printf("|   "BGREEN"1. Daftar Perintah"CYAN"                                                                               |\n");
+    printf("|      - "BPURPLE"SUBMIT TO"CYAN"      : "BWHITE"Menambahkan"CYAN" data                                                           |\n");
+    printf("|      - "BPURPLE"CHANGE"CYAN"         : "BWHITE"Mengubah"CYAN" data                                                              |\n");
+    printf("|      - "BPURPLE"REMOVE FROM"CYAN"    : "BWHITE"Menghapus"CYAN" data                                                             |\n");
+    printf("|      - "BPURPLE"PRESENT FROM"CYAN"   : "BWHITE"Menampilkan"CYAN" data                                                           |\n");
+    printf("|      - "BPURPLE"HELP"CYAN"           : Membuka Guide Book                                                         |\n");
+    printf("|      - "BPURPLE"HELP ON"CYAN"        : Membuka Guide Book berdasarkan tabel                                       |\n");
+    printf("|      - "BPURPLE"EXIT"CYAN"           : "RED"Mengakhiri aplikasi"CYAN"                                                        |\n");
+    printf("|                                                                                                    |\n");
+    printf("|   "BGREEN"2. Master Data"CYAN"                                                                                   |\n");
+    printf("|      - "BYELLOW"Posisi"CYAN"         : "BLUE"tposition"CYAN"     (id, nama, tanggal_dibuat, tanggal_diubah)                   |\n");
+    printf("|      - "BYELLOW"Keahlian"CYAN"       : "BLUE"tskill"CYAN"        (id, nama, kecakapan, tanggal dibuat, tanggal_diubah)        |\n");
+    printf("|      - "BYELLOW"Target"CYAN"         : "BLUE"ttarget"CYAN"       (id, id_posisi, id_skill, sudah_dikuasai, tanggal_dibuat,"CYAN"    |\n");
+    printf("|                                        tanggal_diubah)                                             |\n");
+    printf("|      - "BYELLOW"Organisasi"CYAN"     : "BLUE"torganization"CYAN" (id, nama, tanggal_dibuat, tanggal_diubah)                   |\n");
+    printf("|      - "BYELLOW"Sertifikasi"CYAN"    : "BLUE"tcertificate"CYAN"  (id, nama, id_organisasi, tanggal_dimulai, tanggal_berakhir,"CYAN" |\n");
+    printf("|                                        kredensial, url, tanggal_dibuat, tanggal_diubah)            |\n");
+    printf("|      - "BYELLOW"Pengalaman"CYAN"     : "BLUE"texperience"CYAN"   (id, id_organisasi, id_posisi, tanggal_dimulai,"CYAN"              |\n");
+    printf("|                                        tanggal_berakhir, tanggal_dibuat, tanggal_diubah)           |\n");
+    printf("|      - "BYELLOW"Kategori"CYAN"       : "BLUE"tcategory"CYAN"     (id, nama, tanggal_dibuat, tanggal_diubah)                   |\n");
+    printf("|      - "BYELLOW"Proyek"CYAN"         : "BLUE"tproject"CYAN"      (id, nama, url, tanggal_selesai, id_kategori,"CYAN"                |\n");
+    printf("|                                        tanggal_dibuat, tanggal_diubah)                             |\n");
+    printf("|      "WHITE"Untuk informasi lebih lanjut terkait bagaimana cara menampilkan, menambahkan, mengubah, atau"CYAN"  |\n");
+    printf("|      "WHITE"menghapus data, silakan gunakan perintah "CYAN"\""BPURPLE"HELP ON"CYAN"\" "WHITE"dilanjutkan dengan nama tabel,"CYAN"             |\n");
+    printf("|      "BLACK"cth. "BPURPLE"HELP ON "BLUE"tposition"YELLOW"$"CYAN"                                                                       |\n");
+    printf("|                                                                                                    |\n");
+    printf("|   "BGREEN"3. Format ID "CYAN"(bisa disesuaikan "BRED"ASALKAN KONSISTEN"CYAN")                                                |\n");
+    printf("|      - "BYELLOW"Posisi"CYAN"         : "WHITE"POS"CYAN"-(Nomor ID)    "BLACK"cth. "WHITE"POS001"CYAN"                                              |\n");
+    printf("|      - "BYELLOW"Keahlian"CYAN"       : "WHITE"SKL"CYAN"-(Nomor ID)    "BLACK"cth. "WHITE"SKL001"CYAN"                                              |\n");
+    printf("|      - "BYELLOW"Target"CYAN"         : "WHITE"TAR"CYAN"-(Nomor ID)    "BLACK"cth. "WHITE"TAR001"CYAN"                                              |\n");
+    printf("|      - "BYELLOW"Organisasi"CYAN"     : "WHITE"ORG"CYAN"-(Nomor ID)    "BLACK"cth. "WHITE"ORG001"CYAN"                                              |\n");
+    printf("|      - "BYELLOW"Sertifikasi"CYAN"    : "WHITE"CER"CYAN"-(Nomor ID)    "BLACK"cth. "WHITE"CER001"CYAN"                                              |\n");
+    printf("|      - "BYELLOW"Pengalaman"CYAN"     : "WHITE"EXP"CYAN"-(Nomor ID)    "BLACK"cth. "WHITE"EXP001"CYAN"                                              |\n");
+    printf("|      - "BYELLOW"Kategori"CYAN"       : "WHITE"CAT"CYAN"-(Nomor ID)    "BLACK"cth. "WHITE"CAT001"CYAN"                                              |\n");
+    printf("|      - "BYELLOW"Proyek"CYAN"         : "WHITE"PRJ"CYAN"-(Nomor ID)    "BLACK"cth. "WHITE"PRJ001"CYAN"                                              |\n");
+    printf("|                                                                                                    |\n");
+
+    guideNotes();
 }
 
 void in(){
@@ -35,7 +91,7 @@ void in(){
     printf(" ▒███    ▒███  ▒███   ▒███      ▒███     ▒███▒▒▒  ▒███▒▒▒     ███▒   █   ███▒   █   ███▒   █           \n");
     printf(" █████   █████ █████  █████     █████    ▒▒██████ ▒▒██████   █████████  █████████  █████████  █████████\n");
     printf("▒▒▒▒▒   ▒▒▒▒▒ ▒▒▒▒▒  ▒▒▒▒▒     ▒▒▒▒▒      ▒▒▒▒▒▒   ▒▒▒▒▒▒   ▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒  ▒▒▒▒▒▒▒▒▒ \n");
-    printf("\n" PURPLE);
+    printf("\n" BPURPLE);
     printf("         _ _  ______                                                                  _ _ \n");
     printf("        ( | ) |  ___|                                                                ( | )\n");
     printf("         V V  | |_ ___   ___ _   _ ___    ___  _ __     ___ __ _ _ __ ___  ___ _ __   V V \n");

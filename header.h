@@ -55,6 +55,8 @@ extern char cw[50];
 void timeStamp(char buffer[]);
 
 // ui
+void guideTitle();
+void guideNotes();
 void guide();
 void in();
 

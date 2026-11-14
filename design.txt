@@ -25,3 +25,42 @@ guide book
 |                                ╚═══*.·:·.☽✧    ✦✦    ✧☾.·:·.*═══╝                              |
 |                                                                                                  |
 ⋆﹥━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━﹤⋆
+
+DBMS ini digunakan untuk mencatat data terkait target pekerjaan dan kesiapan kondisi saat ini untuk mencapai target tersebut
+
+1. Daftar Perintah
+   - SUBMIT TO      : Menambahkan data
+   - CHANGE         : Mengubah data
+   - REMOVE FROM    : Menghapus data
+   - PRESENT FROM   : Menampilkan data
+   - HELP           : Membuka Guide Book
+   - HELP ON        : Membuka Guide Book berdasarkan tabel 
+   - EXIT           : Mengakhiri aplikasi
+
+2. Master Data
+   - Posisi         : tposition     (id, nama, tanggal_dibuat, tanggal_diubah)
+   - Keahlian       : tskill        (id, nama, kecakapan, tanggal dibuat, tanggal_diubah) 
+   - Target         : ttarget       (id, id_posisi, id_skill, sudah_dikuasai, tanggal_dibuat, tanggal_diubah)
+   - Organisasi     : torganization (id, nama, tanggal_dibuat, tanggal_diubah)
+   - Sertifikasi    : tcertificate  (id, nama, id_organisasi, tanggal_dimulai, tanggal_berakhir, kredensial, url, tanggal_dibuat, tanggal_diubah)
+   - Pengalaman     : texperience   (id, id_organisasi, id_posisi, tanggal_dimulai, tanggal_berakhir, tanggal_dibuat, tanggal_diubah)
+   - Kategori       : tcategory     (id, nama, tanggal_dibuat, tanggal_diubah)
+   - Proyek         : tproject      (id, nama, url, tanggal_selesai, id_kategori, tanggal_dibuat, tanggal_diubah)
+   Untuk informasi lebih lanjut terkait bagaimana cara menampilkan, menambahkan, mengubah, atau menghapus data, 
+   silahkan gunakan perintah "HELP ON" dilanjutkan dengan nama tabel, cth. HELP ON tposition$
+
+3. Format ID (bisa disesuaikan ASALKAN KONSISTEN)
+   - Posisi         : POS-(Nomor ID)    cth. POS001
+   - Keahlian       : SKL-(Nomor ID)    cth. SKL001
+   - Target         : TAR-(Nomor ID)    cth. TAR001
+   - Organisasi     : ORG-(Nomor ID)    cth. ORG001
+   - Sertifikasi    : CER-(Nomor ID)    cth. CER001
+   - Pengalaman     : EXP-(Nomor ID)    cth. EXP001
+   - Kategori       : CAT-(Nomor ID)    cth. CAT001
+   - Proyek         : PRJ-(Nomor ID)    cth. PRJ001
+
+CATATAN PENTING!!
+1. SELALU AKHIRI PERINTAH DENGAN TANDA DOLLAR ($)
+2. Jika argumen berisi lebih dari satu kata, maka gunakanlah penulisan tanpa spasi dengan format camel case (cth. WebDeveloper)
+3. Tidak perlu menambahkan argumen untuk mengisi data tanggal_dibuat dan data tanggal_diubah
+4. Jika ingin menambahkan data yang berasal dari tabel lain, pastikan bahwa ID tersebut ada di dalam tabel yang bersangkutan
