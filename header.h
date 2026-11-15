@@ -8,72 +8,66 @@
 #include <time.h>       // library mengambil tanggal dan waktu
 #include <stdbool.h>    // library boolean
 
-#define DEFAULT "\e[0;0m"   // warna default teks
+#define DEFAULT "\033[0;0m"   // reset warna teks
+
 // makro warna teks (regular)
-#define BLACK   "\e[0;30m"  // warna hitam
-#define RED     "\e[0;31m"  // warna merah
-#define GREEN   "\e[0;32m"  // warna hijau
-#define YELLOW  "\e[0;33m"  // warna kuning
-#define BLUE    "\e[0;34m"  // warna biru
-#define PURPLE  "\e[0;35m"  // warna ungu
-#define CYAN    "\e[0;36m"  // warna cyan
-#define WHITE   "\e[0;37m"  // warna putih
+#define BLACK   "\033[0;30m"  // warna hitam
+#define RED     "\033[0;31m"  // warna merah
+#define GREEN   "\033[0;32m"  // warna hijau
+#define YELLOW  "\033[0;33m"  // warna kuning
+#define BLUE    "\033[0;34m"  // warna biru
+#define PURPLE  "\033[0;35m"  // warna ungu
+#define CYAN    "\033[0;36m"  // warna cyan
+#define WHITE   "\033[0;37m"  // warna putih
 
 // makro warna teks (bold)
-#define BBLACK   "\e[1;30m"  // warna hitam
-#define BRED     "\e[1;31m"  // warna merah
-#define BGREEN   "\e[1;32m"  // warna hijau
-#define BYELLOW  "\e[1;33m"  // warna kuning
-#define BBLUE    "\e[1;34m"  // warna biru
-#define BPURPLE  "\e[1;35m"  // warna ungu
-#define BCYAN    "\e[1;36m"  // warna cyan
-#define BWHITE   "\e[1;37m"  // warna putih
+#define BBLACK   "\033[1;30m"  // warna hitam
+#define BRED     "\033[1;31m"  // warna merah
+#define BGREEN   "\033[1;32m"  // warna hijau
+#define BYELLOW  "\033[1;33m"  // warna kuning
+#define BBLUE    "\033[1;34m"  // warna biru
+#define BPURPLE  "\033[1;35m"  // warna ungu
+#define BCYAN    "\033[1;36m"  // warna cyan
+#define BWHITE   "\033[1;37m"  // warna putih
 
-// makro warna background
-// #define BGBLACK   "\e[0;100m"  // warna hitam
-// #define BGRED     "\e[0;101m"  // warna merah
-// #define BGGREEN   "\e[0;102m"  // warna hijau
-// #define BGYELLOW  "\e[0;103m"  // warna kuning
-// #define BGBLUE    "\e[0;104m"  // warna biru
-// #define BGPURPLE  "\e[0;105m"  // warna ungu
-// #define BGCYAN    "\e[0;106m"  // warna cyan
-// #define BGWHITE   "\e[0;107m"  // warna putih
-
-#define TABLETEMPLATE char id[10], createdAt[20], updatedAt[20] // makro template tabel
-#define EOP '$'                                                 // makro simbol EOP (End Of Process)
+#define TABLETEMPLATE char id[10], createdAt[20], updatedAt[20] // template tabel
+#define EOP '$'                                                 // simbol EOP (End Of Process)
+#define IDDUMMY "XXXXXXXX"                                      // tanda EOF (End Of File) / nilai dummy ID 
+#define DATEDUMMY "XXXXX"                                       // nilai dummy tanggal
+#define EOFCATEGORY (IDDUMMY" XXX "DATEDUMMY" "DATEDUMMY)       // EOF Category
 
 typedef struct{
     TABLETEMPLATE;
     char name[50];
 } category;
 
-// variabel untuk mesin kata
-extern int indeks, wordLen;
-extern char cw[50];
+extern int indeks, wordLen; // indeks ke-i kata dan panjang kata
+extern char cw[50];         // kata saat ini
 
 // formatting
-void timeStamp(char buffer[]);
+void timeStamp(char buffer[]);  // mengambil waktu saat ini
 
-// ui
-void guideTitle();
-void guideNotes();
-void guide();
-void in();
-void out();
+// ui aplikasi
+void guideTitle();  // header buku panduan 
+void guideFooter(); // footer buku panduan 
+void guide();       // buku panduan
+void in();          // tampilan awal
+void out();         // tampilan akhir
 
 // response
-void success(int code);
-void error(int code);
+void success(int code); // pesan berhasil
+void error(int code);   // pesan error
 
 // mesin kata
-int eop(char ribbon[]);
-void start(char ribbon[]);
-void reset();
-void inc(char ribbon[]);
-char* getcw();
-int getwlen();
+int eop(char ribbon[]);     // mengecek eop
+void start(char ribbon[]);  // memulai mesin kata
+void reset();               // mengosongkan kata saat ini
+void inc(char ribbon[]);    // memajukan kata
+char* getcw();              // mengambil kata saat ini
+int getwlen();              // mengambil panjang kata saat ini
 
-// metode tabel kategori
-void postCategory(char command[]);      // tambah data
-void updateCategory(char command[]);    // ubah data
-void deleteCategory(char command[]);    // hapus data
+// perintah tabel kategori
+void postCategory(char command[]);      // menambahkan data
+void updateCategory(char command[]);    // mengubah data
+void deleteCategory(char command[]);    // menghapus data
+void guideCategory();                   // panduan kategori

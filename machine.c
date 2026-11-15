@@ -3,43 +3,34 @@
 // keberkahanNya maka saya tidak melakukan kecurangan seperti yang telah 
 // dispesifikasikan. Aamiin.
 
-#include "header.h"
+#include "header.h" // memanggil file header
 
-int indeks, wordLen;
-char cw[50];
+int indeks, wordLen;    // indeks ke-i kata dan panjang kata
+char cw[50];            // kata saat ini
 
-void timeStamp(char buffer[]){
+// formatting
+void timeStamp(char buffer[]){  // mengambil waktu saat ini
     time_t now = time(NULL);
     struct tm *t = localtime(&now);
 
     strftime(buffer, 100, "%Y-%m-%dT%H:%M:%S", t);
 }
 
-void guideTitle(){
+void guideTitle(){  // header buku panduan
     printf(BWHITE"                                  ╔═══*.·:·.☽✧    ✦✦    ✧☾.·:·.*═══╗                                  \n");
     printf(BYELLOW"⋆"CYAN"﹥━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"BWHITE"║         " BGREEN "* guide book *" BWHITE "         ║"CYAN"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━﹤"BYELLOW"⋆\n" CYAN);
     printf("∨                                 "BWHITE"╚═══*.·:·.☽✧    ✦✦    ✧☾.·:·.*═══╝"CYAN"                                 ∨\n");
 }
-
-void guideNotes(){
-    printf("|   "BRED"CATATAN PENTING!!"CYAN"                                                                                |\n");
-    printf("|   "BYELLOW"1."WHITE" SELALU AKHIRI PERINTAH DENGAN TANDA DOLLAR ("YELLOW"$"WHITE")"CYAN"                                                |\n");
-    printf("|   "BYELLOW"2."WHITE" Jika argumen berisi lebih dari satu kata, maka gunakanlah penulisan tanpa spasi dengan"CYAN"        |\n");
-    printf("|      "WHITE"format camel case ("BLACK"cth."WHITE" "BLUE"WebDeveloper"WHITE")"CYAN"                                                         |\n");
-    printf("|   "BYELLOW"3."WHITE" Tidak perlu menambahkan argumen untuk mengisi data "BLACK"tanggal_dibuat"WHITE" dan data "BLACK"tanggal_diubah"CYAN"     |\n");
-    printf("|   "BYELLOW"4."WHITE" Jika ingin menambahkan data yang berasal dari tabel lain, pastikan bahwa "BLUE"ID"WHITE" tersebut ada"CYAN"      |\n");
-    printf("|      "WHITE"di dalam tabel yang bersangkutan"CYAN"                                                              |\n");
-    printf("|                                                                                                    |\n");
+void guideFooter(){ // footer buku panduan
     printf("∧                                                                                                    ∧\n");
     printf(BYELLOW"⋆"CYAN"﹥━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━﹤"BYELLOW"⋆\n" DEFAULT);
 }
-
-void guide(){
+void guide(){       // buku panduan
     guideTitle();
 
     printf("|                                                                                                    |\n");
-    printf("|   "BLUE"DBMS ini digunakan untuk mencatat data terkait target pekerjaan dan kesiapan kondisi saat ini"CYAN"    |\n");
-    printf("|   "BLUE"untuk mencapai target tersebut"CYAN"                                                                   |\n");
+    printf("|   "WHITE"DBMS ini digunakan untuk mencatat data terkait target pekerjaan dan kesiapan kondisi saat ini"CYAN"    |\n");
+    printf("|   "WHITE"untuk mencapai target tersebut"CYAN"                                                                   |\n");
     printf("|                                                                                                    |\n");
     printf("|   "BGREEN"1. Daftar Perintah"CYAN"                                                                               |\n");
     printf("|      - "BPURPLE"SUBMIT TO"CYAN"      : "BWHITE"Menambahkan"CYAN" data                                                           |\n");
@@ -77,11 +68,18 @@ void guide(){
     printf("|      - "BYELLOW"Kategori"CYAN"       : "WHITE"CAT"CYAN"-(Nomor ID)    "BLACK"cth. "WHITE"CAT001"CYAN"                                              |\n");
     printf("|      - "BYELLOW"Proyek"CYAN"         : "WHITE"PRJ"CYAN"-(Nomor ID)    "BLACK"cth. "WHITE"PRJ001"CYAN"                                              |\n");
     printf("|                                                                                                    |\n");
+    printf("|   "BRED"CATATAN PENTING!!"CYAN"                                                                                |\n");
+    printf("|   "BYELLOW"1."WHITE" SELALU AKHIRI PERINTAH DENGAN TANDA DOLLAR ("YELLOW"$"WHITE")"CYAN"                                                |\n");
+    printf("|   "BYELLOW"2."WHITE" Jika argumen berisi lebih dari satu kata, maka gunakanlah penulisan tanpa spasi dengan"CYAN"        |\n");
+    printf("|      "WHITE"format camel case ("BLACK"cth."WHITE" "BLUE"WebDeveloper"WHITE")"CYAN"                                                         |\n");
+    printf("|   "BYELLOW"3."WHITE" Tidak perlu menambahkan argumen untuk mengisi data "BLACK"tanggal_dibuat"WHITE" dan data "BLACK"tanggal_diubah"CYAN"     |\n");
+    printf("|   "BYELLOW"4."WHITE" Jika ingin menambahkan data yang berasal dari tabel lain, pastikan bahwa "BLUE"ID"WHITE" tersebut ada"CYAN"      |\n");
+    printf("|      "WHITE"di dalam tabel yang bersangkutan"CYAN"                                                              |\n");
+    printf("|                                                                                                    |\n");
 
-    guideNotes();
+    guideFooter();
 }
-
-void in(){
+void in(){          // tampilan awal
     printf("\n" CYAN);
     printf("   █████████   ████     ██████                                                                         \n");
     printf("  ███▒▒▒▒▒███ ▒▒███    ███▒▒███                                                                        \n");
@@ -106,27 +104,26 @@ void in(){
     guide();
     printf("\n");
 }
-
-void out(){
+void out(){         // tampilan akhir
     printf(RED"                                           &     &                                                                                \n");
     printf("                        &#   &&   &#       #&    &    &                                                                           \n");
     printf("                        #GP5YJJJJ5GB       &BP5YYYYY5B#                                                                           \n");
     printf("                       B"BWHITE"7:^7?J5#P^:~"RED"P&   &#"BWHITE"?:^7?J5BP~:"RED"~P                                                                          \n");
-    printf("                     &5"BWHITE"::::"BBLACK"      "BWHITE"::::?"RED"#  P"BWHITE"::::"BBLACK"      "BWHITE":::"RED"7#          "BRED"_           _       _        __     __                        \n"RED);
-    printf("                     G"BWHITE"::::"BBLACK"        "BWHITE":::::"RED"BB"BWHITE"^:::"BBLACK"        "BWHITE"::::"RED"J#        "BRED"| |         | |     | |       \\ \\   / /                        \n"RED);
-    printf("                     P"BWHITE":::::"BBLACK"      "BWHITE"::::::"RED"#G"BWHITE":::::"BBLACK"      "BWHITE":::::"RED"~#        "BRED"| |     __ _| | __ _| | __ _   \\ \\_/ /__ _   _  ___ _   _  ___ \n"RED);
-    printf("                     B"BWHITE"::::::::::::::::"RED"5BB"BWHITE"^:::::::::::::::"RED"J         "BRED"| |    / _` | |/ _` | |/ _` |   \\   / _ \\ | | |/ _ \\ | | |/ _ \\\n");
-    printf("                     &"RED"P"BWHITE"^:::::::::::::"RED"JBPGP"BWHITE"^:::::::::::::"RED"?#"BRED"#&       | |___| (_| | | (_| | | (_| |    | |  __/ |_| |  __/ |_| |  __/\n");
-    printf("                   &#B"RED"BG"BWHITE"?~^^^^^^:^^"RED"75GPPPGGJ"BWHITE"~^^^^^^^^^"RED"75GGGB#"BRED"&&    |______\\__,_|_|\\__,_|_|\\__,_|    |_|\\___|\\__, |\\___|\\__, |\\___|\n");
+    printf("                     &5"BWHITE"B5GP"BBLACK"      "BWHITE"PG5B?"RED"#  P"BWHITE"B5GP"BBLACK"      "BWHITE"G5B"RED"7#           "BRED"_           _       _        __     __                        \n"RED);
+    printf("                     G"BWHITE"PG5B"BBLACK"        "BWHITE"B5GP#"RED"BB"BWHITE"^G5B"BBLACK"        "BWHITE"B5GP"RED"J#        "BRED"| |         | |     | |       \\ \\   / /                        \n"RED);
+    printf("                     P"BWHITE"BPBG5"BBLACK"      "BWHITE"5GBPBG"RED"#G"BWHITE"BPBG5"BBLACK"      "BWHITE"5GBPB"RED"~#        "BRED"| |     __ _| | __ _| | __ _   \\ \\_/ /__ _   _  ___ _   _  ___ \n"RED);
+    printf("                     B"BWHITE"#P5BP&P5BPGBP5#P"RED"5BB"BWHITE"^P5BP&P5BPGBP5#P"RED"J         "BRED"| |    / _` | |/ _` | |/ _` |   \\   / _ \\ | | |/ _ \\ | | |/ _ \\\n");
+    printf("                     &"RED"P"BWHITE"^GP#P5BP&P5BPG"RED"JBPGP"BWHITE"^GP#P5BP&P5BPG"RED"?#"BRED"#&       | |___| (_| | | (_| | | (_| |    | |  __/ |_| |  __/ |_| |  __/\n");
+    printf("                   &#B"RED"BG&"BWHITE"GP5B#P5BGB"RED"75GPPPGGJ"BWHITE"~P5B#P5BGB"RED"75GGGB#"BRED"&&    |______\\__,_|_|\\__,_|_|\\__,_|    |_|\\___|\\__, |\\___|\\__, |\\___|\n");
     printf("                &##"RED"BGPPPGGPYJ??JY5GGPPPPPPPGGPYJ??JY5GGPPPPPGGB"BRED"#&                                            __/ |      __/ |     \n");
     printf("              &#"RED"BGPPPPPPPPPGGGGGGGPPPPPPPPPPPGGGGGGGGPPPPPPPPPPGB"BRED"#&                                         |___/      |___/      \n");
-    printf("            ##"RED"BGPPP5P5Y5PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPY5P5PPPGB"BRED"##           \n");
-    printf("           #"RED"BBPPPPP5555PG&         "BWHITE"#~:^:~:::^G"RED"           &G5Y5PPPPPGB"BRED"B&         \n");
-    printf("         &##"RED"GPPPPPPP5PPPP&         "BWHITE"&~^:^~::^:B"RED"          #GPP5PPPPPPPPB"BRED"B#        \n");
+    printf("            ##"RED"BGPPP"BRED"5P5Y5"RED"PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"BRED"Y5P5"RED"PPPGB"BRED"##           \n");
+    printf("           #"RED"BBPPPPP"BRED"5555"RED"PG&         "BWHITE"#P5BP&P5BPG"RED"           &G"BRED"5Y5"RED"PPPPPGB"BRED"B&         \n");
+    printf("         &##"RED"GPPPPPPP"BRED"5"RED"PPPP&         "BWHITE"&GP5B#P5BGB"RED"          #GPP"BRED"5"RED"PPPPPPPPB"BRED"B#        \n");
     printf("        &#"RED"BPPPPPPPPPPPPPP#          "BWHITE"#P5G B5PB"RED"         #GPPPPPPPPPPPPPPB"BRED"#&       \n");
     printf("       &#"RED"BPPPPPPPPPPPPPPPB                          &GPPPPPPPPPPPPPPPPP"BRED"B#B&&&   \n");
     printf(" #&&&&#B#GG"RED"PPPPPPPPPPPPPPP&                       &GPPPPPPPPPPPPPPPPGG"BRED"BBBB"RED"GBB"BRED"B#&\n");
-    printf(" #G"RED"PPP"BRED"GGGG"RED"BBBGPPPPPPPPPPPPG    "BRED"&&&#######&"RED"     &#GPPPPPPPPPPPPPPPP"BRED"BBBGG"RED"PPPPPPP"BRED"#&\n");
+    printf(" #G"RED"PPPGGGG"BRED"BBBG"RED"PPPPPPPPPPPPG    "BRED"&&&#######&"RED"     &#GPPPPPPPPPPPPPPPP"BRED"BBBGG"RED"PPPPPPP"BRED"#&\n");
     printf(" #B"RED"PPPPPPPPP"BRED"GGG"RED"PPPPPPPPPPPPB&"BRED"##BBBBBBBBBBB#&"RED" &BGPPPPPPPPPPPPPPPPPPGPPPPPPPPPP"BRED"BB \n");
     printf(" &&#GP"RED"PPPPPPPPPPPPPPPPPPPPPP"RED"G"BRED"BBBBBBBBBBBBBB"RED"GGPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"BRED"G#   \n");
     printf("    #B"RED"PPPPPPPPPPPPPPPPPP"BRED"GGGGG"RED"G"BRED"BBBBBBBBBBB"RED"GG"BRED"GGGGGG"RED"PPPPPPPPPPPPPPPPPPPPPPPPG#"BRED"#&   \n");
@@ -151,7 +148,8 @@ void out(){
     printf("       "BRED"&#BBBBBBB#B#&&&                                                          \n"DEFAULT);
 }
 
-void success(int code){
+// response
+void success(int code){ // pesan berhasil
     switch(code){
         case 0: {
             printf(GREEN "Data berhasil ditambahkan\n" DEFAULT);
@@ -171,8 +169,7 @@ void success(int code){
         }
     }
 }
-
-void error(int code){
+void error(int code){   // pesan error
     switch(code){
         case 0: {
             printf(RED "gada query itu woy\n" DEFAULT);
@@ -241,15 +238,15 @@ void error(int code){
     }
 }
 
-int eop(char ribbon[]){
+// mesin kata
+int eop(char ribbon[]){     // mengecek eop
     if(ribbon[indeks] == EOP){
         return 1;
     } else {
         return 0;
     }
 }
-
-void start(char ribbon[]){
+void start(char ribbon[]){  // memulai mesin kata
     indeks = 0;
     wordLen = 0;
     while(ribbon[indeks] == ' '){
@@ -262,13 +259,11 @@ void start(char ribbon[]){
     }
     cw[wordLen] = '\0';
 }
-
-void reset(){
+void reset(){               // mengosongkan kata saat ini
     wordLen = 0;
     cw[wordLen] = '\0';
 }
-
-void inc(char ribbon[]){
+void inc(char ribbon[]){    // memajukan kata
     wordLen = 0;
     while(ribbon[indeks] == ' '){
         indeks++;
@@ -280,30 +275,31 @@ void inc(char ribbon[]){
     }
     cw[wordLen] = '\0';
 }
-
-char* getcw(){
+char* getcw(){              // mengambil kata saat ini
     return cw;
 }
-
-int getwlen(){
+int getwlen(){              // mengambil panjang kata saat ini
     return wordLen;
 }
 
-// category
-void postCategory(char command[]){
-    char dateTime[100];
-    timeStamp(dateTime);
+// prosedur fungsi perintah tabel kategori
+void postCategory(char command[]){      // menambahkan data
+    char dateTime[100];     // menyimpan tanggal dan waktu saat ini
+    timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
     
-    int recordSum = 0;
-    category temp[100];
-    category record, new;
+    int recordSum = 0;      // jumlah rekaman di dalam tabel
+    category temp[100];     // array rekaman untuk menggeserkan nilai rekaman baru
+    category record, new;   // rekaman saat ini dan rekaman yang baru
     
-    FILE *categoryTable;
-    categoryTable = fopen("tables/tcategory.dat", "r");
+    FILE *categoryTable;    // kaitan untuk mengakses file
+    categoryTable = fopen("tables/tcategory.dat", "r"); // membuka file dengan mode read
     
+    // memulai proses pembacaan
     fscanf(categoryTable, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
 
-    if(strcmp(record.id, "XXXXXXXX") != 0 && strcmp(record.id, "") != 0){
+    // jika tidak ditemukan EOF dan data tidak kosong
+    if(strcmp(record.id, IDDUMMY) != 0 && strcmp(record.id, "") != 0){
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
         do{
             strcpy(temp[recordSum].id, record.id);
             strcpy(temp[recordSum].name, record.name);
@@ -311,23 +307,24 @@ void postCategory(char command[]){
             strcpy(temp[recordSum].updatedAt, record.updatedAt);
             recordSum++;
             fscanf(categoryTable, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
-        } while(strcmp(record.id, "XXXXXXXX") != 0);
+        } while(strcmp(record.id, IDDUMMY) != 0);
     }
-    fclose(categoryTable);
+    fclose(categoryTable); // menutup file
     
     inc(command);
     if(eop(command) == 0){
-        strcpy(new.id, getcw());
+        strcpy(new.id, getcw());    // mengambil id masukan user
 
         inc(command);
         if(eop(command) == 1){
-            strcpy(new.name, getcw());
+            strcpy(new.name, getcw());  // mengambil nama masukan user
 
+            // mengambil tanggal dan waktu saat ini
             strcpy(new.createdAt, dateTime);
             strcpy(new.updatedAt, dateTime);
 
-            bool isDuplicate = false;
-            // kondisi memasukkan ke dalam array
+            bool isDuplicate = false;   // cek id duplikat
+            // kondisi memasukkan rekaman baru ke dalam array
             if(strcmp(new.id, temp[0].id) < 0){
                 // rekaman baru di paling depan
                 // geser semua isi array ke belakang
@@ -343,7 +340,7 @@ void postCategory(char command[]){
                 strcpy(temp[0].createdAt, new.createdAt);
                 strcpy(temp[0].updatedAt, new.updatedAt);
             } else if (strcmp(new.id, temp[recordSum - 1].id) > 0){
-                // rekaman baru di belakang
+                // rekaman baru di paling belakang
                 strcpy(temp[recordSum].id, new.id);
                 strcpy(temp[recordSum].name, new.name);
                 strcpy(temp[recordSum].createdAt, new.createdAt);
@@ -351,11 +348,12 @@ void postCategory(char command[]){
                 recordSum++;
             } else {
                 // rekaman baru memiliki posisi di tengah
-                int i = 0;
-                bool isStop = false;
+                int i = 0;  // iterasi dan indeks
+                bool isStop = false;    // cek berhenti
                 // cari posisi
                 while((i < recordSum) && (!isStop)){
                     if(strcmp(temp[i].id, new.id) == 0){
+                        // terdapat id yang redundan
                         error(7);
                         isDuplicate = true;
                         isStop = true;
@@ -366,12 +364,14 @@ void postCategory(char command[]){
                     }
                 }
                 if(!isDuplicate){
+                    // menggeserkan rekaman di posisi tengah
                     for(int j = recordSum - 1; j >= i; j--){
                         strcpy(temp[j+1].id, temp[j].id);
                         strcpy(temp[j+1].name, temp[j].name);
                         strcpy(temp[j+1].createdAt, temp[j].createdAt);
                         strcpy(temp[j+1].updatedAt, temp[j].updatedAt);
                     }
+                    // memasukkan rekaman baru di posisi tengah
                     strcpy(temp[i].id, new.id);
                     strcpy(temp[i].name, new.name);
                     strcpy(temp[i].createdAt, new.createdAt);
@@ -386,7 +386,7 @@ void postCategory(char command[]){
                 for(int i = 0; i < recordSum; i++){
                     fprintf(categoryTable, "%s %s %s %s\n", temp[i].id, temp[i].name, temp[i].createdAt, temp[i].updatedAt);
                 }
-                fprintf(categoryTable, "XXXXXXXX XXX XXXXX XXXXX");
+                fprintf(categoryTable, "%s", EOFCATEGORY);
                 fclose(categoryTable);
             }
         } else {
@@ -396,24 +396,27 @@ void postCategory(char command[]){
         error(4);
     }
 }
+void updateCategory(char command[]){    // mengubah data
+    char dateTime[100];     // menyimpan tanggal dan waktu saat ini
+    timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
 
-void updateCategory(char command[]){
-    char dateTime[100];
-    timeStamp(dateTime);
+    int recordSum = 0;      // jumlah rekaman di dalam tabel
+    category temp[100];     // array rekaman untuk menggeserkan nilai rekaman baru
+    category record, new;   // rekaman saat ini dan rekaman yang baru
 
-    int recordSum = 0;
-    category temp[100];
-    category record, new;
+    FILE *categoryTable;    // kaitan untuk mengakses file
+    categoryTable = fopen("tables/tcategory.dat", "r"); // membuka file dengan mode read
 
-    FILE *categoryTable;
-    categoryTable = fopen("tables/tcategory.dat", "r");
-
+    // memulai proses pembacaan
     fscanf(categoryTable, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
     
-    if(strcmp(record.id, "XXXXXXXX") == 0 || strcmp(record.id, "") == 0){
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika EOF ditemukan atau data kosong
         error(12);
         fclose(categoryTable);
     } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
         do{
             strcpy(temp[recordSum].id, record.id);
             strcpy(temp[recordSum].name, record.name);
@@ -421,16 +424,17 @@ void updateCategory(char command[]){
             strcpy(temp[recordSum].updatedAt, record.updatedAt);
             recordSum++;
             fscanf(categoryTable, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
-        } while(strcmp(record.id, "XXXXXXXX") != 0);
+        } while(strcmp(record.id, IDDUMMY) != 0);
         
-        fclose(categoryTable);
+        fclose(categoryTable); // menutup file
         
         inc(command);
-        char search[50];
-        strcpy(search, getcw());
+        char search[50]; // cari nilai id
+        strcpy(search, getcw()); // mengambil id masukan user
         
-        int i = 0;
-        bool isFound = false;
+        int i = 0;  // iterasi dan index
+        bool isFound = false;   // cek ditemukan
+        // proses pencarian
         while(!isFound && i < recordSum){
             if(strcmp(temp[i].id, search) == 0){
                 isFound = true;
@@ -445,9 +449,10 @@ void updateCategory(char command[]){
             if(eop(command) == 0){
                 inc(command);
                 if(eop(command) == 1){
-                    strcpy(new.name, getcw());
-                    strcpy(new.updatedAt, dateTime);
+                    strcpy(new.name, getcw());          // mengambil nama masukan user
+                    strcpy(new.updatedAt, dateTime);    // mengubah tanggal diubah
     
+                    // mengubah menjadi nilai baru
                     strcpy(temp[i].name, new.name);
                     strcpy(temp[i].updatedAt, new.updatedAt);
 
@@ -459,49 +464,52 @@ void updateCategory(char command[]){
                 error(13);
             }
         }
-        
         // flush ke file
         categoryTable = fopen("tables/tcategory.dat", "w");
         for(int i = 0; i < recordSum; i++){
             fprintf(categoryTable, "%s %s %s %s\n", temp[i].id, temp[i].name, temp[i].createdAt, temp[i].updatedAt);
         }
-        fprintf(categoryTable, "XXXXXXXX XXX XXXXX XXXXX");
+        fprintf(categoryTable, "%s", EOFCATEGORY);
         fclose(categoryTable);   
     }
 }
+void deleteCategory(char command[]){    // menghapus data
+    int recordSum = 0;      // jumlah rekaman di dalam tabel
+    category temp[100];     // array rekaman untuk menggeserkan nilai rekaman baru
+    category record, new;   // rekaman saat ini dan rekaman yang baru
 
-void deleteCategory(char command[]){
-    int recordSum = 0;
-    category temp[100];
-    category record, new;
+    FILE *categoryTable;    // kaitan untuk mengakses file
+    categoryTable = fopen("tables/tcategory.dat", "r"); // membuka file dengan mode read
 
-    FILE *tableCategory;
-    tableCategory = fopen("tables/tcategory.dat", "r");
-
-    fscanf(tableCategory, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
+    // memulai proses pembacaan
+    fscanf(categoryTable, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
     
-    if(strcmp(record.id, "XXXXXXXX") == 0 || strcmp(record.id, "") == 0){
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika EOF ditemukan atau data kosong
         error(12);
-        fclose(tableCategory);
+        fclose(categoryTable);
     } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
         do{
             strcpy(temp[recordSum].id, record.id);
             strcpy(temp[recordSum].name, record.name);
             strcpy(temp[recordSum].createdAt, record.createdAt);
             strcpy(temp[recordSum].updatedAt, record.updatedAt);
             recordSum++;
-            fscanf(tableCategory, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
-        } while(strcmp(record.id, "XXXXXXXX") != 0);
+            fscanf(categoryTable, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
 
-        fclose(tableCategory);
+        fclose(categoryTable); // menutup file
         
         inc(command);
-        char search[50];
-        strcpy(search, getcw());
+        char search[50]; // cari nilai id
+        strcpy(search, getcw()); // mengambil id masukan user
         
         if(eop(command) == 1){
-            int idx = 0;
-            bool isFound = false;
+            int idx = 0;    // iterasi dan index
+            bool isFound = false;   // cek ditemukan
+            // proses pencarian 
             while(!isFound && idx < recordSum){
                 if(strcmp(temp[idx].id, search) == 0){
                     isFound = true;
@@ -515,7 +523,7 @@ void deleteCategory(char command[]){
             } else {
                 // kondisi memasukkan ke dalam array
                 if(idx == 0){
-                    // rekaman baru di paling depan
+                    // rekaman dihapus di paling depan
                     // geser semua isi array ke belakang
                     for(int i = 0; i < recordSum - 1; i++){
                         strcpy(temp[i].id, temp[i+1].id);
@@ -525,12 +533,12 @@ void deleteCategory(char command[]){
                     }
                     recordSum--;
                 } else if (idx == recordSum - 1){
-                    // rekaman baru di belakang
+                    // rekaman dihapus di paling belakang
                     recordSum--;
                 } else {
-                    // rekaman baru memiliki posisi di tengah
-                    int i = 0;
-                    bool isStopped = false;
+                    // rekaman dihapus memiliki posisi di tengah
+                    int i = 0;  // iterasi dan index
+                    bool isStopped = false; // cek ditemukan
                     // cari posisi
                     while((i < recordSum) && !isStopped){
                         if(i >= idx){
@@ -539,6 +547,7 @@ void deleteCategory(char command[]){
                             i++;
                         }
                     }
+                    // menggeserkan rekaman di posisi tengah
                     for(int j = i; j < recordSum - 1; j++){
                         strcpy(temp[j].id, temp[j+1].id);
                         strcpy(temp[j].name, temp[j+1].name);
@@ -549,16 +558,36 @@ void deleteCategory(char command[]){
                 }
                 success(2);
             }
-    
             // flush ke file
-            tableCategory = fopen("tables/tcategory.dat", "w");
+            categoryTable = fopen("tables/tcategory.dat", "w");
             for(int i = 0; i < recordSum; i++){
-                fprintf(tableCategory, "%s %s %s %s\n", temp[i].id, temp[i].name, temp[i].createdAt, temp[i].updatedAt);
+                fprintf(categoryTable, "%s %s %s %s\n", temp[i].id, temp[i].name, temp[i].createdAt, temp[i].updatedAt);
             }
-            fprintf(tableCategory, "XXXXXXXX XXX XXXXX XXXXX");
-            fclose(tableCategory);
+            fprintf(categoryTable, "%s", EOFCATEGORY);
+            fclose(categoryTable);
         } else {
             error(14);
         }
     }
+}
+void guideCategory(){                   // buku panduan kategori
+    guideTitle();
+
+    printf("|                                                                                                    |\n");
+    printf("|   "WHITE"Tabel kategori digunakan untuk menyimpan relasi kategori dalam tabel proyek"CYAN"                      |\n");
+    printf("|                                                                                                    |\n");
+    printf("|   "BGREEN"STRUKTUR DATA"CYAN"                                                                                    |\n");
+    printf("|      "WHITE"1. id              : "CYAN"Kode unik                                                                |\n");
+    printf("|      "WHITE"2. nama            : "CYAN"Nama kategori proyek                                                     |\n");
+    printf("|      "WHITE"3. tanggal_dibuat  : "CYAN"waktu data dibuat                                                        |\n");
+    printf("|      "WHITE"4. tanggal_diubah  : "CYAN"waktu data diubah                                                        |\n");
+    printf("|                                                                                                    |\n");
+    printf("|   "BGREEN"PENGGUNAAN PERINTAH"CYAN"                                                                              |\n");
+    printf("|      "WHITE"1. Menampilkan data : "BPURPLE"PRESENT FROM "BLUE"tcategory"YELLOW"$"CYAN"                                                 |\n");
+    printf("|      "WHITE"2. Menambahkan data : "BPURPLE"SUBMIT TO "BLUE"tcategory "CYAN"id nama"YELLOW"$"CYAN"                                            |\n");
+    printf("|      "WHITE"3. Mengubah data    : "BPURPLE"CHANGE "BLUE"tcategory "CYAN"id nama"YELLOW"$"CYAN"                                               |\n");
+    printf("|      "WHITE"4. Menghapus data   : "BPURPLE"REMOVE FROM "BLUE"tcategory "CYAN"id"YELLOW"$"CYAN"                                               |\n");
+    printf("|                                                                                                    |\n");
+
+    guideFooter();
 }

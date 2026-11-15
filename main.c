@@ -3,24 +3,24 @@
 // keberkahanNya maka saya tidak melakukan kecurangan seperti yang telah 
 // dispesifikasikan. Aamiin.
 
-#include "header.h"
+#include "header.h" // memanggil file header
 
 int main(){
 
-    char dateTime[100];
-    timeStamp(dateTime);
-
     in();
 
-    bool exit = false;
-    do{
-        char command[250];
+    bool exit = false;  // cek keluar
+    do{ // jalankan aplikasi selama exit bernilai false
+        char command[250];  // perintah/masukan user
+        
+        // custom terminal prompt
         printf(GREEN "DBMS@alfreezzz" PURPLE " CIHUY32 " YELLOW "/c/career tracker" CYAN " (master)\n" DEFAULT);
         printf("$ ");
-        scanf("%249[^\n]s", command);
+        
+        scanf("%249[^\n]s", command);   // mengambil masukkan user
         getchar();
 
-        if(command[strlen(command) - 1] == EOP){
+        if(command[strlen(command) - 1] == EOP){    // mengecek eop
             start(command);
             
             if(strcmp(getcw(), "SUBMIT") == 0){
@@ -176,7 +176,7 @@ int main(){
                                 return 4;
                             } else if (strcmp(getcw(), "tcategory") == 0){
                                 if(eop(command) == 1){
-                                    return 5;
+                                    guideCategory();
                                 } else {
                                     error(14);
                                 }
