@@ -11,13 +11,13 @@ int main(){
 
     bool exit = false;  // cek keluar
     do{ // jalankan aplikasi selama exit bernilai false
-        char command[255];  // perintah/masukan user
+        char command[301];  // perintah/masukan user
         
         // custom terminal prompt
         printf(GREEN "DBMS@alfreezzz" PURPLE " CIHUY32 " YELLOW "/c/career tracker" CYAN " (master)\n" DEFAULT);
         printf("$ ");
         
-        scanf("%254[^\n]s", command);   // mengambil masukkan user
+        scanf("%300[^\n]s", command);   // mengambil masukkan user
         getchar();
 
         if(command[strlen(command) - 1] == EOP){    // mengecek eop

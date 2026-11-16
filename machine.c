@@ -9,6 +9,7 @@ int indeks, wordLen;    // indeks kata dan panjang kata
 char cw[50];            // kata saat ini
 
 // formatting
+// https://www.w3schools.com/c/c_date_time.php
 void timeStamp(char buffer[]){  // mengambil waktu saat ini
     time_t now = time(NULL);
     struct tm *t = localtime(&now);
@@ -25,7 +26,7 @@ void guideFooter(){ // footer buku panduan
     printf("|   "BRED"CATATAN PENTING!!"CYAN"                                                                                |\n");
     printf("|   "BYELLOW"1."WHITE" SELALU AKHIRI PERINTAH DENGAN TANDA DOLLAR ("YELLOW"$"WHITE")"CYAN"                                                |\n");
     printf("|   "BYELLOW"2."WHITE" Jika argumen berisi lebih dari satu kata, maka gunakanlah penulisan tanpa spasi dengan"CYAN"        |\n");
-    printf("|      "WHITE"format camel case ("BLACK"cth."WHITE" "BLUE"WebDeveloper"WHITE")"CYAN"                                                         |\n");
+    printf("|      "WHITE"format camel case atau snake case ("BLACK"cth."WHITE" "BLUE"WebDeveloper"WHITE" atau "BLUE"Web_developer"WHITE")"CYAN"                      |\n");
     printf("|   "BYELLOW"3."WHITE" Tidak perlu menambahkan argumen untuk mengisi data "BLACK"tanggal_dibuat"WHITE" dan data "BLACK"tanggal_diubah"CYAN"     |\n");
     printf("|   "BYELLOW"4."WHITE" Jika ingin menambahkan data yang berasal dari tabel lain, pastikan bahwa "BLUE"ID"WHITE" tersebut ada"CYAN"      |\n");
     printf("|      "WHITE"di dalam tabel yang bersangkutan"CYAN"                                                              |\n");
@@ -236,6 +237,10 @@ void error(int code){   // pesan error
             printf(RED "masukkan id yang akan dicari woy\n" DEFAULT);
             break;    
         }
+        case 16: {
+            printf(RED "melebihi ukuran data woy\n" DEFAULT);
+            break;    
+        }
         default: {
             printf(RED "itu query apaan woy\n" DEFAULT);
             break;
@@ -288,22 +293,264 @@ int getwlen(){              // mengambil panjang kata saat ini
 }
 
 // searching
-void searchCategory(category* arr, int n, char* search, bool *found, int *idx){ // mencari data kategori
+// https://stackoverflow.com/questions/75400003/is-there-a-way-to-make-a-single-function-operate-on-different-structures-having
+void binarySearch(void* arr, int n, char* search, bool *found, int *idx, int type){ // mencari data
     int i, j;           // indeks bawah dan atas
     i = 0, j = n - 1;   // mengisi nilai
+    char id[20];        // menyimpan id dari tipe bentukan yang digunakan
+
     // proses pencarian
     while((!(*found)) && (i <= j)){
         *idx = (i + j) / 2; // mengisi nilai tengah dari indeks bawah dan atas
 
-        if(strcmp(arr[*idx].id, search) == 0){
+        // menentukan tipe bentukan yang digunakan
+        switch(type){
+            case 1: {
+                strcpy(id, ((position*)arr)[*idx].id);
+                break;
+            }
+            case 2: {
+                strcpy(id, ((skill*)arr)[*idx].id);
+                break;
+            }
+            case 3: {
+                strcpy(id, ((target*)arr)[*idx].id);
+                break;
+            }
+            case 4: {
+                strcpy(id, ((organization*)arr)[*idx].id);
+                break;
+            }
+            case 5: {
+                strcpy(id, ((certificate*)arr)[*idx].id);
+                break;
+            }
+            case 6: {
+                strcpy(id, ((experience*)arr)[*idx].id);
+                break;
+            }
+            case 7: {
+                strcpy(id, ((category*)arr)[*idx].id);
+                break;
+            }
+            case 8: {
+                strcpy(id, ((project*)arr)[*idx].id);
+                break;
+            }
+            default: {
+                error(1);
+                break;
+            }
+        }
+
+        if(strcmp(id, search) == 0){
             *found = true;
-        } else if (strcmp(arr[*idx].id, search) > 0){
+        } else if (strcmp(id, search) > 0){
             j = *idx - 1;   // mengambil indeks tengah ke bawah
         } else {
             i = *idx + 1;   // mengambil indeks tengah ke atas
         }
     }
 }
+
+// ui tabel
+int longestName(category* data, int n){
+    int lenMaxName = strlen(data[0].name);
+    
+    for(int i = 1; i < n; i++){
+        if(lenMaxName < strlen(data[i].name)){
+            lenMaxName = strlen(data[i].name);
+        }
+    }
+    return lenMaxName;
+}
+// void categoryTable(int lenMaxNama, int lenMaxTipe, int lenMaxJarak, int lenMaxDurasi, int lenMaxPoin, int n, category* data){
+//     // outline 1
+//     // header table
+//     printf("+-");
+//     for(int i = 1; i <= lenMaxNama || i <= 4; i++){
+//         printf("-");
+//     }
+//     printf("-+-");
+//     for(int i = 1; i <= lenMaxTipe || i <= 4; i++){
+//         printf("-");
+//     }
+//     printf("-+-");
+//     for(int i = 1; i <= lenMaxJarak || i <= 5; i++){
+//         printf("-");
+//     }
+//     printf("-+-");
+//     for(int i = 1; i <= lenMaxDurasi || i <= 6; i++){
+//         printf("-");
+//     }
+//     printf("-+-");
+//     for(int i = 1; i <= lenMaxPoin || i <= 4; i++){
+//         printf("-");
+//     }
+//     printf("-+\n");
+
+//     // header Nama, Tipe, Jarak, Durasi, dan Poin
+//     printf("|");
+//     printf(" Nama ");
+//     for(int i = 1; i <= lenMaxNama && i <= lenMaxNama - 4; i++){
+//         printf(" ");
+//     }
+//     printf("|");
+//     printf(" Tipe ");
+//     for(int i = 1; i <= lenMaxTipe && i <= lenMaxTipe - 4; i++){
+//         printf(" ");
+//     }
+//     printf("|");
+//     printf(" Jarak ");
+//     for(int i = 1; i <= lenMaxJarak && i <= lenMaxJarak - 5; i++){
+//         printf(" ");
+//     }
+//     printf("|");
+//     printf(" Durasi ");
+//     for(int i = 1; i <= lenMaxDurasi && i <= lenMaxDurasi - 6; i++){
+//         printf(" ");
+//     }
+//     printf("|");
+//     printf(" Poin ");
+//     for(int i = 1; i <= lenMaxPoin && i <= lenMaxPoin - 4; i++){
+//         printf(" ");
+//     }
+//     printf("|\n");
+
+//     // outline 2
+//     printf("+-");
+//     for(int i = 1; i <= lenMaxNama || i <= 4; i++){
+//         printf("-");
+//     }
+//     printf("-+-");
+//     for(int i = 1; i <= lenMaxTipe || i <= 4; i++){
+//         printf("-");
+//     }
+//     printf("-+-");
+//     for(int i = 1; i <= lenMaxJarak || i <= 5; i++){
+//         printf("-");
+//     }
+//     printf("-+-");
+//     for(int i = 1; i <= lenMaxDurasi || i <= 6; i++){
+//         printf("-");
+//     }
+//     printf("-+-");
+//     for(int i = 1; i <= lenMaxPoin || i <= 4; i++){
+//         printf("-");
+//     }
+//     printf("-+\n");
+
+//     for(int i = 0; i < n; i++){
+//         // NAMA
+//         printf("| %s ", data[i].nama);
+//         if((lenMaxNama - strlen(data[i].nama)) > 0){
+//             for(int j = 1; (j <= lenMaxNama - strlen(data[i].nama)) ; j++){
+//                 printf(" ");
+//             }
+//         } else {
+//             for(int j = 1; j <= 4 - lenMaxNama ; j++){
+//                 printf(" ");
+//             }
+//         }
+        
+//         // TIPE
+//         printf("| %s ", data[i].tipe);
+//         if((lenMaxTipe - strlen(data[i].tipe)) > 0){
+//             for(int j = 1; (j <= lenMaxTipe - strlen(data[i].tipe)) ; j++){
+//                 printf(" ");
+//             }
+//         } else {
+//             for(int j = 1; j <= 4 - lenMaxTipe ; j++){
+//                 printf(" ");
+//             }
+//         }
+
+//         // JARAK
+//         int jarak = data[i].jarak;
+//         int lenJarak = 0;
+
+//         // menghitung jumlah digit dari jarak i
+//         do{
+//             jarak /= 10;
+//             lenJarak++;
+//         } while(jarak > 0);
+        
+//         printf("| %d ", data[i].jarak);
+//         int lebarJarak = 5;
+
+//         if(lenMaxJarak > 5){
+//             lebarJarak = lenMaxJarak;
+//         }
+//         for(int j = lenJarak; j < lebarJarak; j++){
+//             printf(" ");
+//         }
+        
+//         // DURASI
+//         int durasi = data[i].durasi;
+//         int lenDurasi = 0;
+
+//         // menghitung jumlah digit dari durasi i
+//         do{
+//             durasi /= 10;
+//             lenDurasi++;
+//         } while(durasi > 0);
+        
+//         printf("| %d ", data[i].durasi);
+//         int lebarDurasi = 6;
+
+//         if(lenMaxDurasi > 6){
+//             lebarDurasi = lenMaxDurasi;
+//         }
+//         for(int j = lenDurasi; j < lebarDurasi; j++){
+//             printf(" ");
+//         }
+        
+//         // POIN
+//         int poin = data[i].poin;
+//         int lenPoin = 0;
+
+//         // menghitung jumlah digit dari poin i
+//         do{
+//             poin /= 10;
+//             lenPoin++;
+//         } while(poin > 0);
+        
+//         printf("| %d ", data[i].poin);
+
+//         int lebarPoin = 4;
+
+//         if(lenMaxPoin > 4){
+//             lebarPoin = lenMaxPoin;
+//         }
+//         for(int j = lenPoin; j < lebarPoin; j++){
+//             printf(" ");
+//         }
+//         printf("|\n");
+//     }
+
+//     // outline terakhir
+//     printf("+-");
+//     for(int i = 1; i <= lenMaxNama || i <= 4; i++){
+//         printf("-");
+//     }
+//     printf("-+-");
+//     for(int i = 1; i <= lenMaxTipe || i <= 4; i++){
+//         printf("-");
+//     }
+//     printf("-+-");
+//     for(int i = 1; i <= lenMaxJarak || i <= 5; i++){
+//         printf("-");
+//     }
+//     printf("-+-");
+//     for(int i = 1; i <= lenMaxDurasi || i <= 6; i++){
+//         printf("-");
+//     }
+//     printf("-+-");
+//     for(int i = 1; i <= lenMaxPoin || i <= 4; i++){
+//         printf("-");
+//     }
+//     printf("-+\n");
+// }
 
 // prosedur fungsi perintah tabel kategori
 void getCategory(char command[]){       // menampilkan data
@@ -356,7 +603,7 @@ void getCategory(char command[]){       // menampilkan data
                             bool found = false; // cek ditemukan
 
                             // proses pencarian
-                            searchCategory(temp, recordSum, search, &found, &idx);
+                            binarySearch(temp, recordSum, search, &found, &idx, 7);
                             
                             if(found){  // jika data ditemukan
                                 printf("%s %s %s %s\n", temp[idx].id, temp[idx].name, temp[idx].createdAt, temp[idx].updatedAt);
@@ -404,86 +651,94 @@ void postCategory(char command[]){      // menambahkan data
     }
     fclose(categoryTable); // menutup file
     
-    inc(command);
+    inc(command);   
     if(eop(command) == 0){
-        strcpy(new.id, getcw());    // mengambil id masukan user
-
-        inc(command);
-        if(eop(command) == 1){
-            strcpy(new.name, getcw());  // mengambil nama masukan user
-
-            // mengambil tanggal dan waktu saat ini
-            strcpy(new.createdAt, dateTime);
-            strcpy(new.updatedAt, dateTime);
-
-            bool isDuplicate = false;   // cek id duplikat
-            // kondisi memasukkan rekaman baru ke dalam array
-            if(strcmp(new.id, temp[0].id) < 0){
-                // rekaman baru di paling depan
-                // geser semua isi array ke belakang
-                for(int i = recordSum - 1; i >= 0; i--){
-                    strcpy(temp[i+1].id, temp[i].id);
-                    strcpy(temp[i+1].name, temp[i].name);
-                    strcpy(temp[i+1].createdAt, temp[i].createdAt);
-                    strcpy(temp[i+1].updatedAt, temp[i].updatedAt);
-                }
-                recordSum++;
-                strcpy(temp[0].id, new.id);
-                strcpy(temp[0].name, new.name);
-                strcpy(temp[0].createdAt, new.createdAt);
-                strcpy(temp[0].updatedAt, new.updatedAt);
-            } else if (strcmp(new.id, temp[recordSum - 1].id) > 0){
-                // rekaman baru di paling belakang
-                strcpy(temp[recordSum].id, new.id);
-                strcpy(temp[recordSum].name, new.name);
-                strcpy(temp[recordSum].createdAt, new.createdAt);
-                strcpy(temp[recordSum].updatedAt, new.updatedAt);
-                recordSum++;
-            } else {
-                // rekaman baru memiliki posisi di tengah
-                int i = 0;  // iterasi dan indeks
-                bool isStop = false;    // cek berhenti
-                // cari posisi
-                while((i < recordSum) && (!isStop)){
-                    if(strcmp(temp[i].id, new.id) == 0){
-                        // terdapat id yang redundan
-                        error(7);
-                        isDuplicate = true;
-                        isStop = true;
-                    } else if (strcmp(temp[i].id, new.id) > 0){
-                        isStop = true;
+        if(strlen(getcw()) < sizeof(record.id)){
+            strcpy(new.id, getcw());    // mengambil id masukan user
+    
+            inc(command);
+            if(eop(command) == 1){
+                if(strlen(getcw()) < sizeof(record.name)){
+                    strcpy(new.name, getcw());  // mengambil nama masukan user
+        
+                    // mengambil tanggal dan waktu saat ini
+                    strcpy(new.createdAt, dateTime);
+                    strcpy(new.updatedAt, dateTime);
+        
+                    bool isDuplicate = false;   // cek id duplikat
+                    // kondisi memasukkan rekaman baru ke dalam array
+                    if(strcmp(new.id, temp[0].id) < 0){
+                        // rekaman baru di paling depan
+                        // geser semua isi array ke belakang
+                        for(int i = recordSum - 1; i >= 0; i--){
+                            strcpy(temp[i+1].id, temp[i].id);
+                            strcpy(temp[i+1].name, temp[i].name);
+                            strcpy(temp[i+1].createdAt, temp[i].createdAt);
+                            strcpy(temp[i+1].updatedAt, temp[i].updatedAt);
+                        }
+                        recordSum++;
+                        strcpy(temp[0].id, new.id);
+                        strcpy(temp[0].name, new.name);
+                        strcpy(temp[0].createdAt, new.createdAt);
+                        strcpy(temp[0].updatedAt, new.updatedAt);
+                    } else if (strcmp(new.id, temp[recordSum - 1].id) > 0){
+                        // rekaman baru di paling belakang
+                        strcpy(temp[recordSum].id, new.id);
+                        strcpy(temp[recordSum].name, new.name);
+                        strcpy(temp[recordSum].createdAt, new.createdAt);
+                        strcpy(temp[recordSum].updatedAt, new.updatedAt);
+                        recordSum++;
                     } else {
-                        i++;
+                        // rekaman baru memiliki posisi di tengah
+                        int i = 0;  // iterasi dan indeks
+                        bool isStop = false;    // cek berhenti
+                        // cari posisi
+                        while((i < recordSum) && (!isStop)){
+                            if(strcmp(temp[i].id, new.id) == 0){
+                                // terdapat id yang redundan
+                                error(7);
+                                isDuplicate = true;
+                                isStop = true;
+                            } else if (strcmp(temp[i].id, new.id) > 0){
+                                isStop = true;
+                            } else {
+                                i++;
+                            }
+                        }
+                        if(!isDuplicate){
+                            // menggeserkan rekaman di posisi tengah
+                            for(int j = recordSum - 1; j >= i; j--){
+                                strcpy(temp[j+1].id, temp[j].id);
+                                strcpy(temp[j+1].name, temp[j].name);
+                                strcpy(temp[j+1].createdAt, temp[j].createdAt);
+                                strcpy(temp[j+1].updatedAt, temp[j].updatedAt);
+                            }
+                            // memasukkan rekaman baru di posisi tengah
+                            strcpy(temp[i].id, new.id);
+                            strcpy(temp[i].name, new.name);
+                            strcpy(temp[i].createdAt, new.createdAt);
+                            strcpy(temp[i].updatedAt, new.updatedAt);
+                            recordSum++;
+                        }
                     }
-                }
-                if(!isDuplicate){
-                    // menggeserkan rekaman di posisi tengah
-                    for(int j = recordSum - 1; j >= i; j--){
-                        strcpy(temp[j+1].id, temp[j].id);
-                        strcpy(temp[j+1].name, temp[j].name);
-                        strcpy(temp[j+1].createdAt, temp[j].createdAt);
-                        strcpy(temp[j+1].updatedAt, temp[j].updatedAt);
+                    if(!isDuplicate){
+                        success(0);
+                        // flush ke file
+                        categoryTable = fopen("tables/tcategory.dat", "w");
+                        for(int i = 0; i < recordSum; i++){
+                            fprintf(categoryTable, "%s %s %s %s\n", temp[i].id, temp[i].name, temp[i].createdAt, temp[i].updatedAt);
+                        }
+                        fprintf(categoryTable, "%s", EOFCATEGORY);
+                        fclose(categoryTable);
                     }
-                    // memasukkan rekaman baru di posisi tengah
-                    strcpy(temp[i].id, new.id);
-                    strcpy(temp[i].name, new.name);
-                    strcpy(temp[i].createdAt, new.createdAt);
-                    strcpy(temp[i].updatedAt, new.updatedAt);
-                    recordSum++;
+                } else {
+                    error(16);
                 }
-            }
-            if(!isDuplicate){
-                success(0);
-                // flush ke file
-                categoryTable = fopen("tables/tcategory.dat", "w");
-                for(int i = 0; i < recordSum; i++){
-                    fprintf(categoryTable, "%s %s %s %s\n", temp[i].id, temp[i].name, temp[i].createdAt, temp[i].updatedAt);
-                }
-                fprintf(categoryTable, "%s", EOFCATEGORY);
-                fclose(categoryTable);
+            } else {
+                error(6);
             }
         } else {
-            error(6);
+            error(16);
         }
     } else {
         error(4);
@@ -542,14 +797,18 @@ void updateCategory(char command[]){    // mengubah data
             if(eop(command) == 0){
                 inc(command);
                 if(eop(command) == 1){
-                    strcpy(new.name, getcw());          // mengambil nama masukan user
-                    strcpy(new.updatedAt, dateTime);    // mengubah tanggal diubah
+                    if(strlen(getcw()) < sizeof(record.name)){
+                        strcpy(new.name, getcw());          // mengambil nama masukan user
+                        strcpy(new.updatedAt, dateTime);    // mengubah tanggal diubah
+        
+                        // mengubah menjadi nilai baru
+                        strcpy(temp[i].name, new.name);
+                        strcpy(temp[i].updatedAt, new.updatedAt);
     
-                    // mengubah menjadi nilai baru
-                    strcpy(temp[i].name, new.name);
-                    strcpy(temp[i].updatedAt, new.updatedAt);
-
-                    success(1);
+                        success(1);
+                    } else {
+                        error(16);
+                    }
                 } else {
                     error(6);
                 }

@@ -32,7 +32,7 @@
 
 #define EOP '$' // simbol EOP (End Of Process)
 
-#define TABLETEMPLATE   char id[10], createdAt[20], updatedAt[20]   // template tabel
+#define TABLETEMPLATE   char id[7], createdAt[20], updatedAt[20]   // template tabel
 #define IDDUMMY         "XXXXXX"                                    // tanda EOF (End Of File) / nilai dummy ID 
 #define DATEDUMMY       "XXXXXXXX"                                  // nilai dummy tanggal
 
@@ -113,8 +113,12 @@ void inc(char ribbon[]);    // memajukan kata
 char* getcw();              // mengambil kata saat ini
 int getwlen();              // mengambil panjang kata saat ini
 
-// binary search
-void searchCategory(category* arr, int n, char* search, bool *found, int *idx); // mencari data kategori
+// searching
+void binarySearch(void* arr, int n, char* search, bool *found, int *idx, int type); // mencari data
+
+// ui tabel
+int longestName(category* data, int n);
+void categoryTable(int, int, int, int, int, int, category*);
 
 // perintah tabel kategori
 void getCategory(char command[]);       // menampilkan data
