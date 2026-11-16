@@ -17,6 +17,7 @@ void timeStamp(char buffer[]){  // mengambil waktu saat ini
     strftime(buffer, 100, "%Y-%m-%dT%H:%M:%S", t);
 }
 
+// ui aplikasi
 void guideTitle(){  // header buku panduan
     printf(BWHITE"                                  ╔═══*.·:·.☽✧    ✦✦    ✧☾.·:·.*═══╗                                  \n");
     printf(BYELLOW"⋆"CYAN"﹥━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"BWHITE"║         " BGREEN "* guide book *" BWHITE "         ║"CYAN"━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━﹤"BYELLOW"⋆\n" CYAN);
@@ -126,7 +127,7 @@ void out(){         // tampilan akhir
     printf("       &#"RED"BPPPPPPPPPPPPPPPB                          &GPPPPPPPPPPPPPPPPP"BRED"B#B&&&   \n");
     printf(" #&&&&#B#GG"RED"PPPPPPPPPPPPPPP&                       &GPPPPPPPPPPPPPPPPGG"BRED"BBBB"RED"GBB"BRED"B#&\n");
     printf(" #G"RED"PPPGGGG"BRED"BBBG"RED"PPPPPPPPPPPPG    "BRED"&&&#######&"RED"     &#GPPPPPPPPPPPPPPPP"BRED"BBBGG"RED"PPPPPPP"BRED"#&\n");
-    printf(" #B"RED"PPPPPPPPP"BRED"GGG"RED"PPPPPPPPPPPPB&"BRED"##BBBBBBBBBBB#&"RED" &BGPPPPPPPPPPPPPPPPPPGPPPPPPPPPP"BRED"BB \n");
+    printf(" #B"RED"PPPPPPPPP"BRED"GGG"RED"PPPPPPPPPPPPB&"BRED"##BBBBBBBBBBB#&"RED" &BGPPPPPPPPPPPPPPPPPP"BRED"G"RED"PPPPPPPPPP"BRED"BB \n");
     printf(" &&#GP"RED"PPPPPPPPPPPPPPPPPPPPPP"RED"G"BRED"BBBBBBBBBBBBBB"RED"GGPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP"BRED"G#   \n");
     printf("    #B"RED"PPPPPPPPPPPPPPPPPP"BRED"GGGGG"RED"G"BRED"BBBBBBBBBBB"RED"GG"BRED"GGGGGG"RED"PPPPPPPPPPPPPPPPPPPPPPPPG#"BRED"#&   \n");
     printf("     G#"RED"GPPPPPPPPPPPPPP"BRED"GGGGGGGG"RED"GBBBBBBBBBG"BRED"GBGGGGGGGG"RED"PPPPPPPPPPPPPPPPPPPPPPG"BRED"#&    \n");
@@ -174,75 +175,116 @@ void success(int code){ // pesan berhasil
 void error(int code){   // pesan error
     switch(code){
         case 0: {
-            printf(RED "gada query itu woy\n" DEFAULT);
+            printf(RED "Query tidak valid\n" DEFAULT);
             break;
         }
         case 1: {
-            printf(RED "gada tabel itu woy\n" DEFAULT);
+            printf(RED "Tabel tersebut tidak valid, daftar tabel yang tersedia:\n" DEFAULT);
+            printf(RED "1. tposition\n" DEFAULT);
+            printf(RED "2. tskill\n" DEFAULT);
+            printf(RED "3. ttarget\n" DEFAULT);
+            printf(RED "4. torganization\n" DEFAULT);
+            printf(RED "5. tcertificate\n" DEFAULT);
+            printf(RED "6. texperience\n" DEFAULT);
+            printf(RED "7. tcategory\n" DEFAULT);
+            printf(RED "8. tproject\n" DEFAULT);
             break;
         }
         case 2: {
-            printf(RED "masukkin eop nya (%c) di akhir perintah woy\n", EOP, DEFAULT);
+            printf(RED "Mohon masukkan EOP (%c) pada akhir perintah\n", EOP, DEFAULT);
             break;
         }
         case 3: {
-            printf(RED "masukkin nama tabelnya woy\n" DEFAULT);
+            printf(RED "Nama tabel kosong, daftar tabel yang tersedia:\n" DEFAULT);
+            printf(RED "1. tposition\n" DEFAULT);
+            printf(RED "2. tskill\n" DEFAULT);
+            printf(RED "3. ttarget\n" DEFAULT);
+            printf(RED "4. torganization\n" DEFAULT);
+            printf(RED "5. tcertificate\n" DEFAULT);
+            printf(RED "6. texperience\n" DEFAULT);
+            printf(RED "7. tcategory\n" DEFAULT);
+            printf(RED "8. tproject\n" DEFAULT);
             break;
         }
         case 4: {
-            printf(RED "data yang dimasukkan kurang lengkap woy\n" DEFAULT);
+            printf(RED "Data yang dibutuhkan tabel kurang lengkap\n" DEFAULT);
             break;    
         }
         case 5: {
-            printf(RED "masukkin datanya woy\n" DEFAULT);
+            printf(RED "Mohon masukkan data untuk tabel\n" DEFAULT);
             break;    
         }
         case 6: {
-            printf(RED "melebihi data yang dibutuhkan woy\n" DEFAULT);
+            printf(RED "Data yang dimasukkan melebihi jumlah data yang dibutuhkan tabel\n" DEFAULT);
             break;    
         }
         case 7: {
-            printf(RED "tidak boleh ada data dengan id yang sama woy\n" DEFAULT);
+            printf(RED "Tidak boleh ada data dengan id yang sama\n" DEFAULT);
             break;    
         }
         case 8: {
-            printf(RED "pilih data (dari id) yang bakal diubah woy\n" DEFAULT);
+            printf(RED "Mohon masukkan id untuk data yang akan diubah\n" DEFAULT);
             break;    
         }
         case 9: {
-            printf(RED "pilih data (dari id) yang bakal dihapus woy\n" DEFAULT);
+            printf(RED "Mohon masukkan id untuk data yang akan dihapus\n" DEFAULT);
             break;    
         }
         case 10: {
-            printf(RED "query nya kurang lengkap woy\n" DEFAULT);
+            printf(RED "Query kurang lengkap, mohon masukkan query yang valid\n" DEFAULT);
             break;    
         }
         case 11: {
-            printf(RED "data tidak ditemukan woy\n" DEFAULT);
+            printf(RED "Data tidak ditemukan\n" DEFAULT);
             break;    
         }
         case 12: {
-            printf(RED "data kosong woy\n" DEFAULT);
+            printf(RED "Tabel tersebut masih kosong\n" DEFAULT);
             break;    
         }
         case 13: {
-            printf(RED "masukkan nilai yang akan diubah woy\n" DEFAULT);
+            printf(RED "Mohon masukkan nilai yang akan diubah\n" DEFAULT);
             break;    
         }
         case 14: {
-            printf(RED "melebihi query woy\n" DEFAULT);
+            printf(RED "Query melebihi yang seharusnya, mohon masukkan query yang valid\n" DEFAULT);
             break;    
         }
         case 15: {
-            printf(RED "masukkan id yang akan dicari woy\n" DEFAULT);
+            printf(RED "Mohon masukkan id dari data yang akan dicari\n" DEFAULT);
             break;    
         }
         case 16: {
-            printf(RED "melebihi ukuran data woy\n" DEFAULT);
+            printf(RED "Data yang dimasukkan melebihi batas ukuran\n" DEFAULT);
+            break;    
+        }
+        case 17: {
+            printf(RED "Query tidak valid\n" DEFAULT);
+            printf(RED "Mungkin maksud anda \"SUBMIT TO..\"?\n" DEFAULT);
+            break;    
+        }
+        case 18: {
+            printf(RED "Query tidak valid\n" DEFAULT);
+            printf(RED "Mungkin maksud anda \"REMOVE FROM..\"?\n" DEFAULT);
+            break;    
+        }
+        case 19: {
+            printf(RED "Query tidak valid\n" DEFAULT);
+            printf(RED "Mungkin maksud anda \"PRESENT FROM..\"?\n" DEFAULT);
+            break;    
+        }
+        case 20: {
+            printf(RED "Query tidak valid\n" DEFAULT);
+            printf(RED "Mungkin maksud anda \"HELP ON..\"?\n" DEFAULT);
+            break;    
+        }
+        case 21: {
+            printf(RED "Query tidak valid\n" DEFAULT);
+            printf(RED "Mungkin maksud anda \"PRESENT FROM table WHERE..\"?\n" DEFAULT);
             break;    
         }
         default: {
-            printf(RED "itu query apaan woy\n" DEFAULT);
+            printf(RED "Bug belum diperbaiki\n" DEFAULT);
             break;
         }
     }
@@ -523,7 +565,7 @@ void getCategory(char command[]){       // menampilkan data
                     error(15);
                 }
             } else {
-                error(0);
+                error(21);
             }
         }
     }
@@ -627,6 +669,7 @@ void postCategory(char command[]){      // menambahkan data
                         }
                     }
                     if(!isDuplicate){
+                        showCategoryTable(longestName(temp, recordSum, 7), recordSum, temp);
                         success(0);
                         // flush ke file
                         categoryTable = fopen("tables/tcategory.dat", "w");
@@ -710,6 +753,7 @@ void updateCategory(char command[]){    // mengubah data
                         strcpy(temp[i].name, new.name);
                         strcpy(temp[i].updatedAt, new.updatedAt);
     
+                        showCategoryTable(longestName(temp, recordSum, 7), recordSum, temp);
                         success(1);
                     } else {
                         error(16);
@@ -813,6 +857,7 @@ void deleteCategory(char command[]){    // menghapus data
                     }
                     recordSum--;
                 }
+                showCategoryTable(longestName(temp, recordSum, 7), recordSum, temp);
                 success(2);
             }
             // flush ke file

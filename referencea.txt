@@ -1,0 +1,2 @@
+https://www.w3schools.com/c/c_date_time.php
+https://stackoverflow.com/questions/75400003/is-there-a-way-to-make-a-single-function-operate-on-different-structures-having

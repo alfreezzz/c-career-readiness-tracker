@@ -54,7 +54,7 @@ int main(){
                             error(3);
                         }
                     } else {
-                        error(0);
+                        error(17);
                     }
                 } else {
                     error(10);
@@ -117,7 +117,7 @@ int main(){
                             error(3);
                         }
                     } else {
-                        error(0);
+                        error(18);
                     }
                 } else {
                     error(10);
@@ -149,7 +149,7 @@ int main(){
                             error(3);
                         }
                     } else {
-                        error(0);
+                        error(19);
                     }
                 } else {
                     error(10);
@@ -187,7 +187,7 @@ int main(){
                             error(3);
                         }
                     } else {
-                        error(0);
+                        error(20);
                     }
                 }
             } else if(strcmp(getcw(), "EXIT") == 0){        // mengakhiri aplikasi
