@@ -30,18 +30,65 @@
 #define BCYAN    "\033[1;36m"  // warna cyan
 #define BWHITE   "\033[1;37m"  // warna putih
 
-#define TABLETEMPLATE char id[10], createdAt[20], updatedAt[20] // template tabel
-#define EOP '$'                                                 // simbol EOP (End Of Process)
-#define IDDUMMY "XXXXXXXX"                                      // tanda EOF (End Of File) / nilai dummy ID 
-#define DATEDUMMY "XXXXX"                                       // nilai dummy tanggal
-#define EOFCATEGORY (IDDUMMY" XXX "DATEDUMMY" "DATEDUMMY)       // EOF Category
+#define EOP '$' // simbol EOP (End Of Process)
 
-typedef struct{
+#define TABLETEMPLATE   char id[10], createdAt[20], updatedAt[20]   // template tabel
+#define IDDUMMY         "XXXXXX"                                    // tanda EOF (End Of File) / nilai dummy ID 
+#define DATEDUMMY       "XXXXXXXX"                                  // nilai dummy tanggal
+
+// EOF setiap tabel
+#define EOFPOSITION     (IDDUMMY" XXX "DATEDUMMY" "DATEDUMMY)
+#define EOFSKILL        (IDDUMMY" XXX XXXXX "DATEDUMMY" "DATEDUMMY)
+#define EOFTARGET       (IDDUMMY" "IDDUMMY" "IDDUMMY" X "DATEDUMMY" "DATEDUMMY)
+#define EOFORGANIZATION (IDDUMMY" XXX "DATEDUMMY" "DATEDUMMY)
+#define EOFCERTIFICATE  (IDDUMMY" XXX "IDDUMMY" "DATEDUMMY" "DATEDUMMY" "IDDUMMY" XXXXXXXXXX "DATEDUMMY" "DATEDUMMY)
+#define EOFEXPERIENCE   (IDDUMMY" "IDDUMMY" "IDDUMMY" "DATEDUMMY" "DATEDUMMY" "DATEDUMMY" "DATEDUMMY)
+#define EOFCATEGORY     (IDDUMMY" XXX "DATEDUMMY" "DATEDUMMY)
+#define EOFPROJECT      (IDDUMMY" XXX XXXXXXXXXX "DATEDUMMY" "IDDUMMY" "DATEDUMMY" "DATEDUMMY)
+
+// struktur data
+typedef struct{ // posisi
+    TABLETEMPLATE;
+    char name[50];
+} position;
+
+typedef struct{ // keahlian
+    TABLETEMPLATE;
+    char name[50], proficiency[50];
+} skill;
+
+typedef struct{ // target pekerjaan
+    TABLETEMPLATE;
+    char positionId[20], skillId[20];
+    char isSkilled; 
+} target;
+
+typedef struct{ // organisasi
+    TABLETEMPLATE;
+    char name[50];
+} organization;
+
+typedef struct{ // sertifikasi
+    TABLETEMPLATE;
+    char name[50], issuerId[10], startDate[20], endDate[20], credentialId[50], url[100];
+} certificate;
+
+typedef struct{ // pengalaman
+    TABLETEMPLATE;
+    char organizationId[10], positionId[10], startDate[20], endDate[20];
+} experience;
+
+typedef struct{ // kategori
     TABLETEMPLATE;
     char name[50];
 } category;
 
-extern int indeks, wordLen; // indeks ke-i kata dan panjang kata
+typedef struct{ // proyek
+    TABLETEMPLATE;
+    char name[50], url[100], finishedDate[20], categoryId[10];
+} project;
+
+extern int indeks, wordLen; // indeks kata dan panjang kata
 extern char cw[50];         // kata saat ini
 
 // formatting
@@ -66,7 +113,11 @@ void inc(char ribbon[]);    // memajukan kata
 char* getcw();              // mengambil kata saat ini
 int getwlen();              // mengambil panjang kata saat ini
 
+// binary search
+void searchCategory(category* arr, int n, char* search, bool *found, int *idx); // mencari data kategori
+
 // perintah tabel kategori
+void getCategory(char command[]);       // menampilkan data
 void postCategory(char command[]);      // menambahkan data
 void updateCategory(char command[]);    // mengubah data
 void deleteCategory(char command[]);    // menghapus data

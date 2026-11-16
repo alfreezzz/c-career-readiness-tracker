@@ -5,7 +5,7 @@
 
 #include "header.h" // memanggil file header
 
-int indeks, wordLen;    // indeks ke-i kata dan panjang kata
+int indeks, wordLen;    // indeks kata dan panjang kata
 char cw[50];            // kata saat ini
 
 // formatting
@@ -22,6 +22,14 @@ void guideTitle(){  // header buku panduan
     printf("∨                                 "BWHITE"╚═══*.·:·.☽✧    ✦✦    ✧☾.·:·.*═══╝"CYAN"                                 ∨\n");
 }
 void guideFooter(){ // footer buku panduan
+    printf("|   "BRED"CATATAN PENTING!!"CYAN"                                                                                |\n");
+    printf("|   "BYELLOW"1."WHITE" SELALU AKHIRI PERINTAH DENGAN TANDA DOLLAR ("YELLOW"$"WHITE")"CYAN"                                                |\n");
+    printf("|   "BYELLOW"2."WHITE" Jika argumen berisi lebih dari satu kata, maka gunakanlah penulisan tanpa spasi dengan"CYAN"        |\n");
+    printf("|      "WHITE"format camel case ("BLACK"cth."WHITE" "BLUE"WebDeveloper"WHITE")"CYAN"                                                         |\n");
+    printf("|   "BYELLOW"3."WHITE" Tidak perlu menambahkan argumen untuk mengisi data "BLACK"tanggal_dibuat"WHITE" dan data "BLACK"tanggal_diubah"CYAN"     |\n");
+    printf("|   "BYELLOW"4."WHITE" Jika ingin menambahkan data yang berasal dari tabel lain, pastikan bahwa "BLUE"ID"WHITE" tersebut ada"CYAN"      |\n");
+    printf("|      "WHITE"di dalam tabel yang bersangkutan"CYAN"                                                              |\n");
+    printf("|                                                                                                    |\n");
     printf("∧                                                                                                    ∧\n");
     printf(BYELLOW"⋆"CYAN"﹥━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━﹤"BYELLOW"⋆\n" DEFAULT);
 }
@@ -33,13 +41,14 @@ void guide(){       // buku panduan
     printf("|   "WHITE"untuk mencapai target tersebut"CYAN"                                                                   |\n");
     printf("|                                                                                                    |\n");
     printf("|   "BGREEN"1. Daftar Perintah"CYAN"                                                                               |\n");
-    printf("|      - "BPURPLE"SUBMIT TO"CYAN"      : "BWHITE"Menambahkan"CYAN" data                                                           |\n");
-    printf("|      - "BPURPLE"CHANGE"CYAN"         : "BWHITE"Mengubah"CYAN" data                                                              |\n");
-    printf("|      - "BPURPLE"REMOVE FROM"CYAN"    : "BWHITE"Menghapus"CYAN" data                                                             |\n");
-    printf("|      - "BPURPLE"PRESENT FROM"CYAN"   : "BWHITE"Menampilkan"CYAN" data                                                           |\n");
-    printf("|      - "BPURPLE"HELP"CYAN"           : Membuka Guide Book                                                         |\n");
-    printf("|      - "BPURPLE"HELP ON"CYAN"        : Membuka Guide Book berdasarkan tabel                                       |\n");
-    printf("|      - "BPURPLE"EXIT"CYAN"           : "RED"Mengakhiri aplikasi"CYAN"                                                        |\n");
+    printf("|      - "BPURPLE"SUBMIT TO"CYAN"                   : "BWHITE"Menambahkan"CYAN" data                                              |\n");
+    printf("|      - "BPURPLE"CHANGE"CYAN"                      : "BWHITE"Mengubah"CYAN" data                                                 |\n");
+    printf("|      - "BPURPLE"REMOVE FROM"CYAN"                 : "BWHITE"Menghapus"CYAN" data                                                |\n");
+    printf("|      - "BPURPLE"PRESENT FROM"CYAN"                : "BWHITE"Menampilkan"CYAN" data                                              |\n");
+    printf("|      - "BPURPLE"PRESENT FROM table WHERE"CYAN"    : "BWHITE"Mencari"CYAN" data                                                  |\n");
+    printf("|      - "BPURPLE"HELP"CYAN"                        : Membuka Guide Book                                            |\n");
+    printf("|      - "BPURPLE"HELP ON"CYAN"                     : Membuka Guide Book berdasarkan tabel                          |\n");
+    printf("|      - "BPURPLE"EXIT"CYAN"                        : "RED"Mengakhiri aplikasi"CYAN"                                           |\n");
     printf("|                                                                                                    |\n");
     printf("|   "BGREEN"2. Master Data"CYAN"                                                                                   |\n");
     printf("|      - "BYELLOW"Posisi"CYAN"         : "BLUE"tposition"CYAN"     (id, nama, tanggal_dibuat, tanggal_diubah)                   |\n");
@@ -67,14 +76,6 @@ void guide(){       // buku panduan
     printf("|      - "BYELLOW"Pengalaman"CYAN"     : "WHITE"EXP"CYAN"-(Nomor ID)    "BLACK"cth. "WHITE"EXP001"CYAN"                                              |\n");
     printf("|      - "BYELLOW"Kategori"CYAN"       : "WHITE"CAT"CYAN"-(Nomor ID)    "BLACK"cth. "WHITE"CAT001"CYAN"                                              |\n");
     printf("|      - "BYELLOW"Proyek"CYAN"         : "WHITE"PRJ"CYAN"-(Nomor ID)    "BLACK"cth. "WHITE"PRJ001"CYAN"                                              |\n");
-    printf("|                                                                                                    |\n");
-    printf("|   "BRED"CATATAN PENTING!!"CYAN"                                                                                |\n");
-    printf("|   "BYELLOW"1."WHITE" SELALU AKHIRI PERINTAH DENGAN TANDA DOLLAR ("YELLOW"$"WHITE")"CYAN"                                                |\n");
-    printf("|   "BYELLOW"2."WHITE" Jika argumen berisi lebih dari satu kata, maka gunakanlah penulisan tanpa spasi dengan"CYAN"        |\n");
-    printf("|      "WHITE"format camel case ("BLACK"cth."WHITE" "BLUE"WebDeveloper"WHITE")"CYAN"                                                         |\n");
-    printf("|   "BYELLOW"3."WHITE" Tidak perlu menambahkan argumen untuk mengisi data "BLACK"tanggal_dibuat"WHITE" dan data "BLACK"tanggal_diubah"CYAN"     |\n");
-    printf("|   "BYELLOW"4."WHITE" Jika ingin menambahkan data yang berasal dari tabel lain, pastikan bahwa "BLUE"ID"WHITE" tersebut ada"CYAN"      |\n");
-    printf("|      "WHITE"di dalam tabel yang bersangkutan"CYAN"                                                              |\n");
     printf("|                                                                                                    |\n");
 
     guideFooter();
@@ -231,6 +232,10 @@ void error(int code){   // pesan error
             printf(RED "melebihi query woy\n" DEFAULT);
             break;    
         }
+        case 15: {
+            printf(RED "masukkan id yang akan dicari woy\n" DEFAULT);
+            break;    
+        }
         default: {
             printf(RED "itu query apaan woy\n" DEFAULT);
             break;
@@ -282,7 +287,95 @@ int getwlen(){              // mengambil panjang kata saat ini
     return wordLen;
 }
 
+// searching
+void searchCategory(category* arr, int n, char* search, bool *found, int *idx){ // mencari data kategori
+    int i, j;           // indeks bawah dan atas
+    i = 0, j = n - 1;   // mengisi nilai
+    // proses pencarian
+    while((!(*found)) && (i <= j)){
+        *idx = (i + j) / 2; // mengisi nilai tengah dari indeks bawah dan atas
+
+        if(strcmp(arr[*idx].id, search) == 0){
+            *found = true;
+        } else if (strcmp(arr[*idx].id, search) > 0){
+            j = *idx - 1;   // mengambil indeks tengah ke bawah
+        } else {
+            i = *idx + 1;   // mengambil indeks tengah ke atas
+        }
+    }
+}
+
 // prosedur fungsi perintah tabel kategori
+void getCategory(char command[]){       // menampilkan data
+    int recordSum = 0;  // jumlah rekaman dalam tabel
+    category temp[100]; // array rekaman untuk ditampilkan
+    category record;    // rekaman saat ini untuk disalin
+
+    FILE *categoryTable;    // kaitan untuk mengakses file
+    categoryTable = fopen("tables/tcategory.dat", "r"); // membuka file dengan mode read
+    
+    // memulai proses pembacaan
+    fscanf(categoryTable, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
+
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika ditemukan EOF atau data kosong
+        error(12);
+        fclose(categoryTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].name, record.name);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(categoryTable, "%s %s %s %s\n", record.id, record.name, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+
+        fclose(categoryTable); // menutup file
+
+        if(eop(command) == 1){  // jika tidak melakukan pencarian
+            // menampilkan data
+            for(int i = 0; i < recordSum; i++){
+                printf("%s %s %s %s\n", temp[i].id, temp[i].name, temp[i].createdAt, temp[i].updatedAt);
+            }
+        } else {    // jika tidak melakukan pencarian
+            inc(command);
+            if(strcmp(getcw(), "WHERE") == 0){
+                if(eop(command) == 0){
+                    inc(command);
+                    if(eop(command) == 1){
+                        char search[50];
+                        strcpy(search, getcw());
+                        
+                        if(strcmp(search, IDDUMMY) == 0){
+                            error(11);
+                        } else {
+                            int idx;            // indeks dan iterasi
+                            bool found = false; // cek ditemukan
+
+                            // proses pencarian
+                            searchCategory(temp, recordSum, search, &found, &idx);
+                            
+                            if(found){  // jika data ditemukan
+                                printf("%s %s %s %s\n", temp[idx].id, temp[idx].name, temp[idx].createdAt, temp[idx].updatedAt);
+                            } else {
+                                error(11);
+                            }
+                        }
+                    } else {
+                        error(14);
+                    }
+                } else {
+                    error(15);
+                }
+            } else {
+                error(0);
+            }
+        }
+    }
+}
 void postCategory(char command[]){      // menambahkan data
     char dateTime[100];     // menyimpan tanggal dan waktu saat ini
     timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
@@ -584,9 +677,10 @@ void guideCategory(){                   // buku panduan kategori
     printf("|                                                                                                    |\n");
     printf("|   "BGREEN"PENGGUNAAN PERINTAH"CYAN"                                                                              |\n");
     printf("|      "WHITE"1. Menampilkan data : "BPURPLE"PRESENT FROM "BLUE"tcategory"YELLOW"$"CYAN"                                                 |\n");
-    printf("|      "WHITE"2. Menambahkan data : "BPURPLE"SUBMIT TO "BLUE"tcategory "CYAN"id nama"YELLOW"$"CYAN"                                            |\n");
-    printf("|      "WHITE"3. Mengubah data    : "BPURPLE"CHANGE "BLUE"tcategory "CYAN"id nama"YELLOW"$"CYAN"                                               |\n");
-    printf("|      "WHITE"4. Menghapus data   : "BPURPLE"REMOVE FROM "BLUE"tcategory "CYAN"id"YELLOW"$"CYAN"                                               |\n");
+    printf("|      "WHITE"2. Mencari data     : "BPURPLE"PRESENT FROM"BLUE" tcategory "BPURPLE"WHERE"CYAN" id"YELLOW"$"CYAN"                                        |\n");
+    printf("|      "WHITE"3. Menambahkan data : "BPURPLE"SUBMIT TO "BLUE"tcategory "CYAN"id nama"YELLOW"$"CYAN"                                            |\n");
+    printf("|      "WHITE"4. Mengubah data    : "BPURPLE"CHANGE "BLUE"tcategory "CYAN"id nama"YELLOW"$"CYAN"                                               |\n");
+    printf("|      "WHITE"5. Menghapus data   : "BPURPLE"REMOVE FROM "BLUE"tcategory "CYAN"id"YELLOW"$"CYAN"                                               |\n");
     printf("|                                                                                                    |\n");
 
     guideFooter();

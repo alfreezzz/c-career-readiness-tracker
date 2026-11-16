@@ -11,19 +11,19 @@ int main(){
 
     bool exit = false;  // cek keluar
     do{ // jalankan aplikasi selama exit bernilai false
-        char command[250];  // perintah/masukan user
+        char command[255];  // perintah/masukan user
         
         // custom terminal prompt
         printf(GREEN "DBMS@alfreezzz" PURPLE " CIHUY32 " YELLOW "/c/career tracker" CYAN " (master)\n" DEFAULT);
         printf("$ ");
         
-        scanf("%249[^\n]s", command);   // mengambil masukkan user
+        scanf("%254[^\n]s", command);   // mengambil masukkan user
         getchar();
 
         if(command[strlen(command) - 1] == EOP){    // mengecek eop
             start(command);
             
-            if(strcmp(getcw(), "SUBMIT") == 0){
+            if(strcmp(getcw(), "SUBMIT") == 0){             // menambahkan data
                 if(eop(command) == 0){
                     inc(command);
                     if(strcmp(getcw(), "TO") == 0){
@@ -59,7 +59,7 @@ int main(){
                 } else {
                     error(10);
                 }
-            } else if (strcmp(getcw(), "CHANGE") == 0){
+            } else if (strcmp(getcw(), "CHANGE") == 0){     // mengubah data
                 if(eop(command) == 0){
                     inc(command);
                     if(strcmp(getcw(), "tposition") == 0){
@@ -86,7 +86,7 @@ int main(){
                 } else {
                     error(3);
                 }
-            } else if (strcmp(getcw(), "REMOVE") == 0){
+            } else if (strcmp(getcw(), "REMOVE") == 0){     // menghapus data
                 if(eop(command) == 0){
                     inc(command);
                     if(strcmp(getcw(), "FROM") == 0){
@@ -122,30 +122,28 @@ int main(){
                 } else {
                     error(10);
                 }
-            } else if (strcmp(getcw(), "PRESENT") == 0){
+            } else if (strcmp(getcw(), "PRESENT") == 0){    // menampilkan data
                 if(eop(command) == 0){
                     inc(command);
                     if(strcmp(getcw(), "FROM") == 0){
                         if(eop(command) == 0){
                             inc(command);
-                            if(eop(command) == 1){
-                                if(strcmp(getcw(), "tposition") == 0){
-                                    return 0;
-                                } else if (strcmp(getcw(), "tskill") == 0){
-                                    return 1;
-                                } else if (strcmp(getcw(), "ttarget") == 0){
-                                    return 2;
-                                } else if (strcmp(getcw(), "torganization") == 0){
-                                    return 3;
-                                } else if (strcmp(getcw(), "tcertificate") == 0){
-                                    return 4;
-                                } else if (strcmp(getcw(), "tcategory") == 0){
-                                    return 5;
-                                } else if (strcmp(getcw(), "tproject") == 0){
-                                    return 6;
-                                }
+                            if(strcmp(getcw(), "tposition") == 0){
+                                return 0;
+                            } else if (strcmp(getcw(), "tskill") == 0){
+                                return 1;
+                            } else if (strcmp(getcw(), "ttarget") == 0){
+                                return 2;
+                            } else if (strcmp(getcw(), "torganization") == 0){
+                                return 3;
+                            } else if (strcmp(getcw(), "tcertificate") == 0){
+                                return 4;
+                            } else if (strcmp(getcw(), "tcategory") == 0){
+                                getCategory(command);
+                            } else if (strcmp(getcw(), "tproject") == 0){
+                                return 6;
                             } else {
-                                error(0);
+                                error(1);
                             }
                         } else {
                             error(3);
@@ -156,7 +154,7 @@ int main(){
                 } else {
                     error(10);
                 }
-            } else if (strcmp(getcw(), "HELP") == 0){
+            } else if (strcmp(getcw(), "HELP") == 0){       // membuka buku panduan
                 if(eop(command) == 1){
                     guide();
                 } else {
@@ -192,13 +190,13 @@ int main(){
                         error(0);
                     }
                 }
-            } else if(strcmp(getcw(), "EXIT") == 0){
+            } else if(strcmp(getcw(), "EXIT") == 0){        // mengakhiri aplikasi
                 if(eop(command) == 1){
                     exit = true;
                 } else {
                     error(14);
                 }
-            } else if (strcmp(getcw(), "jangan") == 0){
+            } else if (strcmp(getcw(), "jangan") == 0){     // easter egg
                 if(eop(command) == 0){
                     inc(command);
                     if(strcmp(getcw(), "lupa") == 0){
