@@ -117,8 +117,8 @@ int getwlen();              // mengambil panjang kata saat ini
 void binarySearch(void* arr, int n, char* search, bool *found, int *idx, int type); // mencari data
 
 // ui tabel
-int longestName(category* data, int n);
-void categoryTable(int, int, int, int, int, int, category*);
+int longestName(void* data, int n, int type);
+void showCategoryTable(int lenMaxName, int n, category* data);
 
 // perintah tabel kategori
 void getCategory(char command[]);       // menampilkan data

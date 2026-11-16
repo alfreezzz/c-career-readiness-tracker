@@ -166,7 +166,7 @@ void success(int code){ // pesan berhasil
             break;
         }
         default: {
-            printf(GREEN "yeyy berhasil\n" DEFAULT);
+            printf(GREEN "Berhasil\n" DEFAULT);
             break;
         }
     }
@@ -297,7 +297,7 @@ int getwlen(){              // mengambil panjang kata saat ini
 void binarySearch(void* arr, int n, char* search, bool *found, int *idx, int type){ // mencari data
     int i, j;           // indeks bawah dan atas
     i = 0, j = n - 1;   // mengisi nilai
-    char id[20];        // menyimpan id dari tipe bentukan yang digunakan
+    char id[10];        // menyimpan id dari tipe bentukan yang digunakan
 
     // proses pencarian
     while((!(*found)) && (i <= j)){
@@ -354,203 +354,105 @@ void binarySearch(void* arr, int n, char* search, bool *found, int *idx, int typ
 }
 
 // ui tabel
-int longestName(category* data, int n){
-    int lenMaxName = strlen(data[0].name);
+// https://stackoverflow.com/questions/75400003/is-there-a-way-to-make-a-single-function-operate-on-different-structures-having
+int longestName(void* data, int n, int type){
+    char name[50];      // menyimpan name dari tipe bentukan yang digunakan
+    int lenMaxName = 0; // panjang dari nama terpanjang
     
-    for(int i = 1; i < n; i++){
-        if(lenMaxName < strlen(data[i].name)){
-            lenMaxName = strlen(data[i].name);
+    for(int i = 0; i < n; i++){
+        // menentukan tipe bentukan yang digunakan
+        switch(type){
+            case 1: {
+                strcpy(name, ((position*)data)[i].name);
+                break;
+            }
+            case 2: {
+                strcpy(name, ((skill*)data)[i].name);
+                break;
+            }
+            case 4: {
+                strcpy(name, ((organization*)data)[i].name);
+                break;
+            }
+            case 5: {
+                strcpy(name, ((certificate*)data)[i].name);
+                break;
+            }
+            case 7: {
+                strcpy(name, ((category*)data)[i].name);
+                break;
+            }
+            case 8: {
+                strcpy(name, ((project*)data)[i].name);
+                break;
+            }
+            default: {
+                error(1);
+                break;
+            }
+        }
+        // jika lebih kecil maka nilai diperbarui
+        if(lenMaxName < strlen(name)){
+            lenMaxName = strlen(name);
         }
     }
     return lenMaxName;
 }
-// void categoryTable(int lenMaxNama, int lenMaxTipe, int lenMaxJarak, int lenMaxDurasi, int lenMaxPoin, int n, category* data){
-//     // outline 1
-//     // header table
-//     printf("+-");
-//     for(int i = 1; i <= lenMaxNama || i <= 4; i++){
-//         printf("-");
-//     }
-//     printf("-+-");
-//     for(int i = 1; i <= lenMaxTipe || i <= 4; i++){
-//         printf("-");
-//     }
-//     printf("-+-");
-//     for(int i = 1; i <= lenMaxJarak || i <= 5; i++){
-//         printf("-");
-//     }
-//     printf("-+-");
-//     for(int i = 1; i <= lenMaxDurasi || i <= 6; i++){
-//         printf("-");
-//     }
-//     printf("-+-");
-//     for(int i = 1; i <= lenMaxPoin || i <= 4; i++){
-//         printf("-");
-//     }
-//     printf("-+\n");
+void showCategoryTable(int lenMaxName, int n, category* data){
+    // header table
+    printf(WHITE"+--------+-");
+    for(int i = 1; i <= lenMaxName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+---------------------+---------------------+\n");
+    printf("| "BWHITE"ID"WHITE"     |");
+    printf(" "BWHITE"Nama"WHITE" ");
+    for(int i = 1; i <= lenMaxName && i <= lenMaxName - 4; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Tanggal_dibuat"WHITE"      | "BWHITE"Tanggal_diubah"WHITE"      |\n");
+    printf("+--------+-");
+    for(int i = 1; i <= lenMaxName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+---------------------+---------------------+\n");
 
-//     // header Nama, Tipe, Jarak, Durasi, dan Poin
-//     printf("|");
-//     printf(" Nama ");
-//     for(int i = 1; i <= lenMaxNama && i <= lenMaxNama - 4; i++){
-//         printf(" ");
-//     }
-//     printf("|");
-//     printf(" Tipe ");
-//     for(int i = 1; i <= lenMaxTipe && i <= lenMaxTipe - 4; i++){
-//         printf(" ");
-//     }
-//     printf("|");
-//     printf(" Jarak ");
-//     for(int i = 1; i <= lenMaxJarak && i <= lenMaxJarak - 5; i++){
-//         printf(" ");
-//     }
-//     printf("|");
-//     printf(" Durasi ");
-//     for(int i = 1; i <= lenMaxDurasi && i <= lenMaxDurasi - 6; i++){
-//         printf(" ");
-//     }
-//     printf("|");
-//     printf(" Poin ");
-//     for(int i = 1; i <= lenMaxPoin && i <= lenMaxPoin - 4; i++){
-//         printf(" ");
-//     }
-//     printf("|\n");
+    // body table
+    for(int i = 0; i < n; i++){
+        int lenMaxID = 6;
+        // ID
+        printf("| %s ", data[i].id);
+        if((lenMaxID - strlen(data[i].id)) > 0){
+            for(int j = 1; (j <= lenMaxID - strlen(data[i].id)) ; j++){
+                printf(" ");
+            }
+        } else {
+            for(int j = 1; j <= 2 - lenMaxID ; j++){
+                printf(" ");
+            }
+        }
+        // NAMA
+        printf("| %s ", data[i].name);
+        if((lenMaxName - strlen(data[i].name)) > 0){
+            for(int j = 1; (j <= lenMaxName - strlen(data[i].name)) ; j++){
+                printf(" ");
+            }
+        } else {
+            for(int j = 1; j <= 4 - lenMaxName ; j++){
+                printf(" ");
+            }
+        }
+        // TANGGAL DIBUAT & DIUBAH
+        printf("| %s | %s |\n", data[i].createdAt, data[i].updatedAt);
+    }
 
-//     // outline 2
-//     printf("+-");
-//     for(int i = 1; i <= lenMaxNama || i <= 4; i++){
-//         printf("-");
-//     }
-//     printf("-+-");
-//     for(int i = 1; i <= lenMaxTipe || i <= 4; i++){
-//         printf("-");
-//     }
-//     printf("-+-");
-//     for(int i = 1; i <= lenMaxJarak || i <= 5; i++){
-//         printf("-");
-//     }
-//     printf("-+-");
-//     for(int i = 1; i <= lenMaxDurasi || i <= 6; i++){
-//         printf("-");
-//     }
-//     printf("-+-");
-//     for(int i = 1; i <= lenMaxPoin || i <= 4; i++){
-//         printf("-");
-//     }
-//     printf("-+\n");
-
-//     for(int i = 0; i < n; i++){
-//         // NAMA
-//         printf("| %s ", data[i].nama);
-//         if((lenMaxNama - strlen(data[i].nama)) > 0){
-//             for(int j = 1; (j <= lenMaxNama - strlen(data[i].nama)) ; j++){
-//                 printf(" ");
-//             }
-//         } else {
-//             for(int j = 1; j <= 4 - lenMaxNama ; j++){
-//                 printf(" ");
-//             }
-//         }
-        
-//         // TIPE
-//         printf("| %s ", data[i].tipe);
-//         if((lenMaxTipe - strlen(data[i].tipe)) > 0){
-//             for(int j = 1; (j <= lenMaxTipe - strlen(data[i].tipe)) ; j++){
-//                 printf(" ");
-//             }
-//         } else {
-//             for(int j = 1; j <= 4 - lenMaxTipe ; j++){
-//                 printf(" ");
-//             }
-//         }
-
-//         // JARAK
-//         int jarak = data[i].jarak;
-//         int lenJarak = 0;
-
-//         // menghitung jumlah digit dari jarak i
-//         do{
-//             jarak /= 10;
-//             lenJarak++;
-//         } while(jarak > 0);
-        
-//         printf("| %d ", data[i].jarak);
-//         int lebarJarak = 5;
-
-//         if(lenMaxJarak > 5){
-//             lebarJarak = lenMaxJarak;
-//         }
-//         for(int j = lenJarak; j < lebarJarak; j++){
-//             printf(" ");
-//         }
-        
-//         // DURASI
-//         int durasi = data[i].durasi;
-//         int lenDurasi = 0;
-
-//         // menghitung jumlah digit dari durasi i
-//         do{
-//             durasi /= 10;
-//             lenDurasi++;
-//         } while(durasi > 0);
-        
-//         printf("| %d ", data[i].durasi);
-//         int lebarDurasi = 6;
-
-//         if(lenMaxDurasi > 6){
-//             lebarDurasi = lenMaxDurasi;
-//         }
-//         for(int j = lenDurasi; j < lebarDurasi; j++){
-//             printf(" ");
-//         }
-        
-//         // POIN
-//         int poin = data[i].poin;
-//         int lenPoin = 0;
-
-//         // menghitung jumlah digit dari poin i
-//         do{
-//             poin /= 10;
-//             lenPoin++;
-//         } while(poin > 0);
-        
-//         printf("| %d ", data[i].poin);
-
-//         int lebarPoin = 4;
-
-//         if(lenMaxPoin > 4){
-//             lebarPoin = lenMaxPoin;
-//         }
-//         for(int j = lenPoin; j < lebarPoin; j++){
-//             printf(" ");
-//         }
-//         printf("|\n");
-//     }
-
-//     // outline terakhir
-//     printf("+-");
-//     for(int i = 1; i <= lenMaxNama || i <= 4; i++){
-//         printf("-");
-//     }
-//     printf("-+-");
-//     for(int i = 1; i <= lenMaxTipe || i <= 4; i++){
-//         printf("-");
-//     }
-//     printf("-+-");
-//     for(int i = 1; i <= lenMaxJarak || i <= 5; i++){
-//         printf("-");
-//     }
-//     printf("-+-");
-//     for(int i = 1; i <= lenMaxDurasi || i <= 6; i++){
-//         printf("-");
-//     }
-//     printf("-+-");
-//     for(int i = 1; i <= lenMaxPoin || i <= 4; i++){
-//         printf("-");
-//     }
-//     printf("-+\n");
-// }
+    // footer table
+    printf("+--------+-");
+    for(int i = 1; i <= lenMaxName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+---------------------+---------------------+\n"DEFAULT);
+}
 
 // prosedur fungsi perintah tabel kategori
 void getCategory(char command[]){       // menampilkan data
@@ -584,9 +486,7 @@ void getCategory(char command[]){       // menampilkan data
 
         if(eop(command) == 1){  // jika tidak melakukan pencarian
             // menampilkan data
-            for(int i = 0; i < recordSum; i++){
-                printf("%s %s %s %s\n", temp[i].id, temp[i].name, temp[i].createdAt, temp[i].updatedAt);
-            }
+            showCategoryTable(longestName(temp, recordSum, 7), recordSum, temp);
         } else {    // jika tidak melakukan pencarian
             inc(command);
             if(strcmp(getcw(), "WHERE") == 0){
@@ -606,7 +506,12 @@ void getCategory(char command[]){       // menampilkan data
                             binarySearch(temp, recordSum, search, &found, &idx, 7);
                             
                             if(found){  // jika data ditemukan
-                                printf("%s %s %s %s\n", temp[idx].id, temp[idx].name, temp[idx].createdAt, temp[idx].updatedAt);
+                                category foundData[1];
+                                strcpy(foundData[0].id, temp[idx].id);
+                                strcpy(foundData[0].name, temp[idx].name);
+                                strcpy(foundData[0].createdAt, temp[idx].createdAt);
+                                strcpy(foundData[0].updatedAt, temp[idx].updatedAt);
+                                showCategoryTable(strlen(temp[idx].name), 1, foundData);
                             } else {
                                 error(11);
                             }
