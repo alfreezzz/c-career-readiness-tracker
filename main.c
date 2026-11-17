@@ -46,7 +46,11 @@ int main(){
                                     error(5);
                                 }
                             } else if (strcmp(getcw(), "tproject") == 0){
-                                return 6;
+                                if(eop(command) == 0){
+                                    postProject(command);
+                                } else {
+                                    error(5);
+                                }
                             } else {
                                 error(1);
                             }
@@ -79,7 +83,11 @@ int main(){
                             error(13);
                         }
                     } else if (strcmp(getcw(), "tproject") == 0){
-                        return 6;
+                        if(eop(command) == 0){
+                            updateProject(command);
+                        } else {
+                            error(13);
+                        }
                     } else {
                         error(1);
                     }
@@ -109,7 +117,11 @@ int main(){
                                     error(9);
                                 }
                             } else if (strcmp(getcw(), "tproject") == 0){
-                                return 6;
+                                if(eop(command) == 0){
+                                    deleteProject(command);
+                                } else {
+                                    error(9);
+                                }
                             } else {
                                 error(1);
                             }
@@ -141,7 +153,7 @@ int main(){
                             } else if (strcmp(getcw(), "tcategory") == 0){
                                 getCategory(command);
                             } else if (strcmp(getcw(), "tproject") == 0){
-                                return 6;
+                                getProject(command);
                             } else {
                                 error(1);
                             }
@@ -179,7 +191,11 @@ int main(){
                                     error(14);
                                 }
                             } else if (strcmp(getcw(), "tproject") == 0){
-                                return 6;
+                                if(eop(command) == 1){
+                                    guideProject();
+                                } else {
+                                    error(14);
+                                }
                             } else {
                                 error(1);
                             }

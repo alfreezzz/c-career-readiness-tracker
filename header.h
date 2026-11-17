@@ -114,11 +114,13 @@ char* getcw();              // mengambil kata saat ini
 int getwlen();              // mengambil panjang kata saat ini
 
 // searching
-void binarySearch(void* arr, int n, char* search, bool *found, int *idx, int type); // mencari data
+void searchId(void* arr, int n, char* search, bool *found, int *idx, int type); // mencari data
 
 // ui tabel
 int longestName(void* data, int n, int type);
+int longestUrl(void* data, int n, int type);
 void showCategoryTable(int lenMaxName, int n, category* data);
+void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data);
 
 // perintah tabel kategori
 void getCategory(char command[]);       // menampilkan data
@@ -126,3 +128,11 @@ void postCategory(char command[]);      // menambahkan data
 void updateCategory(char command[]);    // mengubah data
 void deleteCategory(char command[]);    // menghapus data
 void guideCategory();                   // panduan kategori
+void getCategory(char command[]);       // menampilkan data
+
+// perintah tabel proyek
+void getProject(char command[]);       // menampilkan data
+void postProject(char command[]);      // menambahkan data
+void updateProject(char command[]);    // mengubah data
+void deleteProject(char command[]);    // menghapus data
+void guideProject();                   // panduan kategori

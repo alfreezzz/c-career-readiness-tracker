@@ -159,7 +159,7 @@ void success(int code){ // pesan berhasil
             break;
         }
         case 1: {
-            printf(GREEN "Data berhasil diedit\n" DEFAULT);
+            printf(GREEN "Data berhasil diubah\n" DEFAULT);
             break;
         }
         case 2: {
@@ -167,7 +167,7 @@ void success(int code){ // pesan berhasil
             break;
         }
         default: {
-            printf(GREEN "Berhasil\n" DEFAULT);
+            printf(GREEN "Berhasil hore\n" DEFAULT);
             break;
         }
     }
@@ -219,15 +219,15 @@ void error(int code){   // pesan error
             break;    
         }
         case 7: {
-            printf(RED "Tidak boleh ada data dengan id yang sama\n" DEFAULT);
+            printf(RED "Tidak boleh ada data dengan ID yang sama\n" DEFAULT);
             break;    
         }
         case 8: {
-            printf(RED "Mohon masukkan id untuk data yang akan diubah\n" DEFAULT);
+            printf(RED "Mohon masukkan ID untuk data yang akan diubah\n" DEFAULT);
             break;    
         }
         case 9: {
-            printf(RED "Mohon masukkan id untuk data yang akan dihapus\n" DEFAULT);
+            printf(RED "Mohon masukkan ID untuk data yang akan dihapus\n" DEFAULT);
             break;    
         }
         case 10: {
@@ -239,7 +239,7 @@ void error(int code){   // pesan error
             break;    
         }
         case 12: {
-            printf(RED "Tabel tersebut masih kosong\n" DEFAULT);
+            printf(RED "Tabel tidak ada datanya\n" DEFAULT);
             break;    
         }
         case 13: {
@@ -251,7 +251,7 @@ void error(int code){   // pesan error
             break;    
         }
         case 15: {
-            printf(RED "Mohon masukkan id dari data yang akan dicari\n" DEFAULT);
+            printf(RED "Mohon masukkan ID dari data yang akan dicari\n" DEFAULT);
             break;    
         }
         case 16: {
@@ -281,6 +281,18 @@ void error(int code){   // pesan error
         case 21: {
             printf(RED "Query tidak valid\n" DEFAULT);
             printf(RED "Mungkin maksud anda \"PRESENT FROM table WHERE..\"?\n" DEFAULT);
+            break;    
+        }
+        case 22: {
+            printf(RED "Tabel relasi tidak memiliki data\n" DEFAULT);
+            break;    
+        }
+        case 23: {
+            printf(RED "ID relasi tidak ditemukan\n" DEFAULT);
+            break;    
+        }
+        case 24: {
+            printf(RED "Data memiliki relasi dengan tabel lain\n" DEFAULT);
             break;    
         }
         default: {
@@ -336,7 +348,7 @@ int getwlen(){              // mengambil panjang kata saat ini
 
 // searching
 // https://stackoverflow.com/questions/75400003/is-there-a-way-to-make-a-single-function-operate-on-different-structures-having
-void binarySearch(void* arr, int n, char* search, bool *found, int *idx, int type){ // mencari data
+void searchId(void* arr, int n, char* search, bool *found, int *idx, int type){ // mencari data
     int i, j;           // indeks bawah dan atas
     i = 0, j = n - 1;   // mengisi nilai
     char id[10];        // menyimpan id dari tipe bentukan yang digunakan
@@ -440,6 +452,33 @@ int longestName(void* data, int n, int type){
     }
     return lenMaxName;
 }
+int longestUrl(void* data, int n, int type){
+    char url[100];      // menyimpan url dari tipe bentukan yang digunakan
+    int lenMaxUrl = 0; // panjang dari nama terpanjang
+    
+    for(int i = 0; i < n; i++){
+        // menentukan tipe bentukan yang digunakan
+        switch(type){
+            case 5: {
+                strcpy(url, ((certificate*)data)[i].url);
+                break;
+            }
+            case 8: {
+                strcpy(url, ((project*)data)[i].url);
+                break;
+            }
+            default: {
+                error(1);
+                break;
+            }
+        }
+        // jika lebih kecil maka nilai diperbarui
+        if(lenMaxUrl < strlen(url)){
+            lenMaxUrl = strlen(url);
+        }
+    }
+    return lenMaxUrl;
+}
 void showCategoryTable(int lenMaxName, int n, category* data){
     // header table
     printf(WHITE"+--------+-");
@@ -495,8 +534,114 @@ void showCategoryTable(int lenMaxName, int n, category* data){
     }
     printf("-+---------------------+---------------------+\n"DEFAULT);
 }
+void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data){
+    // header table
+    printf(WHITE"+--------+-");
+    for(int i = 1; i <= lenMaxName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= lenMaxUrl || i <= 3; i++){
+        printf("-");
+    }
+    printf("-+-----------------+-------------+---------------------+---------------------+\n");
+    printf("| "BWHITE"ID"WHITE"     |");
+    printf(" "BWHITE"Nama"WHITE" ");
+    for(int i = 1; i <= lenMaxName && i <= lenMaxName - 4; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Url"WHITE" ");
+    for(int i = 1; i <= lenMaxUrl && i <= lenMaxUrl - 3; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Tanggal_selesai"WHITE" ");
+    printf("| "BWHITE"ID_Kategori"WHITE" ");
+    printf("| "BWHITE"Tanggal_dibuat"WHITE"      | "BWHITE"Tanggal_diubah"WHITE"      |\n");
+    printf("+--------+-");
+    for(int i = 1; i <= lenMaxName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= lenMaxUrl || i <= 3; i++){
+        printf("-");
+    }
+    printf("-+-----------------+-------------+---------------------+---------------------+\n");
+    
+    // body table
+    for(int i = 0; i < n; i++){
+        int lenMaxID = 6, lenMaxDate = 15;
+        // ID
+        printf("| %s ", data[i].id);
+        if((lenMaxID - strlen(data[i].id)) > 0){
+            for(int j = 1; (j <= lenMaxID - strlen(data[i].id)) ; j++){
+                printf(" ");
+            }
+        } else {
+            for(int j = 1; j <= 2 - lenMaxID ; j++){
+                printf(" ");
+            }
+        }
+        // NAMA
+        printf("| %s ", data[i].name);
+        if((lenMaxName - strlen(data[i].name)) > 0){
+            for(int j = 1; (j <= lenMaxName - strlen(data[i].name)) ; j++){
+                printf(" ");
+            }
+        } else {
+            for(int j = 1; j <= 4 - lenMaxName ; j++){
+                printf(" ");
+            }
+        }
+        // URL
+        printf("| %s ", data[i].url);
+        if((lenMaxUrl - strlen(data[i].url)) > 0){
+            for(int j = 1; (j <= lenMaxUrl - strlen(data[i].url)) ; j++){
+                printf(" ");
+            }
+        } else {
+            for(int j = 1; j <= 3 - lenMaxUrl ; j++){
+                printf(" ");
+            }
+        }
+        // TANGGAL SELESAI
+        printf("| %s ", data[i].finishedDate);
+        if((lenMaxDate - strlen(data[i].finishedDate)) > 0){
+            for(int j = 1; (j <= lenMaxDate - strlen(data[i].finishedDate)) ; j++){
+                printf(" ");
+            }
+        } else {
+            for(int j = 1; j <= 15 - lenMaxDate ; j++){
+                printf(" ");
+            }
+        }
+        // ID KATEGORI
+        printf("| %s ", data[i].categoryId);
+        if((lenMaxID - strlen(data[i].categoryId)) > 0){
+            for(int j = 1; (j <= lenMaxID - strlen(data[i].categoryId)) ; j++){
+                printf(" ");
+            }
+        } else {
+            for(int j = 1; j <= 11 - lenMaxID ; j++){
+                printf(" ");
+            }
+        }
+        // TANGGAL DIBUAT & DIUBAH
+        printf("| %s | %s |\n", data[i].createdAt, data[i].updatedAt);
+    }
+    
+    // footer table
+     printf("+--------+-");
+    for(int i = 1; i <= lenMaxName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= lenMaxUrl || i <= 3; i++){
+        printf("-");
+    }
+    printf("-+-----------------+-------------+---------------------+---------------------+\n");
+}
 
-// prosedur fungsi perintah tabel kategori
+// perintah tabel kategori
 void getCategory(char command[]){       // menampilkan data
     int recordSum = 0;  // jumlah rekaman dalam tabel
     category temp[100]; // array rekaman untuk ditampilkan
@@ -545,7 +690,7 @@ void getCategory(char command[]){       // menampilkan data
                             bool found = false; // cek ditemukan
 
                             // proses pencarian
-                            binarySearch(temp, recordSum, search, &found, &idx, 7);
+                            searchId(temp, recordSum, search, &found, &idx, 7);
                             
                             if(found){  // jika data ditemukan
                                 category foundData[1];
@@ -808,6 +953,592 @@ void deleteCategory(char command[]){    // menghapus data
         strcpy(search, getcw()); // mengambil id masukan user
         
         if(eop(command) == 1){
+            project projectRecord;
+
+            FILE *projectTable;
+            projectTable = fopen("tables/tproject.dat", "r");
+
+            fscanf(projectTable, "%s %s %s %s %s %s %s", projectRecord.id, projectRecord.name, projectRecord.url, projectRecord.finishedDate, projectRecord.categoryId, projectRecord.createdAt, projectRecord.updatedAt);
+
+            bool foundProId = false;
+            if(strcmp(projectRecord.id, IDDUMMY) == 0){
+                error(12);
+            } else if (strcmp(search, IDDUMMY) == 0){
+                error(11);
+            } else {
+                while((strcmp(projectRecord.id, IDDUMMY) != 0) && (strcmp(projectRecord.categoryId, search) != 0)){
+                    fscanf(projectTable, "%s %s %s %s %s %s %s", projectRecord.id, projectRecord.name, projectRecord.url, projectRecord.finishedDate, projectRecord.categoryId, projectRecord.createdAt, projectRecord.updatedAt);
+                }
+                if(strcmp(projectRecord.categoryId, search) == 0){
+                    foundProId = true;
+                } else {
+                    error(23);
+                }
+            }
+            fclose(projectTable);
+
+            if(!foundProId){
+                int idx = 0;    // iterasi dan index
+                bool isFound = false;   // cek ditemukan
+                // proses pencarian 
+                while(!isFound && idx < recordSum){
+                    if(strcmp(temp[idx].id, search) == 0){
+                        isFound = true;
+                    } else {
+                        idx++;
+                    }
+                }
+                
+                if(!isFound){
+                    error(11);
+                } else {
+                    // kondisi memasukkan ke dalam array
+                    if(idx == 0){
+                        // rekaman dihapus di paling depan
+                        // geser semua isi array ke belakang
+                        for(int i = 0; i < recordSum - 1; i++){
+                            strcpy(temp[i].id, temp[i+1].id);
+                            strcpy(temp[i].name, temp[i+1].name);
+                            strcpy(temp[i].createdAt, temp[i+1].createdAt);
+                            strcpy(temp[i].updatedAt, temp[i+1].updatedAt);
+                        }
+                        recordSum--;
+                    } else if (idx == recordSum - 1){
+                        // rekaman dihapus di paling belakang
+                        recordSum--;
+                    } else {
+                        // rekaman dihapus memiliki posisi di tengah
+                        int i = 0;  // iterasi dan index
+                        bool isStopped = false; // cek ditemukan
+                        // cari posisi
+                        while((i < recordSum) && !isStopped){
+                            if(i >= idx){
+                                isStopped = true;
+                            } else {
+                                i++;
+                            }
+                        }
+                        // menggeserkan rekaman di posisi tengah
+                        for(int j = i; j < recordSum - 1; j++){
+                            strcpy(temp[j].id, temp[j+1].id);
+                            strcpy(temp[j].name, temp[j+1].name);
+                            strcpy(temp[j].createdAt, temp[j+1].createdAt);
+                            strcpy(temp[j].updatedAt, temp[j+1].updatedAt);
+                        }
+                        recordSum--;
+                    }
+                    showCategoryTable(longestName(temp, recordSum, 7), recordSum, temp);
+                    success(2);
+                }
+                // flush ke file
+                categoryTable = fopen("tables/tcategory.dat", "w");
+                for(int i = 0; i < recordSum; i++){
+                    fprintf(categoryTable, "%s %s %s %s\n", temp[i].id, temp[i].name, temp[i].createdAt, temp[i].updatedAt);
+                }
+                fprintf(categoryTable, "%s", EOFCATEGORY);
+                fclose(categoryTable);
+            } else {
+                error(24);
+            }
+        } else {
+            error(14);
+        }
+    }
+}
+void guideCategory(){                   // buku panduan kategori
+    guideTitle();
+
+    printf("|                                                                                                    |\n");
+    printf("|   "WHITE"Tabel kategori digunakan untuk menyimpan relasi kategori dalam tabel proyek"CYAN"                      |\n");
+    printf("|                                                                                                    |\n");
+    printf("|   "BGREEN"STRUKTUR DATA"CYAN"                                                                                    |\n");
+    printf("|      "WHITE"1. id              : "CYAN"Kode unik                                                                |\n");
+    printf("|      "WHITE"2. nama            : "CYAN"Nama kategori proyek                                                     |\n");
+    printf("|      "WHITE"3. tanggal_dibuat  : "CYAN"Waktu data dibuat                                                        |\n");
+    printf("|      "WHITE"4. tanggal_diubah  : "CYAN"Waktu data diubah                                                        |\n");
+    printf("|                                                                                                    |\n");
+    printf("|   "BGREEN"PENGGUNAAN PERINTAH"CYAN"                                                                              |\n");
+    printf("|      "WHITE"1. Menampilkan data : "BPURPLE"PRESENT FROM "BLUE"tcategory"YELLOW"$"CYAN"                                                 |\n");
+    printf("|      "WHITE"2. Mencari data     : "BPURPLE"PRESENT FROM"BLUE" tcategory "BPURPLE"WHERE"CYAN" id"YELLOW"$"CYAN"                                        |\n");
+    printf("|      "WHITE"3. Menambahkan data : "BPURPLE"SUBMIT TO "BLUE"tcategory "CYAN"id nama"YELLOW"$"CYAN"                                            |\n");
+    printf("|      "WHITE"4. Mengubah data    : "BPURPLE"CHANGE "BLUE"tcategory "CYAN"id nama"YELLOW"$"CYAN"                                               |\n");
+    printf("|      "WHITE"5. Menghapus data   : "BPURPLE"REMOVE FROM "BLUE"tcategory "CYAN"id"YELLOW"$"CYAN"                                               |\n");
+    printf("|                                                                                                    |\n");
+
+    guideFooter();
+}
+
+// perintah tabel proyek
+void getProject(char command[]){       // menampilkan data
+    int recordSum = 0;  // jumlah rekaman dalam tabel
+    project temp[100]; // array rekaman untuk ditampilkan
+    project record;    // rekaman saat ini untuk disalin
+
+    FILE *projectTable;    // kaitan untuk mengakses file
+    projectTable = fopen("tables/tproject.dat", "r"); // membuka file dengan mode read
+    
+    // memulai proses pembacaan
+    fscanf(projectTable, "%s %s %s %s %s %s %s\n", record.id, record.name, record.url, record.finishedDate, record.categoryId, record.createdAt, record.updatedAt);
+
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika ditemukan EOF atau data kosong
+        error(12);
+        fclose(projectTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].name, record.name);
+            strcpy(temp[recordSum].url, record.url);
+            strcpy(temp[recordSum].finishedDate, record.finishedDate);
+            strcpy(temp[recordSum].categoryId, record.categoryId);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(projectTable, "%s %s %s %s %s %s %s\n", record.id, record.name, record.url, record.finishedDate, record.categoryId, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+
+        fclose(projectTable); // menutup file
+
+        if(eop(command) == 1){  // jika tidak melakukan pencarian
+            // menampilkan data
+            showProjectTable(longestName(temp, recordSum, 8), longestUrl(temp, recordSum, 8), recordSum, temp);
+        } else {    // jika tidak melakukan pencarian
+            inc(command);
+            if(strcmp(getcw(), "WHERE") == 0){
+                if(eop(command) == 0){
+                    inc(command);
+                    if(eop(command) == 1){
+                        char search[50];
+                        strcpy(search, getcw());
+                        
+                        if(strcmp(search, IDDUMMY) == 0){
+                            error(11);
+                        } else {
+                            int idx;            // indeks dan iterasi
+                            bool found = false; // cek ditemukan
+
+                            // proses pencarian
+                            searchId(temp, recordSum, search, &found, &idx, 8);
+                            
+                            if(found){  // jika data ditemukan
+                                project foundData[1];
+                                strcpy(foundData[0].id, temp[idx].id);
+                                strcpy(foundData[0].name, temp[idx].name);
+                                strcpy(foundData[0].url, temp[idx].url);
+                                strcpy(foundData[0].finishedDate, temp[idx].finishedDate);
+                                strcpy(foundData[0].categoryId, temp[idx].categoryId);
+                                strcpy(foundData[0].createdAt, temp[idx].createdAt);
+                                strcpy(foundData[0].updatedAt, temp[idx].updatedAt);
+                                showProjectTable(longestName(foundData, 1, 8), longestUrl(foundData, 1, 8), 1, foundData);
+                            } else {
+                                error(11);
+                            }
+                        }
+                    } else {
+                        error(14);
+                    }
+                } else {
+                    error(15);
+                }
+            } else {
+                error(21);
+            }
+        }
+    }
+}
+void postProject(char command[]){      // menambahkan data
+    char dateTime[100];     // menyimpan tanggal dan waktu saat ini
+    timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
+    
+    int recordSum = 0;      // jumlah rekaman di dalam tabel
+    project temp[100];      // array rekaman untuk menggeserkan nilai rekaman baru
+    project record, new;    // rekaman saat ini dan rekaman yang baru
+    
+    FILE *projectTable;    // kaitan untuk mengakses file
+    projectTable = fopen("tables/tproject.dat", "r"); // membuka file dengan mode read
+    
+    // memulai proses pembacaan
+    fscanf(projectTable, "%s %s %s %s %s %s %s\n", record.id, record.name, record.url, record.finishedDate, record.categoryId, record.createdAt, record.updatedAt);
+
+    // jika tidak ditemukan EOF dan data tidak kosong
+    if(strcmp(record.id, IDDUMMY) != 0 && strcmp(record.id, "") != 0){
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].name, record.name);
+            strcpy(temp[recordSum].url, record.url);
+            strcpy(temp[recordSum].finishedDate, record.finishedDate);
+            strcpy(temp[recordSum].categoryId, record.categoryId);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(projectTable, "%s %s %s %s %s %s %s\n", record.id, record.name, record.url, record.finishedDate, record.categoryId, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+    }
+    fclose(projectTable); // menutup file
+    
+    inc(command);   
+    if(eop(command) == 0){
+        if(strlen(getcw()) < sizeof(record.id)){
+            strcpy(new.id, getcw());    // mengambil id masukan user
+    
+            inc(command);
+            if(eop(command) == 0){
+                if(strlen(getcw()) < sizeof(record.name)){
+                    strcpy(new.name, getcw());  // mengambil nama masukan user
+
+                    inc(command);
+                    if(eop(command) == 0){
+                        if(strlen(getcw()) < sizeof(record.url)){
+                            strcpy(new.url, getcw());
+
+                            inc(command);
+                            if(eop(command) == 0){
+                                if(strlen(getcw()) < sizeof(record.finishedDate)){
+                                    strcpy(new.finishedDate, getcw());
+
+                                    inc(command);
+                                    if(eop(command) == 1){
+                                        if(strlen(getcw()) < sizeof(record.categoryId)){
+
+                                            category categoryRecord;
+
+                                            FILE *categoryTable;
+                                            categoryTable = fopen("tables/tcategory.dat", "r");
+
+                                            char search[10];
+                                            strcpy(search, getcw());
+
+                                            fscanf(categoryTable, "%s %s %s %s", categoryRecord.id, categoryRecord.name, categoryRecord.createdAt, categoryRecord.updatedAt);
+
+                                            bool foundCatId = false;
+                                            if(strcmp(categoryRecord.id, IDDUMMY) == 0){
+                                                error(12);
+                                            } else if (strcmp(search, IDDUMMY) == 0){
+                                                error(11);
+                                            } else {
+                                                while((strcmp(categoryRecord.id, IDDUMMY) != 0) && (strcmp(categoryRecord.id, search) != 0)){
+                                                    fscanf(categoryTable, "%s %s %s %s\n", categoryRecord.id, categoryRecord.name, categoryRecord.createdAt, categoryRecord.updatedAt);
+                                                }
+                                                if(strcmp(categoryRecord.id, search) == 0){
+                                                    foundCatId = true;
+                                                } else {
+                                                    error(23);
+                                                }
+                                            }
+                                            fclose(categoryTable);
+
+                                            if(foundCatId){
+                                                strcpy(new.categoryId, getcw());
+    
+                                                // mengambil tanggal dan waktu saat ini
+                                                strcpy(new.createdAt, dateTime);
+                                                strcpy(new.updatedAt, dateTime);
+                                    
+                                                bool isDuplicate = false;   // cek id duplikat
+                                                // kondisi memasukkan rekaman baru ke dalam array
+                                                if(strcmp(new.id, temp[0].id) < 0){
+                                                    // rekaman baru di paling depan
+                                                    // geser semua isi array ke belakang
+                                                    for(int i = recordSum - 1; i >= 0; i--){
+                                                        strcpy(temp[i+1].id, temp[i].id);
+                                                        strcpy(temp[i+1].name, temp[i].name);
+                                                        strcpy(temp[i+1].url, temp[i].url);
+                                                        strcpy(temp[i+1].finishedDate, temp[i].finishedDate);
+                                                        strcpy(temp[i+1].categoryId, temp[i].categoryId);
+                                                        strcpy(temp[i+1].createdAt, temp[i].createdAt);
+                                                        strcpy(temp[i+1].updatedAt, temp[i].updatedAt);
+                                                    }
+                                                    recordSum++;
+                                                    strcpy(temp[0].id, new.id);
+                                                    strcpy(temp[0].name, new.name);
+                                                    strcpy(temp[0].url, new.url);
+                                                    strcpy(temp[0].finishedDate, new.finishedDate);
+                                                    strcpy(temp[0].categoryId, new.categoryId);
+                                                    strcpy(temp[0].createdAt, new.createdAt);
+                                                    strcpy(temp[0].updatedAt, new.updatedAt);
+                                                } else if (strcmp(new.id, temp[recordSum - 1].id) > 0){
+                                                    // rekaman baru di paling belakang
+                                                    strcpy(temp[recordSum].id, new.id);
+                                                    strcpy(temp[recordSum].name, new.name);
+                                                    strcpy(temp[recordSum].url, new.url);
+                                                    strcpy(temp[recordSum].finishedDate, new.finishedDate);
+                                                    strcpy(temp[recordSum].categoryId, new.categoryId);
+                                                    strcpy(temp[recordSum].createdAt, new.createdAt);
+                                                    strcpy(temp[recordSum].updatedAt, new.updatedAt);
+                                                    recordSum++;
+                                                } else {
+                                                    // rekaman baru memiliki posisi di tengah
+                                                    int i = 0;  // iterasi dan indeks
+                                                    bool isStop = false;    // cek berhenti
+                                                    // cari posisi
+                                                    while((i < recordSum) && (!isStop)){
+                                                        if(strcmp(temp[i].id, new.id) == 0){
+                                                            // terdapat id yang redundan
+                                                            error(7);
+                                                            isDuplicate = true;
+                                                            isStop = true;
+                                                        } else if (strcmp(temp[i].id, new.id) > 0){
+                                                            isStop = true;
+                                                        } else {
+                                                            i++;
+                                                        }
+                                                    }
+                                                    if(!isDuplicate){
+                                                        // menggeserkan rekaman di posisi tengah
+                                                        for(int j = recordSum - 1; j >= i; j--){
+                                                            strcpy(temp[j+1].id, temp[j].id);
+                                                            strcpy(temp[j+1].name, temp[j].name);
+                                                            strcpy(temp[j+1].url, temp[j].url);
+                                                            strcpy(temp[j+1].finishedDate, temp[j].finishedDate);
+                                                            strcpy(temp[j+1].categoryId, temp[j].categoryId);
+                                                            strcpy(temp[j+1].createdAt, temp[j].createdAt);
+                                                            strcpy(temp[j+1].updatedAt, temp[j].updatedAt);
+                                                        }
+                                                        // memasukkan rekaman baru di posisi tengah
+                                                        strcpy(temp[i].id, new.id);
+                                                        strcpy(temp[i].name, new.name);
+                                                        strcpy(temp[i].url, new.url);
+                                                        strcpy(temp[i].finishedDate, new.finishedDate);
+                                                        strcpy(temp[i].categoryId, new.categoryId);
+                                                        strcpy(temp[i].createdAt, new.createdAt);
+                                                        strcpy(temp[i].updatedAt, new.updatedAt);
+                                                        recordSum++;
+                                                    }
+                                                }
+                                                if(!isDuplicate){
+                                                    showProjectTable(longestName(temp, recordSum, 8), longestUrl(temp, recordSum, 8), recordSum, temp);
+                                                    success(0);
+                                                    // flush ke file
+                                                    projectTable = fopen("tables/tproject.dat", "w");
+                                                    for(int i = 0; i < recordSum; i++){
+                                                        fprintf(projectTable, "%s %s %s %s %s %s %s\n", temp[i].id, temp[i].name, temp[i].url, temp[i].finishedDate, temp[i].categoryId, temp[i].createdAt, temp[i].updatedAt);
+                                                    }
+                                                    fprintf(projectTable, "%s", EOFPROJECT);
+                                                    fclose(projectTable);
+                                                }
+                                            }
+                                        } else {
+                                            error(16);
+                                        }
+                                    } else {
+                                        error(6);
+                                    }
+                                } else {
+                                    error(16);
+                                }
+                            } else {
+                                error(4);
+                            }
+                        } else {
+                            error(16);
+                        }
+                    } else {
+                        error(4);
+                    }
+                } else {
+                    error(16);
+                }
+            } else {
+                error(4);
+            }
+        } else {
+            error(16);
+        }
+    } else {
+        error(4);
+    }
+}
+void updateProject(char command[]){    // mengubah data
+    char dateTime[100];     // menyimpan tanggal dan waktu saat ini
+    timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
+
+    int recordSum = 0;      // jumlah rekaman di dalam tabel
+    project temp[100];     // array rekaman untuk menggeserkan nilai rekaman baru
+    project record, new;   // rekaman saat ini dan rekaman yang baru
+
+    FILE *projectTable;    // kaitan untuk mengakses file
+    projectTable = fopen("tables/tproject.dat", "r"); // membuka file dengan mode read
+
+    // memulai proses pembacaan
+    fscanf(projectTable, "%s %s %s %s %s %s %s\n", record.id, record.name, record.url, record.finishedDate, record.categoryId, record.createdAt, record.updatedAt);
+    
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika EOF ditemukan atau data kosong
+        error(12);
+        fclose(projectTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].name, record.name);
+            strcpy(temp[recordSum].url, record.url);
+            strcpy(temp[recordSum].finishedDate, record.finishedDate);
+            strcpy(temp[recordSum].categoryId, record.categoryId);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(projectTable, "%s %s %s %s %s %s %s\n", record.id, record.name, record.url, record.finishedDate, record.categoryId, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+        
+        fclose(projectTable); // menutup file
+        
+        inc(command);
+        char search[50]; // cari nilai id
+        strcpy(search, getcw()); // mengambil id masukan user
+        
+        int i = 0;  // iterasi dan index
+        bool isFound = false;   // cek ditemukan
+        // proses pencarian
+        while(!isFound && i < recordSum){
+            if(strcmp(temp[i].id, search) == 0){
+                isFound = true;
+            } else {
+                i++;
+            }
+        }
+        
+        if(!isFound){
+            error(11);
+        } else {
+            if(eop(command) == 0){
+                inc(command);
+                if(eop(command) == 0){
+                    if(strlen(getcw()) < sizeof(record.name)){
+                        strcpy(new.name, getcw());          // mengambil nama masukan user
+
+                        inc(command);
+                        if(eop(command) == 0){
+                            if(strlen(getcw()) < sizeof(record.url)){
+                                strcpy(new.url, getcw());
+
+                                inc(command);
+                                if(eop(command) == 0){
+                                    if(strlen(getcw()) < sizeof(record.finishedDate)){
+                                        strcpy(new.finishedDate, getcw());
+
+                                        inc(command);
+                                        if(eop(command) == 1){
+                                            if(strlen(getcw()) < sizeof(record.categoryId)){
+
+                                                category categoryRecord;
+
+                                                FILE *categoryTable;
+                                                categoryTable = fopen("tables/tcategory.dat", "r");
+
+                                                char search[10];
+                                                strcpy(search, getcw());
+
+                                                fscanf(categoryTable, "%s %s %s %s", categoryRecord.id, categoryRecord.name, categoryRecord.createdAt, categoryRecord.updatedAt);
+
+                                                bool foundCatId = false;
+                                                if(strcmp(categoryRecord.id, IDDUMMY) == 0){
+                                                    error(12);
+                                                } else if (strcmp(search, IDDUMMY) == 0){
+                                                    error(11);
+                                                } else {
+                                                    while((strcmp(categoryRecord.id, IDDUMMY) != 0) && (strcmp(categoryRecord.id, search) != 0)){
+                                                        fscanf(categoryTable, "%s %s %s %s\n", categoryRecord.id, categoryRecord.name, categoryRecord.createdAt, categoryRecord.updatedAt);
+                                                    }
+                                                    if(strcmp(categoryRecord.id, search) == 0){
+                                                        foundCatId = true;
+                                                    } else {
+                                                        error(23);
+                                                    }
+                                                }
+                                                fclose(categoryTable);
+
+                                                if(foundCatId){
+                                                    strcpy(new.categoryId, getcw());
+                                                    strcpy(new.updatedAt, dateTime);    // mengubah tanggal diubah
+                
+                                                    // mengubah menjadi nilai baru
+                                                    strcpy(temp[i].name, new.name);
+                                                    strcpy(temp[i].url, new.url);
+                                                    strcpy(temp[i].finishedDate, new.finishedDate);
+                                                    strcpy(temp[i].categoryId, new.categoryId);
+                                                    strcpy(temp[i].updatedAt, new.updatedAt);
+                                
+                                                    showProjectTable(longestName(temp, recordSum, 8), longestUrl(temp, recordSum, 8), recordSum, temp);
+                                                    success(1);
+                                                }
+                                            } else {
+                                                error(16);
+                                            }
+                                        } else {
+                                            error(6);
+                                        }
+                                    } else {
+                                        error(16);
+                                    }
+                                } else {
+                                    error(4);
+                                }
+                            } else {
+                                error(16);
+                            }
+                        } else {
+                            error(4);
+                        }
+                    } else {
+                        error(16);
+                    }
+                } else {
+                    error(4);
+                }
+            } else {
+                error(13);
+            }
+        }
+        // flush ke file
+        projectTable = fopen("tables/tproject.dat", "w");
+        for(int i = 0; i < recordSum; i++){
+            fprintf(projectTable, "%s %s %s %s %s %s %s\n", temp[i].id, temp[i].name, temp[i].url, temp[i].finishedDate, temp[i].categoryId, temp[i].createdAt, temp[i].updatedAt);
+        }
+        fprintf(projectTable, "%s", EOFPROJECT);
+        fclose(projectTable);   
+    }
+}
+void deleteProject(char command[]){    // menghapus data
+    int recordSum = 0;      // jumlah rekaman di dalam tabel
+    project temp[100];     // array rekaman untuk menggeserkan nilai rekaman baru
+    project record, new;   // rekaman saat ini dan rekaman yang baru
+
+    FILE *projectTable;    // kaitan untuk mengakses file
+    projectTable = fopen("tables/tproject.dat", "r"); // membuka file dengan mode read
+
+    // memulai proses pembacaan
+    fscanf(projectTable, "%s %s %s %s %s %s %s\n", record.id, record.name, record.url, record.finishedDate, record.categoryId, record.createdAt, record.updatedAt);
+    
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika EOF ditemukan atau data kosong
+        error(12);
+        fclose(projectTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].name, record.name);
+            strcpy(temp[recordSum].url, record.url);
+            strcpy(temp[recordSum].finishedDate, record.finishedDate);
+            strcpy(temp[recordSum].categoryId, record.categoryId);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(projectTable, "%s %s %s %s %s %s %s\n", record.id, record.name, record.url, record.finishedDate, record.categoryId, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+
+        fclose(projectTable); // menutup file
+        
+        inc(command);
+        char search[50]; // cari nilai id
+        strcpy(search, getcw()); // mengambil id masukan user
+        
+        if(eop(command) == 1){
             int idx = 0;    // iterasi dan index
             bool isFound = false;   // cek ditemukan
             // proses pencarian 
@@ -829,6 +1560,9 @@ void deleteCategory(char command[]){    // menghapus data
                     for(int i = 0; i < recordSum - 1; i++){
                         strcpy(temp[i].id, temp[i+1].id);
                         strcpy(temp[i].name, temp[i+1].name);
+                        strcpy(temp[i].url, temp[i+1].url);
+                        strcpy(temp[i].finishedDate, temp[i+1].finishedDate);
+                        strcpy(temp[i].categoryId, temp[i+1].categoryId);
                         strcpy(temp[i].createdAt, temp[i+1].createdAt);
                         strcpy(temp[i].updatedAt, temp[i+1].updatedAt);
                     }
@@ -852,44 +1586,50 @@ void deleteCategory(char command[]){    // menghapus data
                     for(int j = i; j < recordSum - 1; j++){
                         strcpy(temp[j].id, temp[j+1].id);
                         strcpy(temp[j].name, temp[j+1].name);
+                        strcpy(temp[j].url, temp[j+1].url);
+                        strcpy(temp[j].finishedDate, temp[j+1].finishedDate);
+                        strcpy(temp[j].categoryId, temp[j+1].categoryId);
                         strcpy(temp[j].createdAt, temp[j+1].createdAt);
                         strcpy(temp[j].updatedAt, temp[j+1].updatedAt);
                     }
                     recordSum--;
                 }
-                showCategoryTable(longestName(temp, recordSum, 7), recordSum, temp);
+                showProjectTable(longestName(temp, recordSum, 8), longestUrl(temp, recordSum, 8), recordSum, temp);
                 success(2);
             }
             // flush ke file
-            categoryTable = fopen("tables/tcategory.dat", "w");
+            projectTable = fopen("tables/tproject.dat", "w");
             for(int i = 0; i < recordSum; i++){
-                fprintf(categoryTable, "%s %s %s %s\n", temp[i].id, temp[i].name, temp[i].createdAt, temp[i].updatedAt);
+                fprintf(projectTable, "%s %s %s %s %s %s %s\n", temp[i].id, temp[i].name, temp[i].url, temp[i].finishedDate, temp[i].categoryId, temp[i].createdAt, temp[i].updatedAt);
             }
-            fprintf(categoryTable, "%s", EOFCATEGORY);
-            fclose(categoryTable);
+            fprintf(projectTable, "%s", EOFPROJECT);
+            fclose(projectTable);
         } else {
             error(14);
         }
     }
 }
-void guideCategory(){                   // buku panduan kategori
+void guideProject(){                   // buku panduan project
     guideTitle();
 
     printf("|                                                                                                    |\n");
-    printf("|   "WHITE"Tabel kategori digunakan untuk menyimpan relasi kategori dalam tabel proyek"CYAN"                      |\n");
+    printf("|   "WHITE"Tabel proyek digunakan untuk menyimpan data proyek yang pernah dibuat"CYAN"                            |\n");
     printf("|                                                                                                    |\n");
     printf("|   "BGREEN"STRUKTUR DATA"CYAN"                                                                                    |\n");
     printf("|      "WHITE"1. id              : "CYAN"Kode unik                                                                |\n");
-    printf("|      "WHITE"2. nama            : "CYAN"Nama kategori proyek                                                     |\n");
-    printf("|      "WHITE"3. tanggal_dibuat  : "CYAN"waktu data dibuat                                                        |\n");
-    printf("|      "WHITE"4. tanggal_diubah  : "CYAN"waktu data diubah                                                        |\n");
+    printf("|      "WHITE"2. nama            : "CYAN"Nama/judul proyek                                                        |\n");
+    printf("|      "WHITE"3. url             : "CYAN"Url hasil proyek (opsional: -)                                           |\n");
+    printf("|      "WHITE"4. tanggal_selesai : "CYAN"Tanggal proyek selesai (cth. 2025_May atau -)                            |\n");
+    printf("|      "WHITE"5. id_kategori     : "CYAN"Kode unik dari nama kategori                                             |\n");
+    printf("|      "WHITE"6. tanggal_dibuat  : "CYAN"Waktu data dibuat                                                        |\n");
+    printf("|      "WHITE"7. tanggal_diubah  : "CYAN"Waktu data diubah                                                        |\n");
     printf("|                                                                                                    |\n");
     printf("|   "BGREEN"PENGGUNAAN PERINTAH"CYAN"                                                                              |\n");
-    printf("|      "WHITE"1. Menampilkan data : "BPURPLE"PRESENT FROM "BLUE"tcategory"YELLOW"$"CYAN"                                                 |\n");
-    printf("|      "WHITE"2. Mencari data     : "BPURPLE"PRESENT FROM"BLUE" tcategory "BPURPLE"WHERE"CYAN" id"YELLOW"$"CYAN"                                        |\n");
-    printf("|      "WHITE"3. Menambahkan data : "BPURPLE"SUBMIT TO "BLUE"tcategory "CYAN"id nama"YELLOW"$"CYAN"                                            |\n");
-    printf("|      "WHITE"4. Mengubah data    : "BPURPLE"CHANGE "BLUE"tcategory "CYAN"id nama"YELLOW"$"CYAN"                                               |\n");
-    printf("|      "WHITE"5. Menghapus data   : "BPURPLE"REMOVE FROM "BLUE"tcategory "CYAN"id"YELLOW"$"CYAN"                                               |\n");
+    printf("|      "WHITE"1. Menampilkan data : "BPURPLE"PRESENT FROM "BLUE"tproject"YELLOW"$"CYAN"                                                  |\n");
+    printf("|      "WHITE"2. Mencari data     : "BPURPLE"PRESENT FROM"BLUE" tproject "BPURPLE"WHERE"CYAN" id"YELLOW"$"CYAN"                                         |\n");
+    printf("|      "WHITE"3. Menambahkan data : "BPURPLE"SUBMIT TO "BLUE"tproject "CYAN"id nama url tanggal_selesai id_kategori"YELLOW"$"CYAN"             |\n");
+    printf("|      "WHITE"4. Mengubah data    : "BPURPLE"CHANGE "BLUE"tproject "CYAN"id nama url tanggal_selesai id_kategori"YELLOW"$"CYAN"                |\n");
+    printf("|      "WHITE"5. Menghapus data   : "BPURPLE"REMOVE FROM "BLUE"tproject "CYAN"id"YELLOW"$"CYAN"                                                |\n");
     printf("|                                                                                                    |\n");
 
     guideFooter();
