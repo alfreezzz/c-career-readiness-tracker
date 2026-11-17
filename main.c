@@ -24,10 +24,10 @@ int main(){
             start(command);
             
             if(strcmp(getcw(), "SUBMIT") == 0){             // menambahkan data
-                if(eop(command) == 0){
+                if(!eop(command)){
                     inc(command);
                     if(strcmp(getcw(), "TO") == 0){
-                        if(eop(command) == 0){
+                        if(!eop(command)){
                             inc(command);
                             if(strcmp(getcw(), "tposition") == 0){
                                 return 0;
@@ -40,13 +40,13 @@ int main(){
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
                             } else if (strcmp(getcw(), "tcategory") == 0){
-                                if(eop(command) == 0){
+                                if(!eop(command)){
                                     postCategory(command);
                                 } else {
                                     error(5);
                                 }
                             } else if (strcmp(getcw(), "tproject") == 0){
-                                if(eop(command) == 0){
+                                if(!eop(command)){
                                     postProject(command);
                                 } else {
                                     error(5);
@@ -64,7 +64,7 @@ int main(){
                     error(10);
                 }
             } else if (strcmp(getcw(), "CHANGE") == 0){     // mengubah data
-                if(eop(command) == 0){
+                if(!eop(command)){
                     inc(command);
                     if(strcmp(getcw(), "tposition") == 0){
                         return 0;
@@ -77,13 +77,13 @@ int main(){
                     } else if (strcmp(getcw(), "tcertificate") == 0){
                         return 4;
                     } else if (strcmp(getcw(), "tcategory") == 0){
-                        if(eop(command) == 0){
+                        if(!eop(command)){
                             updateCategory(command);
                         } else {
                             error(13);
                         }
                     } else if (strcmp(getcw(), "tproject") == 0){
-                        if(eop(command) == 0){
+                        if(!eop(command)){
                             updateProject(command);
                         } else {
                             error(13);
@@ -95,10 +95,10 @@ int main(){
                     error(3);
                 }
             } else if (strcmp(getcw(), "REMOVE") == 0){     // menghapus data
-                if(eop(command) == 0){
+                if(!eop(command)){
                     inc(command);
                     if(strcmp(getcw(), "FROM") == 0){
-                        if(eop(command) == 0){
+                        if(!eop(command)){
                             inc(command);
                             if(strcmp(getcw(), "tposition") == 0){
                                 return 0;
@@ -111,13 +111,13 @@ int main(){
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
                             } else if (strcmp(getcw(), "tcategory") == 0){
-                                if(eop(command) == 0){
+                                if(!eop(command)){
                                     deleteCategory(command);
                                 } else {
                                     error(9);
                                 }
                             } else if (strcmp(getcw(), "tproject") == 0){
-                                if(eop(command) == 0){
+                                if(!eop(command)){
                                     deleteProject(command);
                                 } else {
                                     error(9);
@@ -135,10 +135,10 @@ int main(){
                     error(10);
                 }
             } else if (strcmp(getcw(), "PRESENT") == 0){    // menampilkan data
-                if(eop(command) == 0){
+                if(!eop(command)){
                     inc(command);
                     if(strcmp(getcw(), "FROM") == 0){
-                        if(eop(command) == 0){
+                        if(!eop(command)){
                             inc(command);
                             if(strcmp(getcw(), "tposition") == 0){
                                 return 0;
@@ -167,10 +167,10 @@ int main(){
                     error(10);
                 }
             } else if (strcmp(getcw(), "JOIN") == 0){       // menggabungkan tabel
-                if(eop(command) == 0){
+                if(!eop(command)){
                     inc(command);
                     if(strcmp(getcw(), "ON") == 0){
-                        if(eop(command) == 0){
+                        if(!eop(command)){
                             inc(command);
                             if(strcmp(getcw(), "tposition") == 0){
                                 return 0;
@@ -183,10 +183,10 @@ int main(){
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
                             } else if (strcmp(getcw(), "tcategory") == 0){
-                                if(eop(command) == 0){
+                                if(!eop(command)){
                                     inc(command);
                                     if(strcmp(getcw(), "tproject") == 0){
-                                        if(eop(command) == 1){
+                                        if(eop(command)){
                                             joinProjectCategory(command);
                                         } else {
                                             error(14);
@@ -198,10 +198,10 @@ int main(){
                                     error(14);
                                 }
                             } else if (strcmp(getcw(), "tproject") == 0){
-                                if(eop(command) == 0){
+                                if(!eop(command)){
                                     inc(command);
                                     if(strcmp(getcw(), "tcategory") == 0){
-                                        if(eop(command) == 1){
+                                        if(eop(command)){
                                             joinProjectCategory(command);
                                         } else {
                                             error(14);
@@ -225,12 +225,12 @@ int main(){
                     error(10);
                 }
             } else if (strcmp(getcw(), "HELP") == 0){       // membuka buku panduan
-                if(eop(command) == 1){
+                if(eop(command)){
                     guide();
                 } else {
                     inc(command);
                     if(strcmp(getcw(), "ON") == 0){
-                        if(eop(command) == 0){
+                        if(!eop(command)){
                             inc(command);
                             if(strcmp(getcw(), "tposition") == 0){
                                 return 0;
@@ -243,13 +243,13 @@ int main(){
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
                             } else if (strcmp(getcw(), "tcategory") == 0){
-                                if(eop(command) == 1){
+                                if(eop(command)){
                                     guideCategory();
                                 } else {
                                     error(14);
                                 }
                             } else if (strcmp(getcw(), "tproject") == 0){
-                                if(eop(command) == 1){
+                                if(eop(command)){
                                     guideProject();
                                 } else {
                                     error(14);
@@ -265,31 +265,31 @@ int main(){
                     }
                 }
             } else if(strcmp(getcw(), "EXIT") == 0){        // mengakhiri aplikasi
-                if(eop(command) == 1){
+                if(eop(command)){
                     exit = true;
                 } else {
                     error(14);
                 }
             } else if (strcmp(getcw(), "jangan") == 0){     // easter egg
-                if(eop(command) == 0){
+                if(!eop(command)){
                     inc(command);
                     if(strcmp(getcw(), "lupa") == 0){
-                        if(eop(command) == 0){
+                        if(!eop(command)){
                             inc(command);
                             if(strcmp(getcw(), "berkah") == 0){
-                                if(eop(command) == 0){
+                                if(!eop(command)){
                                     inc(command);
                                     if(strcmp(getcw(), "dan") == 0){
-                                        if(eop(command) == 0){
+                                        if(!eop(command)){
                                             inc(command);
                                             if(strcmp(getcw(), "bahagia") == 0){
-                                                if(eop(command) == 0){
+                                                if(!eop(command)){
                                                     inc(command);
                                                     if(strcmp(getcw(), "hari") == 0){
-                                                        if(eop(command) == 0){
+                                                        if(!eop(command)){
                                                             inc(command);
                                                             if(strcmp(getcw(), "ini") == 0){
-                                                                if(eop(command) == 1){
+                                                                if(eop(command)){
                                                                     out();
                                                                     exit = true;
                                                                 } else {

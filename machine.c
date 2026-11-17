@@ -331,11 +331,11 @@ void error(int code){   // pesan error
 }
 
 // mesin kata
-int eop(char ribbon[]){     // mengecek eop
+bool eop(char ribbon[]){    // mengecek eop
     if(ribbon[indeks] == EOP){
-        return 1;
+        return true;
     } else {
-        return 0;
+        return false;
     }
 }
 void start(char ribbon[]){  // memulai mesin kata
@@ -798,15 +798,15 @@ void getCategory(char command[]){       // menampilkan data
 
         fclose(categoryTable); // menutup file
 
-        if(eop(command) == 1){  // jika tidak melakukan pencarian
+        if(eop(command)){  // jika tidak melakukan pencarian
             // menampilkan data
             showCategoryTable(longestName(temp, recordSum, 7), recordSum, temp);
         } else {    // jika tidak melakukan pencarian
             inc(command);
             if(strcmp(getcw(), "WHERE") == 0){
-                if(eop(command) == 0){
+                if(!eop(command)){
                     inc(command);
-                    if(eop(command) == 1){
+                    if(eop(command)){
                         char search[50];
                         strcpy(search, getcw());
                         
@@ -871,12 +871,12 @@ void postCategory(char command[]){      // menambahkan data
     fclose(categoryTable); // menutup file
     
     inc(command);   
-    if(eop(command) == 0){
+    if(!eop(command)){
         if(strlen(getcw()) < sizeof(record.id)){
             strcpy(new.id, getcw());    // mengambil id masukan user
     
             inc(command);
-            if(eop(command) == 1){
+            if(eop(command)){
                 if(strlen(getcw()) < sizeof(record.name)){
                     strcpy(new.name, getcw());  // mengambil nama masukan user
         
@@ -1014,9 +1014,9 @@ void updateCategory(char command[]){    // mengubah data
         if(!isFound){
             error(11);
         } else {
-            if(eop(command) == 0){
+            if(!eop(command)){
                 inc(command);
-                if(eop(command) == 1){
+                if(eop(command)){
                     if(strlen(getcw()) < sizeof(record.name)){
                         strcpy(new.name, getcw());          // mengambil nama masukan user
                         strcpy(new.updatedAt, dateTime);    // mengubah tanggal diubah
@@ -1079,7 +1079,7 @@ void deleteCategory(char command[]){    // menghapus data
         char search[50]; // cari nilai id
         strcpy(search, getcw()); // mengambil id masukan user
         
-        if(eop(command) == 1){
+        if(eop(command)){
             project projectRecord;
 
             FILE *projectTable;
@@ -1229,15 +1229,15 @@ void getProject(char command[]){       // menampilkan data
 
         fclose(projectTable); // menutup file
 
-        if(eop(command) == 1){  // jika tidak melakukan pencarian
+        if(eop(command)){  // jika tidak melakukan pencarian
             // menampilkan data
             showProjectTable(longestName(temp, recordSum, 8), longestUrl(temp, recordSum, 8), recordSum, temp);
         } else {    // jika tidak melakukan pencarian
             inc(command);
             if(strcmp(getcw(), "WHERE") == 0){
-                if(eop(command) == 0){
+                if(!eop(command)){
                     inc(command);
-                    if(eop(command) == 1){
+                    if(eop(command)){
                         char search[50];
                         strcpy(search, getcw());
                         
@@ -1308,27 +1308,27 @@ void postProject(char command[]){      // menambahkan data
     fclose(projectTable); // menutup file
     
     inc(command);   
-    if(eop(command) == 0){
+    if(!eop(command)){
         if(strlen(getcw()) < sizeof(record.id)){
             strcpy(new.id, getcw());    // mengambil id masukan user
     
             inc(command);
-            if(eop(command) == 0){
+            if(!eop(command)){
                 if(strlen(getcw()) < sizeof(record.name)){
                     strcpy(new.name, getcw());  // mengambil nama masukan user
 
                     inc(command);
-                    if(eop(command) == 0){
+                    if(!eop(command)){
                         if(strlen(getcw()) < sizeof(record.url)){
                             strcpy(new.url, getcw());
 
                             inc(command);
-                            if(eop(command) == 0){
+                            if(!eop(command)){
                                 if(strlen(getcw()) < sizeof(record.finishedDate)){
                                     strcpy(new.finishedDate, getcw());
 
                                     inc(command);
-                                    if(eop(command) == 1){
+                                    if(eop(command)){
                                         if(strlen(getcw()) < sizeof(record.categoryId)){
 
                                             category categoryRecord;
@@ -1532,24 +1532,24 @@ void updateProject(char command[]){    // mengubah data
         if(!isFound){
             error(11);
         } else {
-            if(eop(command) == 0){
+            if(!eop(command)){
                 inc(command);
-                if(eop(command) == 0){
+                if(!eop(command)){
                     if(strlen(getcw()) < sizeof(record.name)){
                         strcpy(new.name, getcw());          // mengambil nama masukan user
 
                         inc(command);
-                        if(eop(command) == 0){
+                        if(!eop(command)){
                             if(strlen(getcw()) < sizeof(record.url)){
                                 strcpy(new.url, getcw());
 
                                 inc(command);
-                                if(eop(command) == 0){
+                                if(!eop(command)){
                                     if(strlen(getcw()) < sizeof(record.finishedDate)){
                                         strcpy(new.finishedDate, getcw());
 
                                         inc(command);
-                                        if(eop(command) == 1){
+                                        if(eop(command)){
                                             if(strlen(getcw()) < sizeof(record.categoryId)){
 
                                                 category categoryRecord;
@@ -1666,7 +1666,7 @@ void deleteProject(char command[]){    // menghapus data
         char search[50]; // cari nilai id
         strcpy(search, getcw()); // mengambil id masukan user
         
-        if(eop(command) == 1){
+        if(eop(command)){
             int idx = 0;    // iterasi dan index
             bool isFound = false;   // cek ditemukan
             // proses pencarian 
