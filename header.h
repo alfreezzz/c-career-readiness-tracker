@@ -107,7 +107,7 @@ void success(int code); // pesan berhasil
 void error(int code);   // pesan error
 
 // mesin kata
-int eop(char ribbon[]);     // mengecek eop
+bool eop(char ribbon[]);    // mengecek eop
 void start(char ribbon[]);  // memulai mesin kata
 void reset();               // mengosongkan kata saat ini
 void inc(char ribbon[]);    // memajukan kata
@@ -130,7 +130,6 @@ void postCategory(char command[]);      // menambahkan data
 void updateCategory(char command[]);    // mengubah data
 void deleteCategory(char command[]);    // menghapus data
 void guideCategory();                   // panduan kategori
-void getCategory(char command[]);       // menampilkan data
 
 // perintah tabel proyek
 void getProject(char command[]);       // menampilkan data

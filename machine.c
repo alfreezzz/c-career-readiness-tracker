@@ -680,12 +680,12 @@ void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum,
     }
     printf("-+---------------------+---------------------+\n");
     
+    bool isError = false; // jika ada nilai id_kategori yang tidak valid
     // body table
-    bool found = false; // jika ada nilai id_kategori yang tidak valid
     for(int i = 0; i < proSum; i++){
-
         char catName[50];   // nama kategori jika ditemukan
         int j = 0;          // iterasi
+        bool found = false; // kondisi berhenti
         // proses pencarian foreign key
         do{
             if(strcmp(proData[i].categoryId, catData[j].id) == 0){
@@ -743,11 +743,11 @@ void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum,
             for(int j = strlen(proData[i].categoryId); j < catLen; j++){
                 printf(" ");
             }
+            isError = true;
         }
         // TANGGAL DIBUAT & DIUBAH
         printf("| %s | %s |\n", proData[i].createdAt, proData[i].updatedAt);
     }
-    
     // footer table
     printf("+--------+-");
     for(int i = 1; i <= maxProName || i <= 4; i++){
@@ -762,6 +762,10 @@ void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum,
         printf("-");
     }
     printf("-+---------------------+---------------------+\n");
+
+    if(isError){
+        error(27);
+    }
 }
 
 // perintah tabel kategori
