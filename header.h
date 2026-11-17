@@ -33,8 +33,9 @@
 #define EOP '$' // simbol EOP (End Of Process)
 
 #define TABLETEMPLATE   char id[7], createdAt[20], updatedAt[20]   // template tabel
-#define IDDUMMY         "XXXXXX"                                    // tanda EOF (End Of File) / nilai dummy ID 
-#define DATEDUMMY       "XXXXXXXX"                                  // nilai dummy tanggal
+#define IDDUMMY         "XXXXXX"                                   // tanda EOF (End Of File) / nilai dummy ID 
+#define DATEDUMMY       "XXXXXXXX"                                 // nilai dummy tanggal
+#define MAX             999                                        // nilai maksimal array rekaman
 
 // EOF setiap tabel
 #define EOFPOSITION     (IDDUMMY" XXX "DATEDUMMY" "DATEDUMMY)
@@ -121,6 +122,7 @@ int longestName(void* data, int n, int type);
 int longestUrl(void* data, int n, int type);
 void showCategoryTable(int lenMaxName, int n, category* data);
 void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data);
+void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum, int catSum, project* proData, category* catData);
 
 // perintah tabel kategori
 void getCategory(char command[]);       // menampilkan data
@@ -136,3 +138,6 @@ void postProject(char command[]);      // menambahkan data
 void updateProject(char command[]);    // mengubah data
 void deleteProject(char command[]);    // menghapus data
 void guideProject();                   // panduan kategori
+
+// perintah join
+void joinProjectCategory(char command[]);   // menggabungkan tabel kategori dan proyek

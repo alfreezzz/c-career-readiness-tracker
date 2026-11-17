@@ -166,6 +166,64 @@ int main(){
                 } else {
                     error(10);
                 }
+            } else if (strcmp(getcw(), "JOIN") == 0){       // menggabungkan tabel
+                if(eop(command) == 0){
+                    inc(command);
+                    if(strcmp(getcw(), "ON") == 0){
+                        if(eop(command) == 0){
+                            inc(command);
+                            if(strcmp(getcw(), "tposition") == 0){
+                                return 0;
+                            } else if (strcmp(getcw(), "tskill") == 0){
+                                return 1;
+                            } else if (strcmp(getcw(), "ttarget") == 0){
+                                return 2;
+                            } else if (strcmp(getcw(), "torganization") == 0){
+                                return 3;
+                            } else if (strcmp(getcw(), "tcertificate") == 0){
+                                return 4;
+                            } else if (strcmp(getcw(), "tcategory") == 0){
+                                if(eop(command) == 0){
+                                    inc(command);
+                                    if(strcmp(getcw(), "tproject") == 0){
+                                        if(eop(command) == 1){
+                                            joinProjectCategory(command);
+                                        } else {
+                                            error(14);
+                                        }
+                                    } else {
+                                        error(26);
+                                    }
+                                } else {
+                                    error(14);
+                                }
+                            } else if (strcmp(getcw(), "tproject") == 0){
+                                if(eop(command) == 0){
+                                    inc(command);
+                                    if(strcmp(getcw(), "tcategory") == 0){
+                                        if(eop(command) == 1){
+                                            joinProjectCategory(command);
+                                        } else {
+                                            error(14);
+                                        }
+                                    } else {
+                                        error(26);
+                                    }
+                                } else {
+                                    error(28);
+                                }
+                            } else {
+                                error(1);
+                            }
+                        } else {
+                            error(3);
+                        }
+                    } else {
+                        error(25);
+                    }
+                } else {
+                    error(10);
+                }
             } else if (strcmp(getcw(), "HELP") == 0){       // membuka buku panduan
                 if(eop(command) == 1){
                     guide();

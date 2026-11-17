@@ -12,9 +12,10 @@ List of commands:
 3. `REMOVE FROM`
 4. `PRESENT FROM`
 5. `PRESENT FROM table WHERE`
-6. `HELP`
-7. `HELP ON table`
-8. `EXIT`
+6. `JOIN ON`
+7. `HELP`
+8. `HELP ON table`
+9. `EXIT`
 
 This project consists of 8 tables:
 1. `positions` {id, name, createdAt, updatedAt} 

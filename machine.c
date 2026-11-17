@@ -48,6 +48,7 @@ void guide(){       // buku panduan
     printf("|      - "BPURPLE"REMOVE FROM"CYAN"                 : "BWHITE"Menghapus"CYAN" data                                                |\n");
     printf("|      - "BPURPLE"PRESENT FROM"CYAN"                : "BWHITE"Menampilkan"CYAN" data                                              |\n");
     printf("|      - "BPURPLE"PRESENT FROM table WHERE"CYAN"    : "BWHITE"Mencari"CYAN" data                                                  |\n");
+    printf("|      - "BPURPLE"JOIN ON"CYAN"                     : "BWHITE"Menggabungkan"CYAN" tabel                                           |\n");
     printf("|      - "BPURPLE"HELP"CYAN"                        : Membuka Guide Book                                            |\n");
     printf("|      - "BPURPLE"HELP ON"CYAN"                     : Membuka Guide Book berdasarkan tabel                          |\n");
     printf("|      - "BPURPLE"EXIT"CYAN"                        : "RED"Mengakhiri aplikasi"CYAN"                                           |\n");
@@ -295,6 +296,33 @@ void error(int code){   // pesan error
             printf(RED "Data memiliki relasi dengan tabel lain\n" DEFAULT);
             break;    
         }
+        case 25: {
+            printf(RED "Query tidak valid\n" DEFAULT);
+            printf(RED "Mungkin maksud anda \"JOIN ON..\"?\n" DEFAULT);
+            break;    
+        }
+        case 26: {
+            printf(RED "Relasi tabel tersebut tidak valid\n" DEFAULT);
+            printf(RED "Daftar relasi: (urutan tidak penting)\n" DEFAULT);
+            printf(RED "- tposition tskill ttarget\n" DEFAULT);
+            printf(RED "- torganization tcertificate\n" DEFAULT);
+            printf(RED "- torganization tposition texperience\n" DEFAULT);
+            printf(RED "- tcategory tproject\n" DEFAULT);
+            break;    
+        }
+        case 27: {
+            printf(RED "Error: ada data yang memiliki relasi yang tidak valid\n" DEFAULT);
+            break;    
+        }
+        case 28: {
+            printf(RED "Mohon masukkan tabel yang memiliki relasi dengan tabel tersebut\n" DEFAULT);
+            printf(RED "Daftar relasi: (urutan tidak penting)\n" DEFAULT);
+            printf(RED "- tposition tskill ttarget\n" DEFAULT);
+            printf(RED "- torganization tcertificate\n" DEFAULT);
+            printf(RED "- torganization tposition texperience\n" DEFAULT);
+            printf(RED "- tcategory tproject\n" DEFAULT);
+            break;    
+        }
         default: {
             printf(RED "Bug belum diperbaiki\n" DEFAULT);
             break;
@@ -503,25 +531,17 @@ void showCategoryTable(int lenMaxName, int n, category* data){
         int lenMaxID = 6;
         // ID
         printf("| %s ", data[i].id);
-        if((lenMaxID - strlen(data[i].id)) > 0){
-            for(int j = 1; (j <= lenMaxID - strlen(data[i].id)) ; j++){
-                printf(" ");
-            }
-        } else {
-            for(int j = 1; j <= 2 - lenMaxID ; j++){
-                printf(" ");
-            }
+        for(int j = strlen(data[i].id); j < lenMaxID; j++){
+            printf(" ");
         }
         // NAMA
+        int nameLen = 4;
+        if(lenMaxName > nameLen){
+            nameLen = lenMaxName;
+        }
         printf("| %s ", data[i].name);
-        if((lenMaxName - strlen(data[i].name)) > 0){
-            for(int j = 1; (j <= lenMaxName - strlen(data[i].name)) ; j++){
-                printf(" ");
-            }
-        } else {
-            for(int j = 1; j <= 4 - lenMaxName ; j++){
-                printf(" ");
-            }
+        for(int j = strlen(data[i].name); j < nameLen; j++){
+            printf(" ");
         }
         // TANGGAL DIBUAT & DIUBAH
         printf("| %s | %s |\n", data[i].createdAt, data[i].updatedAt);
@@ -555,7 +575,7 @@ void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data){
         printf(" ");
     }
     printf("| "BWHITE"Tanggal_selesai"WHITE" ");
-    printf("| "BWHITE"ID_Kategori"WHITE" ");
+    printf("| "BWHITE"ID_kategori"WHITE" ");
     printf("| "BWHITE"Tanggal_dibuat"WHITE"      | "BWHITE"Tanggal_diubah"WHITE"      |\n");
     printf("+--------+-");
     for(int i = 1; i <= lenMaxName || i <= 4; i++){
@@ -572,65 +592,44 @@ void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data){
         int lenMaxID = 6, lenMaxDate = 15;
         // ID
         printf("| %s ", data[i].id);
-        if((lenMaxID - strlen(data[i].id)) > 0){
-            for(int j = 1; (j <= lenMaxID - strlen(data[i].id)) ; j++){
-                printf(" ");
-            }
-        } else {
-            for(int j = 1; j <= 2 - lenMaxID ; j++){
-                printf(" ");
-            }
+        for(int j = strlen(data[i].id); j < lenMaxID; j++){
+            printf(" ");
         }
         // NAMA
+        int nameLen = 4;
+        if(lenMaxName > nameLen){
+            nameLen = lenMaxName;
+        }
         printf("| %s ", data[i].name);
-        if((lenMaxName - strlen(data[i].name)) > 0){
-            for(int j = 1; (j <= lenMaxName - strlen(data[i].name)) ; j++){
-                printf(" ");
-            }
-        } else {
-            for(int j = 1; j <= 4 - lenMaxName ; j++){
-                printf(" ");
-            }
+        for(int j = strlen(data[i].name); j < nameLen; j++){
+            printf(" ");
         }
         // URL
+        int urlLen = 3;
+        if(lenMaxUrl > urlLen){
+            urlLen = lenMaxUrl;
+        }
         printf("| %s ", data[i].url);
-        if((lenMaxUrl - strlen(data[i].url)) > 0){
-            for(int j = 1; (j <= lenMaxUrl - strlen(data[i].url)) ; j++){
-                printf(" ");
-            }
-        } else {
-            for(int j = 1; j <= 3 - lenMaxUrl ; j++){
-                printf(" ");
-            }
+        for(int j = strlen(data[i].url); j < urlLen; j++){
+            printf(" ");
         }
         // TANGGAL SELESAI
+        int dateLen = 15;
         printf("| %s ", data[i].finishedDate);
-        if((lenMaxDate - strlen(data[i].finishedDate)) > 0){
-            for(int j = 1; (j <= lenMaxDate - strlen(data[i].finishedDate)) ; j++){
-                printf(" ");
-            }
-        } else {
-            for(int j = 1; j <= 15 - lenMaxDate ; j++){
-                printf(" ");
-            }
+        for(int j = strlen(data[i].finishedDate); j < lenMaxDate; j++){
+            printf(" ");
         }
         // ID KATEGORI
         printf("| %s ", data[i].categoryId);
-        if((lenMaxID - strlen(data[i].categoryId)) > 0){
-            for(int j = 1; (j <= lenMaxID - strlen(data[i].categoryId)) ; j++){
-                printf(" ");
-            }
-        } else {
-            for(int j = 1; j <= 11 - lenMaxID ; j++){
-                printf(" ");
-            }
+        for(int j = strlen(data[i].categoryId); j < 11; j++){
+            printf(" ");
         }
         // TANGGAL DIBUAT & DIUBAH
         printf("| %s | %s |\n", data[i].createdAt, data[i].updatedAt);
     }
     
     // footer table
-     printf("+--------+-");
+    printf("+--------+-");
     for(int i = 1; i <= lenMaxName || i <= 4; i++){
         printf("-");
     }
@@ -640,11 +639,135 @@ void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data){
     }
     printf("-+-----------------+-------------+---------------------+---------------------+\n");
 }
+void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum, int catSum, project* proData, category* catData){
+    // header table
+    printf("+--------+-");
+    for(int i = 1; i <= maxProName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxUrl || i <= 3; i++){
+        printf("-");
+    }
+    printf("-+-----------------+-");
+    for(int i = 1; i <= maxCatName || i <= 8; i++){
+        printf("-");
+    }
+    printf("-+---------------------+---------------------+\n");
+    printf("| "BWHITE"ID"WHITE"     |");
+    printf(" "BWHITE"Nama"WHITE" ");
+    for(int i = 1; i <= maxProName && i <= maxProName - 4; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Url"WHITE" ");
+    for(int i = 1; i <= maxUrl && i <= maxUrl - 3; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Tanggal_selesai"WHITE" ");
+    printf("| "BWHITE"Kategori"WHITE" ");
+    printf("| "BWHITE"Tanggal_dibuat"WHITE"      | "BWHITE"Tanggal_diubah"WHITE"      |\n");
+    printf("+--------+-");
+    for(int i = 1; i <= maxProName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxUrl || i <= 3; i++){
+        printf("-");
+    }
+    printf("-+-----------------+-");
+    for(int i = 1; i <= maxCatName || i <= 8; i++){
+        printf("-");
+    }
+    printf("-+---------------------+---------------------+\n");
+    
+    // body table
+    bool found = false; // jika ada nilai id_kategori yang tidak valid
+    for(int i = 0; i < proSum; i++){
+
+        char catName[50];   // nama kategori jika ditemukan
+        int j = 0;          // iterasi
+        // proses pencarian foreign key
+        do{
+            if(strcmp(proData[i].categoryId, catData[j].id) == 0){
+                strcpy(catName, catData[j].name);
+                found = true;
+            } else {
+                found = false;
+            }
+            j++;
+        } while(j < catSum && !found);
+
+        int lenMaxID = 6, lenMaxDate = 15;
+        // ID
+        printf("| %s ", proData[i].id);
+        for(int j = strlen(proData[i].id); j < lenMaxID; j++){
+            printf(" ");
+        }
+        // NAMA
+        int nameLen = 4;
+        if(maxProName > nameLen){
+            nameLen = maxProName;
+        }
+        printf("| %s ", proData[i].name);
+        for(int j = strlen(proData[i].name); j < nameLen; j++){
+            printf(" ");
+        }
+        // URL
+        int urlLen = 3;
+        if(maxUrl > urlLen){
+            urlLen = maxUrl;
+        }
+        printf("| %s ", proData[i].url);
+        for(int j = strlen(proData[i].url); j < urlLen; j++){
+            printf(" ");
+        }
+        // TANGGAL SELESAI
+        printf("| %s ", proData[i].finishedDate);
+        for(int j = strlen(proData[i].finishedDate); j < lenMaxDate; j++){
+            printf(" ");
+        }
+        int catLen = 8;
+        if(maxCatName > catLen){
+            catLen = maxCatName;
+        }
+        // kondisi nilai kategori_id ditemukan di tabel kategori
+        if(found){
+            // NAMA KATEGORI
+            printf("| %s ", catName);
+            for(int j = strlen(catName); j < catLen; j++){
+                printf(" ");
+            }
+        } else {
+            // ID KATEGORI
+            printf("| %s ", proData[i].categoryId);
+            for(int j = strlen(proData[i].categoryId); j < catLen; j++){
+                printf(" ");
+            }
+        }
+        // TANGGAL DIBUAT & DIUBAH
+        printf("| %s | %s |\n", proData[i].createdAt, proData[i].updatedAt);
+    }
+    
+    // footer table
+    printf("+--------+-");
+    for(int i = 1; i <= maxProName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxUrl || i <= 3; i++){
+        printf("-");
+    }
+    printf("-+-----------------+-");
+    for(int i = 1; i <= maxCatName || i <= 8; i++){
+        printf("-");
+    }
+    printf("-+---------------------+---------------------+\n");
+}
 
 // perintah tabel kategori
 void getCategory(char command[]){       // menampilkan data
     int recordSum = 0;  // jumlah rekaman dalam tabel
-    category temp[100]; // array rekaman untuk ditampilkan
+    category temp[MAX]; // array rekaman untuk ditampilkan
     category record;    // rekaman saat ini untuk disalin
 
     FILE *categoryTable;    // kaitan untuk mengakses file
@@ -720,7 +843,7 @@ void postCategory(char command[]){      // menambahkan data
     timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
     
     int recordSum = 0;      // jumlah rekaman di dalam tabel
-    category temp[100];     // array rekaman untuk menggeserkan nilai rekaman baru
+    category temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
     category record, new;   // rekaman saat ini dan rekaman yang baru
     
     FILE *categoryTable;    // kaitan untuk mengakses file
@@ -842,7 +965,7 @@ void updateCategory(char command[]){    // mengubah data
     timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
 
     int recordSum = 0;      // jumlah rekaman di dalam tabel
-    category temp[100];     // array rekaman untuk menggeserkan nilai rekaman baru
+    category temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
     category record, new;   // rekaman saat ini dan rekaman yang baru
 
     FILE *categoryTable;    // kaitan untuk mengakses file
@@ -921,7 +1044,7 @@ void updateCategory(char command[]){    // mengubah data
 }
 void deleteCategory(char command[]){    // menghapus data
     int recordSum = 0;      // jumlah rekaman di dalam tabel
-    category temp[100];     // array rekaman untuk menggeserkan nilai rekaman baru
+    category temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
     category record, new;   // rekaman saat ini dan rekaman yang baru
 
     FILE *categoryTable;    // kaitan untuk mengakses file
@@ -1058,11 +1181,12 @@ void guideCategory(){                   // buku panduan kategori
     printf("|      "WHITE"4. tanggal_diubah  : "CYAN"Waktu data diubah                                                        |\n");
     printf("|                                                                                                    |\n");
     printf("|   "BGREEN"PENGGUNAAN PERINTAH"CYAN"                                                                              |\n");
-    printf("|      "WHITE"1. Menampilkan data : "BPURPLE"PRESENT FROM "BLUE"tcategory"YELLOW"$"CYAN"                                                 |\n");
-    printf("|      "WHITE"2. Mencari data     : "BPURPLE"PRESENT FROM"BLUE" tcategory "BPURPLE"WHERE"CYAN" id"YELLOW"$"CYAN"                                        |\n");
-    printf("|      "WHITE"3. Menambahkan data : "BPURPLE"SUBMIT TO "BLUE"tcategory "CYAN"id nama"YELLOW"$"CYAN"                                            |\n");
-    printf("|      "WHITE"4. Mengubah data    : "BPURPLE"CHANGE "BLUE"tcategory "CYAN"id nama"YELLOW"$"CYAN"                                               |\n");
-    printf("|      "WHITE"5. Menghapus data   : "BPURPLE"REMOVE FROM "BLUE"tcategory "CYAN"id"YELLOW"$"CYAN"                                               |\n");
+    printf("|      "WHITE"1. Menampilkan data      : "BPURPLE"PRESENT FROM "BLUE"tcategory"YELLOW"$"CYAN"                                            |\n");
+    printf("|      "WHITE"2. Mencari data          : "BPURPLE"PRESENT FROM"BLUE" tcategory "BPURPLE"WHERE"CYAN" id"YELLOW"$"CYAN"                                   |\n");
+    printf("|      "WHITE"3. Menambahkan data      : "BPURPLE"SUBMIT TO "BLUE"tcategory "CYAN"id nama"YELLOW"$"CYAN"                                       |\n");
+    printf("|      "WHITE"4. Mengubah data         : "BPURPLE"CHANGE "BLUE"tcategory "CYAN"id nama"YELLOW"$"CYAN"                                          |\n");
+    printf("|      "WHITE"5. Menghapus data        : "BPURPLE"REMOVE FROM "BLUE"tcategory "CYAN"id"YELLOW"$"CYAN"                                          |\n");
+    printf("|      "WHITE"6. Menggabungkan tabel   : "BPURPLE"JOIN ON "BLUE"tcategory tproject"YELLOW"$"CYAN"                                        |\n");
     printf("|                                                                                                    |\n");
 
     guideFooter();
@@ -1071,8 +1195,8 @@ void guideCategory(){                   // buku panduan kategori
 // perintah tabel proyek
 void getProject(char command[]){       // menampilkan data
     int recordSum = 0;  // jumlah rekaman dalam tabel
-    project temp[100]; // array rekaman untuk ditampilkan
-    project record;    // rekaman saat ini untuk disalin
+    project temp[MAX];  // array rekaman untuk ditampilkan
+    project record;     // rekaman saat ini untuk disalin
 
     FILE *projectTable;    // kaitan untuk mengakses file
     projectTable = fopen("tables/tproject.dat", "r"); // membuka file dengan mode read
@@ -1153,7 +1277,7 @@ void postProject(char command[]){      // menambahkan data
     timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
     
     int recordSum = 0;      // jumlah rekaman di dalam tabel
-    project temp[100];      // array rekaman untuk menggeserkan nilai rekaman baru
+    project temp[MAX];      // array rekaman untuk menggeserkan nilai rekaman baru
     project record, new;    // rekaman saat ini dan rekaman yang baru
     
     FILE *projectTable;    // kaitan untuk mengakses file
@@ -1356,7 +1480,7 @@ void updateProject(char command[]){    // mengubah data
     timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
 
     int recordSum = 0;      // jumlah rekaman di dalam tabel
-    project temp[100];     // array rekaman untuk menggeserkan nilai rekaman baru
+    project temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
     project record, new;   // rekaman saat ini dan rekaman yang baru
 
     FILE *projectTable;    // kaitan untuk mengakses file
@@ -1504,7 +1628,7 @@ void updateProject(char command[]){    // mengubah data
 }
 void deleteProject(char command[]){    // menghapus data
     int recordSum = 0;      // jumlah rekaman di dalam tabel
-    project temp[100];     // array rekaman untuk menggeserkan nilai rekaman baru
+    project temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
     project record, new;   // rekaman saat ini dan rekaman yang baru
 
     FILE *projectTable;    // kaitan untuk mengakses file
@@ -1625,12 +1749,80 @@ void guideProject(){                   // buku panduan project
     printf("|      "WHITE"7. tanggal_diubah  : "CYAN"Waktu data diubah                                                        |\n");
     printf("|                                                                                                    |\n");
     printf("|   "BGREEN"PENGGUNAAN PERINTAH"CYAN"                                                                              |\n");
-    printf("|      "WHITE"1. Menampilkan data : "BPURPLE"PRESENT FROM "BLUE"tproject"YELLOW"$"CYAN"                                                  |\n");
-    printf("|      "WHITE"2. Mencari data     : "BPURPLE"PRESENT FROM"BLUE" tproject "BPURPLE"WHERE"CYAN" id"YELLOW"$"CYAN"                                         |\n");
-    printf("|      "WHITE"3. Menambahkan data : "BPURPLE"SUBMIT TO "BLUE"tproject "CYAN"id nama url tanggal_selesai id_kategori"YELLOW"$"CYAN"             |\n");
-    printf("|      "WHITE"4. Mengubah data    : "BPURPLE"CHANGE "BLUE"tproject "CYAN"id nama url tanggal_selesai id_kategori"YELLOW"$"CYAN"                |\n");
-    printf("|      "WHITE"5. Menghapus data   : "BPURPLE"REMOVE FROM "BLUE"tproject "CYAN"id"YELLOW"$"CYAN"                                                |\n");
+    printf("|      "WHITE"1. Menampilkan data      : "BPURPLE"PRESENT FROM "BLUE"tproject"YELLOW"$"CYAN"                                             |\n");
+    printf("|      "WHITE"2. Mencari data          : "BPURPLE"PRESENT FROM"BLUE" tproject "BPURPLE"WHERE"CYAN" id"YELLOW"$"CYAN"                                    |\n");
+    printf("|      "WHITE"3. Menambahkan data      : "BPURPLE"SUBMIT TO "BLUE"tproject "CYAN"id nama url tanggal_selesai id_kategori"YELLOW"$"CYAN"        |\n");
+    printf("|      "WHITE"4. Mengubah data         : "BPURPLE"CHANGE "BLUE"tproject "CYAN"id nama url tanggal_selesai id_kategori"YELLOW"$"CYAN"           |\n");
+    printf("|      "WHITE"5. Menghapus data        : "BPURPLE"REMOVE FROM "BLUE"tproject "CYAN"id"YELLOW"$"CYAN"                                           |\n");
+    printf("|      "WHITE"6. Menggabungkan tabel   : "BPURPLE"JOIN ON "BLUE"tproject tcategory"YELLOW"$"CYAN"                                        |\n");
     printf("|                                                                                                    |\n");
 
     guideFooter();
+}
+
+// perintah join
+void joinProjectCategory(char command[]){   // menggabungkan tabel kategori dan proyek
+    int catSum = 0;         // jumlah rekaman dalam tabel kategori
+    category tempCat[MAX];  // array rekaman kategori untuk ditampilkan
+    category catRecord;     // rekaman kategori saat ini untuk disalin
+
+    FILE *categoryTable;    // kaitan untuk mengakses file kategori
+    categoryTable = fopen("tables/tcategory.dat", "r"); // membuka file kategori dengan mode read
+    
+    // memulai proses pembacaan
+    fscanf(categoryTable, "%s %s %s %s\n", catRecord.id, catRecord.name, catRecord.createdAt, catRecord.updatedAt);
+
+    if(strcmp(catRecord.id, IDDUMMY) == 0 || strcmp(catRecord.id, "") == 0){
+        // jika ditemukan EOF atau data kosong
+        error(12);
+        fclose(categoryTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array kategori sampai ditemukan EOF
+        do{
+            strcpy(tempCat[catSum].id, catRecord.id);
+            strcpy(tempCat[catSum].name, catRecord.name);
+            strcpy(tempCat[catSum].createdAt, catRecord.createdAt);
+            strcpy(tempCat[catSum].updatedAt, catRecord.updatedAt);
+            catSum++;
+            fscanf(categoryTable, "%s %s %s %s\n", catRecord.id, catRecord.name, catRecord.createdAt, catRecord.updatedAt);
+        } while(strcmp(catRecord.id, IDDUMMY) != 0);
+
+        fclose(categoryTable); // menutup file kategori
+
+        int proSum = 0;  // jumlah rekaman dalam tabel proyek
+        project tempPro[MAX]; // array rekaman proyek untuk ditampilkan
+        project proRecord;    // rekaman proyek saat ini untuk disalin
+
+        FILE *projectTable;    // kaitan untuk mengakses file proyek
+        projectTable = fopen("tables/tproject.dat", "r"); // membuka file proyek dengan mode read
+        
+        // memulai proses pembacaan
+        fscanf(projectTable, "%s %s %s %s %s %s %s\n", proRecord.id, proRecord.name, proRecord.url, proRecord.finishedDate, proRecord.categoryId, proRecord.createdAt, proRecord.updatedAt);
+
+        if(strcmp(proRecord.id, IDDUMMY) == 0 || strcmp(proRecord.id, "") == 0){
+            // jika ditemukan EOF atau data kosong
+            error(12);
+            fclose(projectTable);
+        } else {
+            // jika tidak ditemukan EOF dan data tidak kosong
+            // mengisi rekaman ke dalam array proyek sampai ditemukan EOF
+            do{
+                strcpy(tempPro[proSum].id, proRecord.id);
+                strcpy(tempPro[proSum].name, proRecord.name);
+                strcpy(tempPro[proSum].url, proRecord.url);
+                strcpy(tempPro[proSum].finishedDate, proRecord.finishedDate);
+                strcpy(tempPro[proSum].categoryId, proRecord.categoryId);
+                strcpy(tempPro[proSum].createdAt, proRecord.createdAt);
+                strcpy(tempPro[proSum].updatedAt, proRecord.updatedAt);
+                proSum++;
+                fscanf(projectTable, "%s %s %s %s %s %s %s\n", proRecord.id, proRecord.name, proRecord.url, proRecord.finishedDate, proRecord.categoryId, proRecord.createdAt, proRecord.updatedAt);
+            } while(strcmp(proRecord.id, IDDUMMY) != 0);
+
+            fclose(projectTable); // menutup file
+
+            // hasil join
+            showCategoryProject(longestName(tempPro, proSum, 8), longestUrl(tempPro, proSum, 8), longestName(tempCat, catSum, 7), proSum, catSum, tempPro, tempCat);
+        }
+    }
 }
