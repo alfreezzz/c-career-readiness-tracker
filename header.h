@@ -41,7 +41,7 @@
 // EOF setiap tabel
 #define EOFPOSITION     (IDDUMMY" XXX "DATEDUMMY" "DATEDUMMY)
 #define EOFSKILL        (IDDUMMY" XXX XXXXX "DATEDUMMY" "DATEDUMMY)
-#define EOFTARGET       (IDDUMMY" "IDDUMMY" "IDDUMMY" X "DATEDUMMY" "DATEDUMMY)
+#define EOFTARGET       (IDDUMMY" "IDDUMMY" "IDDUMMY" 9 "DATEDUMMY" "DATEDUMMY)
 #define EOFORGANIZATION (IDDUMMY" XXX "DATEDUMMY" "DATEDUMMY)
 #define EOFCERTIFICATE  (IDDUMMY" XXX "IDDUMMY" "DATEDUMMY" "DATEDUMMY" "IDDUMMY" XXXXXXXXXX "DATEDUMMY" "DATEDUMMY)
 #define EOFEXPERIENCE   (IDDUMMY" "IDDUMMY" "IDDUMMY" "DATEDUMMY" "DATEDUMMY" "DATEDUMMY" "DATEDUMMY)
@@ -62,7 +62,7 @@ typedef struct{ // keahlian
 typedef struct{ // target pekerjaan
     TABLETEMPLATE;
     char positionId[20], skillId[20];
-    char isSkilled; 
+    bool isSkilled; 
 } target;
 
 typedef struct{ // organisasi
@@ -122,6 +122,7 @@ void searchId(void* arr, int n, char* search, bool *found, int *idx, int type); 
 int longestName(void* data, int n, int type);
 int longestUrl(void* data, int n, int type);
 void showPositionTable(int lenMaxName, int n, position* data);
+void showSkillTable(int lenMaxName, int n, skill* data);
 void showOrganizationTable(int lenMaxName, int n, organization* data);
 void showCategoryTable(int lenMaxName, int n, category* data);
 void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data);
@@ -133,6 +134,13 @@ void postPosition(char command[]);      // menambahkan data
 void updatePosition(char command[]);    // mengubah data
 void deletePosition(char command[]);    // menghapus data
 void guidePosition();                   // panduan posisi
+
+// perintah tabel skill
+void getSkill(char command[]);       // menampilkan data
+void postSkill(char command[]);      // menambahkan data
+void updateSkill(char command[]);    // mengubah data
+void deleteSkill(char command[]);    // menghapus data
+void guideSkill();                   // panduan skill
 
 // perintah tabel organisasi
 void getOrganization(char command[]);       // menampilkan data

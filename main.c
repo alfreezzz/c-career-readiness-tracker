@@ -36,7 +36,11 @@ int main(){
                                     error(5);
                                 }
                             } else if (strcmp(getcw(), "tskill") == 0){
-                                return 1;
+                                if(!eop(command)){
+                                    postSkill(command);
+                                } else {
+                                    error(5);
+                                }
                             } else if (strcmp(getcw(), "ttarget") == 0){
                                 return 2;
                             } else if (strcmp(getcw(), "torganization") == 0){
@@ -83,7 +87,11 @@ int main(){
                             error(13);
                         }
                     } else if (strcmp(getcw(), "tskill") == 0){
-                        return 1;
+                        if(!eop(command)){
+                            updateSkill(command);
+                        } else {
+                            error(13);
+                        }
                     } else if (strcmp(getcw(), "ttarget") == 0){
                         return 2;
                     } else if (strcmp(getcw(), "torganization") == 0){
@@ -127,7 +135,11 @@ int main(){
                                     error(9);
                                 }
                             } else if (strcmp(getcw(), "tskill") == 0){
-                                return 1;
+                                if(!eop(command)){
+                                    deleteSkill(command);
+                                } else {
+                                    error(9);
+                                }
                             } else if (strcmp(getcw(), "ttarget") == 0){
                                 return 2;
                             } else if (strcmp(getcw(), "torganization") == 0){
@@ -173,7 +185,7 @@ int main(){
                             if(strcmp(getcw(), "tposition") == 0){
                                 getPosition(command);
                             } else if (strcmp(getcw(), "tskill") == 0){
-                                return 1;
+                                getSkill(command);
                             } else if (strcmp(getcw(), "ttarget") == 0){
                                 return 2;
                             } else if (strcmp(getcw(), "torganization") == 0){
@@ -271,7 +283,11 @@ int main(){
                                     error(14);
                                 }
                             } else if (strcmp(getcw(), "tskill") == 0){
-                                return 1;
+                                if(eop(command)){
+                                    guideSkill();
+                                } else {
+                                    error(14);
+                                }
                             } else if (strcmp(getcw(), "ttarget") == 0){
                                 return 2;
                             } else if (strcmp(getcw(), "torganization") == 0){
