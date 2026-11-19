@@ -122,6 +122,7 @@ void searchId(void* arr, int n, char* search, bool *found, int *idx, int type); 
 int longestName(void* data, int n, int type);
 int longestUrl(void* data, int n, int type);
 void showPositionTable(int lenMaxName, int n, position* data);
+void showOrganizationTable(int lenMaxName, int n, organization* data);
 void showCategoryTable(int lenMaxName, int n, category* data);
 void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data);
 void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum, int catSum, project* proData, category* catData);
@@ -132,6 +133,13 @@ void postPosition(char command[]);      // menambahkan data
 void updatePosition(char command[]);    // mengubah data
 void deletePosition(char command[]);    // menghapus data
 void guidePosition();                   // panduan posisi
+
+// perintah tabel organisasi
+void getOrganization(char command[]);       // menampilkan data
+void postOrganization(char command[]);      // menambahkan data
+void updateOrganization(char command[]);    // mengubah data
+void deleteOrganization(char command[]);    // menghapus data
+void guideOrganization();                   // panduan organisasi
 
 // perintah tabel kategori
 void getCategory(char command[]);       // menampilkan data

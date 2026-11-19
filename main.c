@@ -40,7 +40,11 @@ int main(){
                             } else if (strcmp(getcw(), "ttarget") == 0){
                                 return 2;
                             } else if (strcmp(getcw(), "torganization") == 0){
-                                return 3;
+                               if(!eop(command)){
+                                    postOrganization(command);
+                                } else {
+                                    error(5);
+                                }
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
                             } else if (strcmp(getcw(), "texperience") == 0){
@@ -83,7 +87,11 @@ int main(){
                     } else if (strcmp(getcw(), "ttarget") == 0){
                         return 2;
                     } else if (strcmp(getcw(), "torganization") == 0){
-                        return 3;
+                        if(!eop(command)){
+                            updateOrganization(command);
+                        } else {
+                            error(13);
+                        }
                     } else if (strcmp(getcw(), "tcertificate") == 0){
                         return 4;
                     } else if (strcmp(getcw(), "texperience") == 0){
@@ -123,7 +131,11 @@ int main(){
                             } else if (strcmp(getcw(), "ttarget") == 0){
                                 return 2;
                             } else if (strcmp(getcw(), "torganization") == 0){
-                                return 3;
+                                if(!eop(command)){
+                                    deleteOrganization(command);
+                                } else {
+                                    error(9);
+                                }
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
                             } else if (strcmp(getcw(), "texperience") == 0){
@@ -165,7 +177,7 @@ int main(){
                             } else if (strcmp(getcw(), "ttarget") == 0){
                                 return 2;
                             } else if (strcmp(getcw(), "torganization") == 0){
-                                return 3;
+                                getOrganization(command);
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
                             } else if (strcmp(getcw(), "texperience") == 0){
@@ -263,7 +275,11 @@ int main(){
                             } else if (strcmp(getcw(), "ttarget") == 0){
                                 return 2;
                             } else if (strcmp(getcw(), "torganization") == 0){
-                                return 3;
+                                if(eop(command)){
+                                    guideOrganization();
+                                } else {
+                                    error(14);
+                                }
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
                             } else if (strcmp(getcw(), "texperience") == 0){
