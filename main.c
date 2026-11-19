@@ -30,7 +30,11 @@ int main(){
                         if(!eop(command)){
                             inc(command);
                             if(strcmp(getcw(), "tposition") == 0){
-                                return 0;
+                                if(!eop(command)){
+                                    postPosition(command);
+                                } else {
+                                    error(5);
+                                }
                             } else if (strcmp(getcw(), "tskill") == 0){
                                 return 1;
                             } else if (strcmp(getcw(), "ttarget") == 0){
@@ -39,6 +43,8 @@ int main(){
                                 return 3;
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
+                            } else if (strcmp(getcw(), "texperience") == 0){
+                                return 5;
                             } else if (strcmp(getcw(), "tcategory") == 0){
                                 if(!eop(command)){
                                     postCategory(command);
@@ -67,7 +73,11 @@ int main(){
                 if(!eop(command)){
                     inc(command);
                     if(strcmp(getcw(), "tposition") == 0){
-                        return 0;
+                        if(!eop(command)){
+                            updatePosition(command);
+                        } else {
+                            error(13);
+                        }
                     } else if (strcmp(getcw(), "tskill") == 0){
                         return 1;
                     } else if (strcmp(getcw(), "ttarget") == 0){
@@ -76,6 +86,8 @@ int main(){
                         return 3;
                     } else if (strcmp(getcw(), "tcertificate") == 0){
                         return 4;
+                    } else if (strcmp(getcw(), "texperience") == 0){
+                        return 5;
                     } else if (strcmp(getcw(), "tcategory") == 0){
                         if(!eop(command)){
                             updateCategory(command);
@@ -101,7 +113,11 @@ int main(){
                         if(!eop(command)){
                             inc(command);
                             if(strcmp(getcw(), "tposition") == 0){
-                                return 0;
+                                if(!eop(command)){
+                                    deletePosition(command);
+                                } else {
+                                    error(9);
+                                }
                             } else if (strcmp(getcw(), "tskill") == 0){
                                 return 1;
                             } else if (strcmp(getcw(), "ttarget") == 0){
@@ -110,6 +126,8 @@ int main(){
                                 return 3;
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
+                            } else if (strcmp(getcw(), "texperience") == 0){
+                                return 5;
                             } else if (strcmp(getcw(), "tcategory") == 0){
                                 if(!eop(command)){
                                     deleteCategory(command);
@@ -141,7 +159,7 @@ int main(){
                         if(!eop(command)){
                             inc(command);
                             if(strcmp(getcw(), "tposition") == 0){
-                                return 0;
+                                getPosition(command);
                             } else if (strcmp(getcw(), "tskill") == 0){
                                 return 1;
                             } else if (strcmp(getcw(), "ttarget") == 0){
@@ -150,6 +168,8 @@ int main(){
                                 return 3;
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
+                            } else if (strcmp(getcw(), "texperience") == 0){
+                                return 5;
                             } else if (strcmp(getcw(), "tcategory") == 0){
                                 getCategory(command);
                             } else if (strcmp(getcw(), "tproject") == 0){
@@ -233,7 +253,11 @@ int main(){
                         if(!eop(command)){
                             inc(command);
                             if(strcmp(getcw(), "tposition") == 0){
-                                return 0;
+                                if(eop(command)){
+                                    guidePosition();
+                                } else {
+                                    error(14);
+                                }
                             } else if (strcmp(getcw(), "tskill") == 0){
                                 return 1;
                             } else if (strcmp(getcw(), "ttarget") == 0){
@@ -242,6 +266,8 @@ int main(){
                                 return 3;
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
+                            } else if (strcmp(getcw(), "texperience") == 0){
+                                return 5;
                             } else if (strcmp(getcw(), "tcategory") == 0){
                                 if(eop(command)){
                                     guideCategory();

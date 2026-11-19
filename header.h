@@ -11,6 +11,7 @@
 #define DEFAULT "\033[0;0m"   // reset warna teks
 
 // makro warna teks (regular)
+// https://gist.github.com/RabaDabaDoba/145049536f815903c79944599c6f952a
 #define BLACK   "\033[0;30m"  // warna hitam
 #define RED     "\033[0;31m"  // warna merah
 #define GREEN   "\033[0;32m"  // warna hijau
@@ -120,9 +121,17 @@ void searchId(void* arr, int n, char* search, bool *found, int *idx, int type); 
 // ui tabel
 int longestName(void* data, int n, int type);
 int longestUrl(void* data, int n, int type);
+void showPositionTable(int lenMaxName, int n, position* data);
 void showCategoryTable(int lenMaxName, int n, category* data);
 void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data);
 void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum, int catSum, project* proData, category* catData);
+
+// perintah tabel posisi
+void getPosition(char command[]);       // menampilkan data
+void postPosition(char command[]);      // menambahkan data
+void updatePosition(char command[]);    // mengubah data
+void deletePosition(char command[]);    // menghapus data
+void guidePosition();                   // panduan posisi
 
 // perintah tabel kategori
 void getCategory(char command[]);       // menampilkan data
@@ -136,7 +145,7 @@ void getProject(char command[]);       // menampilkan data
 void postProject(char command[]);      // menambahkan data
 void updateProject(char command[]);    // mengubah data
 void deleteProject(char command[]);    // menghapus data
-void guideProject();                   // panduan kategori
+void guideProject();                   // panduan proyek
 
 // perintah join
 void joinProjectCategory(char command[]);   // menggabungkan tabel kategori dan proyek
