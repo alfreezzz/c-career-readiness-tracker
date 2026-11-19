@@ -49,7 +49,7 @@ int main(){
                                 }
                             } else if (strcmp(getcw(), "torganization") == 0){
                                if(!eop(command)){
-                                    postTarget(command);
+                                    postOrganization(command);
                                 } else {
                                     error(5);
                                 }
@@ -313,9 +313,17 @@ int main(){
                                     error(14);
                                 }
                             } else if (strcmp(getcw(), "tcertificate") == 0){
-                                return 4;
+                                if(eop(command)){
+                                    guideCertificate();
+                                } else {
+                                    error(14);
+                                }
                             } else if (strcmp(getcw(), "texperience") == 0){
-                                return 5;
+                                if(eop(command)){
+                                    guideExperience();
+                                } else {
+                                    error(14);
+                                }
                             } else if (strcmp(getcw(), "tcategory") == 0){
                                 if(eop(command)){
                                     guideCategory();

@@ -39,14 +39,14 @@
 #define MAX             999                                        // nilai maksimal array rekaman
 
 // EOF setiap tabel
-#define EOFPOSITION     (IDDUMMY" XXX "DATEDUMMY" "DATEDUMMY)
-#define EOFSKILL        (IDDUMMY" XXX XXXXX "DATEDUMMY" "DATEDUMMY)
-#define EOFTARGET       (IDDUMMY" "IDDUMMY" "IDDUMMY" 9 "DATEDUMMY" "DATEDUMMY)
-#define EOFORGANIZATION (IDDUMMY" XXX "DATEDUMMY" "DATEDUMMY)
-#define EOFCERTIFICATE  (IDDUMMY" XXX "IDDUMMY" "DATEDUMMY" "DATEDUMMY" "IDDUMMY" XXXXXXXXXX "DATEDUMMY" "DATEDUMMY)
-#define EOFEXPERIENCE   (IDDUMMY" "IDDUMMY" "IDDUMMY" "DATEDUMMY" "DATEDUMMY" "DATEDUMMY" "DATEDUMMY)
-#define EOFCATEGORY     (IDDUMMY" XXX "DATEDUMMY" "DATEDUMMY)
-#define EOFPROJECT      (IDDUMMY" XXX XXXXXXXXXX "DATEDUMMY" "IDDUMMY" "DATEDUMMY" "DATEDUMMY)
+#define EOFPOSITION     (IDDUMMY" XXX "DATEDUMMY" "DATEDUMMY)                                                           // posisi
+#define EOFSKILL        (IDDUMMY" XXX XXXXX "DATEDUMMY" "DATEDUMMY)                                                     // skill
+#define EOFTARGET       (IDDUMMY" "IDDUMMY" "IDDUMMY" 9 "DATEDUMMY" "DATEDUMMY)                                         // target
+#define EOFORGANIZATION (IDDUMMY" XXX "DATEDUMMY" "DATEDUMMY)                                                           // organisasi
+#define EOFCERTIFICATE  (IDDUMMY" XXX "IDDUMMY" "DATEDUMMY" "DATEDUMMY" "IDDUMMY" XXXXXXXXXX "DATEDUMMY" "DATEDUMMY)    // sertifikat
+#define EOFEXPERIENCE   (IDDUMMY" "IDDUMMY" "IDDUMMY" "DATEDUMMY" "DATEDUMMY" "DATEDUMMY" "DATEDUMMY)                   // pengalaman
+#define EOFCATEGORY     (IDDUMMY" XXX "DATEDUMMY" "DATEDUMMY)                                                           // kategori
+#define EOFPROJECT      (IDDUMMY" XXX XXXXXXXXXX "DATEDUMMY" "IDDUMMY" "DATEDUMMY" "DATEDUMMY)                          // proyek
 
 // struktur data
 typedef struct{ // posisi
@@ -116,17 +116,29 @@ char* getcw();              // mengambil kata saat ini
 int getwlen();              // mengambil panjang kata saat ini
 
 // searching
-void searchId(void* arr, int n, char* search, bool *found, int *idx, int type); // mencari data
+void searchId(void* arr, int n, char* search, bool *found, int *idx, int type); // mencari data id
+int longestName(void* data, int n, int type);                                   // mencari nama terpanjang
+int longestUrl(void* data, int n, int type);                                    // mencari url terpanjang
+int longestCredential(certificate* data, int n);                                // mencari krensial terpanjang
 
 // ui tabel
-int longestName(void* data, int n, int type);
-int longestUrl(void* data, int n, int type);
-void showPositionTable(int lenMaxName, int n, position* data);
-void showSkillTable(int lenMaxName, int n, skill* data);
-void showTargetTable(int n, target* data);
-void showOrganizationTable(int lenMaxName, int n, organization* data);
-void showCategoryTable(int lenMaxName, int n, category* data);
-void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data);
+void showPositionTable(int lenMaxName, int n, position* data);                      // tabel posisi
+void showSkillTable(int lenMaxName, int n, skill* data);                            // tabel skill
+void showTargetTable(int n, target* data);                                          // tabel target
+void showOrganizationTable(int lenMaxName, int n, organization* data);              // tabel organisasi
+void showCertificateTable(int lenMaxName, int lenMaxUrl, int n, certificate* data); // tabel sertifikat
+void showExperienceTable(int n, experience* data);                                  // tabel pengalaman
+void showCategoryTable(int lenMaxName, int n, category* data);                      // tabel kategori
+void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data);         // tabel proyek
+
+// ui tabel join
+// tabel gabungan posisi, skill, dan target
+void showPositionSkillTarget(int maxTarName, int maxPosName, int maxSklName, int tarSum, int posSum, int sklSum, target* tarData, position* posData, skill* sklData);
+// tabel gabungan organisasi, dan sertifikat
+void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int cerSum, int orgSum, certificate* cerData, organization* orgData);
+// tabel gabungan organisasi, posisi, dan pengalaman
+void showOrganizationPositionExperience(int maxExpName, int maxOrgName, int maxPosName, int expSum, int orgSum, int posSum, experience* expData, organization* orgData, position* posData);
+// tabel gabungan kategori, dan proyek
 void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum, int catSum, project* proData, category* catData);
 
 // perintah tabel posisi
@@ -157,6 +169,20 @@ void updateOrganization(char command[]);    // mengubah data
 void deleteOrganization(char command[]);    // menghapus data
 void guideOrganization();                   // panduan organisasi
 
+// perintah tabel sertifikat
+void getCertificate(char command[]);       // menampilkan data
+void postCertificate(char command[]);      // menambahkan data
+void updateCertificate(char command[]);    // mengubah data
+void deleteCertificate(char command[]);    // menghapus data
+void guideCertificate();                   // panduan sertifikat
+
+// perintah tabel pengalaman
+void getExperience(char command[]);       // menampilkan data
+void postExperience(char command[]);      // menambahkan data
+void updateExperience(char command[]);    // mengubah data
+void deleteExperience(char command[]);    // menghapus data
+void guideExperience();                   // panduan pengalaman
+
 // perintah tabel kategori
 void getCategory(char command[]);       // menampilkan data
 void postCategory(char command[]);      // menambahkan data
@@ -172,4 +198,7 @@ void deleteProject(char command[]);    // menghapus data
 void guideProject();                   // panduan proyek
 
 // perintah join
-void joinProjectCategory(char command[]);   // menggabungkan tabel kategori dan proyek
+void joinTargetPositionSkill(char command[]);               // menggabungkan tabel target, posisi, dan skill
+void joinCertificateOrganization(char command[]);           // menggabungkan tabel sertifikat, dan organisasi
+void joinExperienceOrganizationPosition(char command[]);    // menggabungkan tabel pengalaman, organisasi, dan posisi
+void joinProjectCategory(char command[]);                   // menggabungkan tabel kategori, dan proyek

@@ -1193,13 +1193,7 @@ void updatePosition(char command[]){    // mengubah data
         int i = 0;  // iterasi dan index
         bool isFound = false;   // cek ditemukan
         // proses pencarian
-        while(!isFound && i < recordSum){
-            if(strcmp(temp[i].id, search) == 0){
-                isFound = true;
-            } else {
-                i++;
-            }
-        }
+        searchId(temp, recordSum, search, &isFound, &i, 1);
         
         if(!isFound){
             error(11);
@@ -1289,12 +1283,12 @@ void deletePosition(char command[]){    // menghapus data
             fclose(targetTable);
             
             experience experienceRecord;
-
+            
             FILE *experienceTable;
             experienceTable = fopen("tables/texperience.dat", "r");
-
+            
             fscanf(experienceTable, "%s %s %s %s %s %s %s", experienceRecord.id, experienceRecord.organizationId, experienceRecord.positionId, experienceRecord.startDate, experienceRecord.endDate, experienceRecord.createdAt, experienceRecord.updatedAt);
-
+            
             bool foundExpId = false;
             if(strcmp(experienceRecord.id, IDDUMMY) != 0 && strcmp(search, IDDUMMY) != 0 && strcmp(experienceRecord.id, "") != 0) {
                 while((strcmp(experienceRecord.id, IDDUMMY) != 0) && (strcmp(experienceRecord.positionId, search) != 0)){
@@ -1310,13 +1304,7 @@ void deletePosition(char command[]){    // menghapus data
                 int idx = 0;    // iterasi dan index
                 bool isFound = false;   // cek ditemukan
                 // proses pencarian 
-                while(!isFound && idx < recordSum){
-                    if(strcmp(temp[idx].id, search) == 0){
-                        isFound = true;
-                    } else {
-                        idx++;
-                    }
-                }
+                searchId(temp, recordSum, search, &isFound, &idx, 1);
                 
                 if(!isFound){
                     error(11);
@@ -1654,13 +1642,7 @@ void updateSkill(char command[]){    // mengubah data
         int i = 0;  // iterasi dan index
         bool isFound = false;   // cek ditemukan
         // proses pencarian
-        while(!isFound && i < recordSum){
-            if(strcmp(temp[i].id, search) == 0){
-                isFound = true;
-            } else {
-                i++;
-            }
-        }
+        searchId(temp, recordSum, search, &isFound, &i, 2);
         
         if(!isFound){
             error(11);
@@ -1770,13 +1752,7 @@ void deleteSkill(char command[]){    // menghapus data
                 int idx = 0;    // iterasi dan index
                 bool isFound = false;   // cek ditemukan
                 // proses pencarian 
-                while(!isFound && idx < recordSum){
-                    if(strcmp(temp[idx].id, search) == 0){
-                        isFound = true;
-                    } else {
-                        idx++;
-                    }
-                }
+                searchId(temp, recordSum, search, &isFound, &idx, 2);
                 
                 if(!isFound){
                     error(11);
@@ -2190,13 +2166,7 @@ void updateTarget(char command[]){    // mengubah data
         int i = 0;  // iterasi dan index
         bool isFound = false;   // cek ditemukan
         // proses pencarian
-        while(!isFound && i < recordSum){
-            if(strcmp(temp[i].id, search) == 0){
-                isFound = true;
-            } else {
-                i++;
-            }
-        }
+        searchId(temp, recordSum, search, &isFound, &i, 3);
         
         if(!isFound){
             error(11);
@@ -2354,13 +2324,7 @@ void deleteTarget(char command[]){    // menghapus data
             int idx = 0;    // iterasi dan index
             bool isFound = false;   // cek ditemukan
             // proses pencarian 
-            while(!isFound && idx < recordSum){
-                if(strcmp(temp[idx].id, search) == 0){
-                    isFound = true;
-                } else {
-                    idx++;
-                }
-            }
+            searchId(temp, recordSum, search, &isFound, &idx, 3);
             
             if(!isFound){
                 error(11);
@@ -2677,13 +2641,7 @@ void updateOrganization(char command[]){    // mengubah data
         int i = 0;  // iterasi dan index
         bool isFound = false;   // cek ditemukan
         // proses pencarian
-        while(!isFound && i < recordSum){
-            if(strcmp(temp[i].id, search) == 0){
-                isFound = true;
-            } else {
-                i++;
-            }
-        }
+        searchId(temp, recordSum, search, &isFound, &i, 4);
         
         if(!isFound){
             error(11);
@@ -2794,13 +2752,7 @@ void deleteOrganization(char command[]){    // menghapus data
                 int idx = 0;    // iterasi dan index
                 bool isFound = false;   // cek ditemukan
                 // proses pencarian 
-                while(!isFound && idx < recordSum){
-                    if(strcmp(temp[idx].id, search) == 0){
-                        isFound = true;
-                    } else {
-                        idx++;
-                    }
-                }
+                searchId(temp, recordSum, search, &isFound, &idx, 4);
                 
                 if(!isFound){
                     error(11);
@@ -2879,6 +2831,68 @@ void guideOrganization(){                   // buku panduan organisasi
     printf("|      "WHITE"5. Menghapus data        : "BPURPLE"REMOVE FROM "BLUE"torganization "CYAN"id"YELLOW"$"CYAN"                                      |\n");
     printf("|      "WHITE"6. Menggabungkan tabel   : "BPURPLE"JOIN ON "BLUE"torganization tcertificate"YELLOW"$"CYAN"                                |\n");
     printf("|                                 "BPURPLE"JOIN ON "BLUE"torganization texperience tposition"YELLOW"$"CYAN"                       |\n");
+    printf("|                                                                                                    |\n");
+
+    guideFooter();
+}
+
+// perintah tabel sertifikat
+void guideCertificate(){                   // buku panduan sertifikat
+    guideTitle();
+
+    printf("|                                                                                                    |\n");
+    printf("|   "WHITE"Tabel sertifikat digunakan untuk menyimpan data sertifikat yang pernah diperoleh"CYAN"                 |\n");
+    printf("|                                                                                                    |\n");
+    printf("|   "BGREEN"STRUKTUR DATA"CYAN"                                                                                    |\n");
+    printf("|      "WHITE"1. id               : "CYAN"Kode unik                                                               |\n");
+    printf("|      "WHITE"2. nama             : "CYAN"Nama sertifikat                                                         |\n");
+    printf("|      "WHITE"3. id_organisasi    : "CYAN"Kode unik dari nama organisasi                                          |\n");
+    printf("|      "WHITE"4. tanggal_dimulai  : "CYAN"Tanggal sertifikat dimulai/diperoleh (cth. 2025_May)                    |\n");
+    printf("|      "WHITE"5. tanggal_berakhir : "CYAN"Tanggal sertifikat berakhir (cth. 2035_May atau -)                      |\n");
+    printf("|      "WHITE"6. kredensial       : "CYAN"Kode kredensial                                                         |\n");
+    printf("|      "WHITE"7. url              : "CYAN"Url hasil sertifikat (opsional: -)                                      |\n");
+    printf("|      "WHITE"8. tanggal_dibuat   : "CYAN"Waktu data dibuat                                                       |\n");
+    printf("|      "WHITE"9. tanggal_diubah   : "CYAN"Waktu data diubah                                                       |\n");
+    printf("|                                                                                                    |\n");
+    printf("|   "BGREEN"PENGGUNAAN PERINTAH"CYAN"                                                                              |\n");
+    printf("|      "WHITE"1. Menampilkan data      : "BPURPLE"PRESENT FROM "BLUE"tcertificate"YELLOW"$"CYAN"                                         |\n");
+    printf("|      "WHITE"2. Mencari data          : "BPURPLE"PRESENT FROM"BLUE" tcertificate "BPURPLE"WHERE"CYAN" id"YELLOW"$"CYAN"                                |\n");
+    printf("|      "WHITE"3. Menambahkan data      : "BPURPLE"SUBMIT TO "BLUE"tcertificate "CYAN"id nama id_organisasi tanggal_dimulai       |\n");
+    printf("|                                                        tanggal_berakhir kredensial url"YELLOW"$"CYAN"            |\n");
+    printf("|      "WHITE"4. Mengubah data         : "BPURPLE"CHANGE "BLUE"tcertificate "CYAN"id nama id_organisasi tanggal_dimulai          |\n");
+    printf("|                                                     tanggal_berakhir kredensial url"YELLOW"$"CYAN"               |\n");
+    printf("|      "WHITE"5. Menghapus data        : "BPURPLE"REMOVE FROM "BLUE"tcertificate "CYAN"id"YELLOW"$"CYAN"                                       |\n");
+    printf("|      "WHITE"6. Menggabungkan tabel   : "BPURPLE"JOIN ON "BLUE"tcertificate torganization"YELLOW"$"CYAN"                                |\n");
+    printf("|                                                                                                    |\n");
+
+    guideFooter();
+}
+
+// perintah tabel pengalaman
+void guideExperience(){                   // buku panduan pengalaman
+    guideTitle();
+
+    printf("|                                                                                                    |\n");
+    printf("|   "WHITE"Tabel pengalaman digunakan untuk menyimpan data pengalaman yang pernah diperoleh"CYAN"                 |\n");
+    printf("|                                                                                                    |\n");
+    printf("|   "BGREEN"STRUKTUR DATA"CYAN"                                                                                    |\n");
+    printf("|      "WHITE"1. id               : "CYAN"Kode unik                                                               |\n");
+    printf("|      "WHITE"2. id_organisasi    : "CYAN"Kode unik dari nama organisasi                                          |\n");
+    printf("|      "WHITE"3. id_posisi        : "CYAN"Kode unik dari nama posisi                                              |\n");
+    printf("|      "WHITE"4. tanggal_dimulai  : "CYAN"Tanggal pengalaman dimulai (cth. 2025_May)                              |\n");
+    printf("|      "WHITE"5. tanggal_berakhir : "CYAN"Tanggal pengalaman berakhir (cth. 2025_Agustus atau -)                  |\n");
+    printf("|      "WHITE"6. tanggal_dibuat   : "CYAN"Waktu data dibuat                                                       |\n");
+    printf("|      "WHITE"7. tanggal_diubah   : "CYAN"Waktu data diubah                                                       |\n");
+    printf("|                                                                                                    |\n");
+    printf("|   "BGREEN"PENGGUNAAN PERINTAH"CYAN"                                                                              |\n");
+    printf("|      "WHITE"1. Menampilkan data      : "BPURPLE"PRESENT FROM "BLUE"texperience"YELLOW"$"CYAN"                                          |\n");
+    printf("|      "WHITE"2. Mencari data          : "BPURPLE"PRESENT FROM"BLUE" texperience "BPURPLE"WHERE"CYAN" id"YELLOW"$"CYAN"                                 |\n");
+    printf("|      "WHITE"3. Menambahkan data      : "BPURPLE"SUBMIT TO "BLUE"texperience "CYAN"id id_organisasi id_posisi tanggal_dimulai   |\n");
+    printf("|                                                       tanggal_berakhir"YELLOW"$"CYAN"                            |\n");
+    printf("|      "WHITE"4. Mengubah data         : "BPURPLE"CHANGE "BLUE"texperience "CYAN"id id_organisasi id_posisi tanggal_dimulai      |\n");
+    printf("|                                                    tanggal_berakhir"YELLOW"$"CYAN"                               |\n");
+    printf("|      "WHITE"5. Menghapus data        : "BPURPLE"REMOVE FROM "BLUE"texperience "CYAN"id"YELLOW"$"CYAN"                                        |\n");
+    printf("|      "WHITE"6. Menggabungkan tabel   : "BPURPLE"JOIN ON "BLUE"texperience torganization tposition"YELLOW"$"CYAN"                       |\n");
     printf("|                                                                                                    |\n");
 
     guideFooter();
@@ -3116,13 +3130,7 @@ void updateCategory(char command[]){    // mengubah data
         int i = 0;  // iterasi dan index
         bool isFound = false;   // cek ditemukan
         // proses pencarian
-        while(!isFound && i < recordSum){
-            if(strcmp(temp[i].id, search) == 0){
-                isFound = true;
-            } else {
-                i++;
-            }
-        }
+        searchId(temp, recordSum, search, &isFound, &i, 7);
         
         if(!isFound){
             error(11);
@@ -3215,13 +3223,7 @@ void deleteCategory(char command[]){    // menghapus data
                 int idx = 0;    // iterasi dan index
                 bool isFound = false;   // cek ditemukan
                 // proses pencarian 
-                while(!isFound && idx < recordSum){
-                    if(strcmp(temp[idx].id, search) == 0){
-                        isFound = true;
-                    } else {
-                        idx++;
-                    }
-                }
+                searchId(temp, recordSum, search, &isFound, &idx, 7);
                 
                 if(!isFound){
                     error(11);
@@ -3622,13 +3624,7 @@ void updateProject(char command[]){    // mengubah data
         int i = 0;  // iterasi dan index
         bool isFound = false;   // cek ditemukan
         // proses pencarian
-        while(!isFound && i < recordSum){
-            if(strcmp(temp[i].id, search) == 0){
-                isFound = true;
-            } else {
-                i++;
-            }
-        }
+        searchId(temp, recordSum, search, &isFound, &i, 8);
         
         if(!isFound){
             error(11);
@@ -3771,13 +3767,7 @@ void deleteProject(char command[]){    // menghapus data
             int idx = 0;    // iterasi dan index
             bool isFound = false;   // cek ditemukan
             // proses pencarian 
-            while(!isFound && idx < recordSum){
-                if(strcmp(temp[idx].id, search) == 0){
-                    isFound = true;
-                } else {
-                    idx++;
-                }
-            }
+            searchId(temp, recordSum, search, &isFound, &idx, 8);
             
             if(!isFound){
                 error(11);
