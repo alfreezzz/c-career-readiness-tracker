@@ -42,10 +42,14 @@ int main(){
                                     error(5);
                                 }
                             } else if (strcmp(getcw(), "ttarget") == 0){
-                                return 2;
+                                if(!eop(command)){
+                                    postTarget(command);
+                                } else {
+                                    error(5);
+                                }
                             } else if (strcmp(getcw(), "torganization") == 0){
                                if(!eop(command)){
-                                    postOrganization(command);
+                                    postTarget(command);
                                 } else {
                                     error(5);
                                 }
@@ -93,7 +97,11 @@ int main(){
                             error(13);
                         }
                     } else if (strcmp(getcw(), "ttarget") == 0){
-                        return 2;
+                        if(!eop(command)){
+                            updateTarget(command);
+                        } else {
+                            error(13);
+                        }
                     } else if (strcmp(getcw(), "torganization") == 0){
                         if(!eop(command)){
                             updateOrganization(command);
@@ -141,7 +149,11 @@ int main(){
                                     error(9);
                                 }
                             } else if (strcmp(getcw(), "ttarget") == 0){
-                                return 2;
+                                if(!eop(command)){
+                                    deleteTarget(command);
+                                } else {
+                                    error(9);
+                                }
                             } else if (strcmp(getcw(), "torganization") == 0){
                                 if(!eop(command)){
                                     deleteOrganization(command);
@@ -187,7 +199,7 @@ int main(){
                             } else if (strcmp(getcw(), "tskill") == 0){
                                 getSkill(command);
                             } else if (strcmp(getcw(), "ttarget") == 0){
-                                return 2;
+                                getTarget(command);
                             } else if (strcmp(getcw(), "torganization") == 0){
                                 getOrganization(command);
                             } else if (strcmp(getcw(), "tcertificate") == 0){
@@ -289,7 +301,11 @@ int main(){
                                     error(14);
                                 }
                             } else if (strcmp(getcw(), "ttarget") == 0){
-                                return 2;
+                                if(eop(command)){
+                                    guideTarget();
+                                } else {
+                                    error(14);
+                                }
                             } else if (strcmp(getcw(), "torganization") == 0){
                                 if(eop(command)){
                                     guideOrganization();

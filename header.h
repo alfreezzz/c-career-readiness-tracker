@@ -123,6 +123,7 @@ int longestName(void* data, int n, int type);
 int longestUrl(void* data, int n, int type);
 void showPositionTable(int lenMaxName, int n, position* data);
 void showSkillTable(int lenMaxName, int n, skill* data);
+void showTargetTable(int n, target* data);
 void showOrganizationTable(int lenMaxName, int n, organization* data);
 void showCategoryTable(int lenMaxName, int n, category* data);
 void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data);
@@ -141,6 +142,13 @@ void postSkill(char command[]);      // menambahkan data
 void updateSkill(char command[]);    // mengubah data
 void deleteSkill(char command[]);    // menghapus data
 void guideSkill();                   // panduan skill
+
+// perintah tabel target
+void getTarget(char command[]);       // menampilkan data
+void postTarget(char command[]);      // menambahkan data
+void updateTarget(char command[]);    // mengubah data
+void deleteTarget(char command[]);    // menghapus data
+void guideTarget();                   // panduan target
 
 // perintah tabel organisasi
 void getOrganization(char command[]);       // menampilkan data

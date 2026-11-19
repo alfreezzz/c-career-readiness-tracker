@@ -1,3 +1,4 @@
 https://www.w3schools.com/c/c_date_time.php
 https://gist.github.com/RabaDabaDoba/145049536f815903c79944599c6f952a
 https://stackoverflow.com/questions/75400003/is-there-a-way-to-make-a-single-function-operate-on-different-structures-having
+https://www.geeksforgeeks.org/c/convert-string-to-int-in-c/

@@ -328,6 +328,12 @@ void error(int code){   // pesan error
             printf(RED "pemula, menengah, mahir\n" DEFAULT);
             break;    
         }
+        case 30: {
+            printf(RED "Penguasaan harus di antara berikut:\n" DEFAULT);
+            printf(RED "0, 1\n\n" DEFAULT);
+            printf(RED "0 = belum dikuasai, 1 = sudah dikuasai\n" DEFAULT);
+            break;    
+        }
         default: {
             printf(RED "Bug belum diperbaiki\n" DEFAULT);
             break;
@@ -611,6 +617,41 @@ void showSkillTable(int lenMaxName, int n, skill* data){
         printf("-");
     }
     printf("-+-----------+---------------------+---------------------+\n"DEFAULT);
+}
+void showTargetTable(int n, target* data){
+    // header table
+    printf(WHITE"+--------+-----------+----------+----------------+---------------------+---------------------+\n");
+    printf("| "BWHITE"ID"WHITE"     | "BWHITE"ID_posisi"WHITE" | "BWHITE"ID_skill"WHITE" | "BWHITE"Sudah_dikuasai"WHITE" | "BWHITE"Tanggal_dibuat"WHITE"      | "BWHITE"Tanggal_diubah"WHITE"      |\n");
+    printf("+--------+-----------+----------+----------------+---------------------+---------------------+\n");
+
+    // body table
+    for(int i = 0; i < n; i++){
+        int lenMaxID = 6;
+        int lenMaxPosID = 9;
+        int lenMaxSklID = 8;
+        // ID
+        printf("| %s ", data[i].id);
+        for(int j = strlen(data[i].id); j < lenMaxID; j++){
+            printf(" ");
+        }
+        // ID POSISI
+        printf("| %s ", data[i].positionId);
+        for(int j = strlen(data[i].positionId); j < lenMaxPosID; j++){
+            printf(" ");
+        }
+        // ID SKILL
+        printf("| %s ", data[i].skillId);
+        for(int j = strlen(data[i].skillId); j < lenMaxSklID; j++){
+            printf(" ");
+        }
+        // STATUS PENGUASAAN
+        printf("| %d              ", data[i].isSkilled);
+        // TANGGAL DIBUAT & DIUBAH
+        printf("| %s | %s |\n", data[i].createdAt, data[i].updatedAt);
+    }
+
+    // footer table
+    printf("+--------+-----------+----------+----------------+---------------------+---------------------+\n"DEFAULT);
 }
 void showOrganizationTable(int lenMaxName, int n, organization* data){
     // header table
@@ -1816,6 +1857,589 @@ void guideSkill(){                   // buku panduan skill
     printf("|      "WHITE"4. Mengubah data         : "BPURPLE"CHANGE "BLUE"tskill "CYAN"id nama kecakapan"YELLOW"$"CYAN"                                   |\n");
     printf("|      "WHITE"5. Menghapus data        : "BPURPLE"REMOVE FROM "BLUE"tskill "CYAN"id"YELLOW"$"CYAN"                                             |\n");
     printf("|      "WHITE"6. Menggabungkan tabel   : "BPURPLE"JOIN ON "BLUE"tskill tposition ttarget"YELLOW"$"CYAN"                                  |\n");
+    printf("|                                                                                                    |\n");
+
+    guideFooter();
+}
+
+// perintah tabel target
+void getTarget(char command[]){       // menampilkan data
+    int recordSum = 0;  // jumlah rekaman dalam tabel
+    target temp[MAX];  // array rekaman untuk ditampilkan
+    target record;     // rekaman saat ini untuk disalin
+
+    FILE *targetTable;    // kaitan untuk mengakses file
+    targetTable = fopen("tables/ttarget.dat", "r"); // membuka file dengan mode read
+    
+    // memulai proses pembacaan
+    fscanf(targetTable, "%s %s %s %d %s %s\n", record.id, record.positionId, record.skillId, &record.isSkilled, record.createdAt, record.updatedAt);
+
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika ditemukan EOF atau data kosong
+        error(12);
+        fclose(targetTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].positionId, record.positionId);
+            strcpy(temp[recordSum].skillId, record.skillId);
+            temp[recordSum].isSkilled = record.isSkilled;
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(targetTable, "%s %s %s %d %s %s\n", record.id, record.positionId, record.skillId, &record.isSkilled, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+
+        fclose(targetTable); // menutup file
+
+        if(eop(command)){  // jika tidak melakukan pencarian
+            // menampilkan data
+            showTargetTable(recordSum, temp);
+        } else {    // jika tidak melakukan pencarian
+            inc(command);
+            if(strcmp(getcw(), "WHERE") == 0){
+                if(!eop(command)){
+                    inc(command);
+                    if(eop(command)){
+                        char search[50];
+                        strcpy(search, getcw());
+                        
+                        if(strcmp(search, IDDUMMY) == 0){
+                            error(11);
+                        } else {
+                            int idx;            // indeks dan iterasi
+                            bool found = false; // cek ditemukan
+
+                            // proses pencarian
+                            searchId(temp, recordSum, search, &found, &idx, 3);
+                            
+                            if(found){  // jika data ditemukan
+                                target foundData[1];
+                                foundData[0] = temp[idx];
+                                showTargetTable(1, foundData);
+                            } else {
+                                error(11);
+                            }
+                        }
+                    } else {
+                        error(14);
+                    }
+                } else {
+                    error(15);
+                }
+            } else {
+                error(21);
+            }
+        }
+    }
+}
+void postTarget(char command[]){      // menambahkan data
+    char dateTime[100];     // menyimpan tanggal dan waktu saat ini
+    timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
+    
+    int recordSum = 0;      // jumlah rekaman di dalam tabel
+    target temp[MAX];      // array rekaman untuk menggeserkan nilai rekaman baru
+    target record, new;    // rekaman saat ini dan rekaman yang baru
+    
+    FILE *targetTable;    // kaitan untuk mengakses file
+    targetTable = fopen("tables/ttarget.dat", "r"); // membuka file dengan mode read
+    
+    // memulai proses pembacaan
+    fscanf(targetTable, "%s %s %s %d %s %s\n", record.id, record.positionId, record.skillId, &record.isSkilled, record.createdAt, record.updatedAt);
+
+    // jika tidak ditemukan EOF dan data tidak kosong
+    if(strcmp(record.id, IDDUMMY) != 0 && strcmp(record.id, "") != 0){
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].positionId, record.positionId);
+            strcpy(temp[recordSum].skillId, record.skillId);
+            temp[recordSum].isSkilled = record.isSkilled;
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(targetTable, "%s %s %s %d %s %s\n", record.id, record.positionId, record.skillId, &record.isSkilled, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+    }
+    fclose(targetTable); // menutup file
+    
+    inc(command);   
+    if(!eop(command)){
+        if(strlen(getcw()) < sizeof(record.id)){
+            strcpy(new.id, getcw());    // mengambil id masukan user
+    
+            inc(command);
+            if(!eop(command)){
+                if(strlen(getcw()) < sizeof(record.positionId)){
+
+                    position positionRecord;
+                    FILE *positionTable;
+                    positionTable = fopen("tables/tposition.dat", "r");
+
+                    char searchPosition[10];
+                    strcpy(searchPosition, getcw());
+
+                    fscanf(positionTable, "%s %s %s %s", positionRecord.id, positionRecord.name, positionRecord.createdAt, positionRecord.updatedAt);
+
+                    bool foundPosId = false;
+                    if(strcmp(positionRecord.id, IDDUMMY) == 0){
+                        error(12);
+                    } else if (strcmp(searchPosition, IDDUMMY) == 0){
+                        error(11);
+                    } else {
+                        while((strcmp(positionRecord.id, IDDUMMY) != 0) && (strcmp(positionRecord.id, searchPosition) != 0)){
+                            fscanf(positionTable, "%s %s %s %s\n", positionRecord.id, positionRecord.name, positionRecord.createdAt, positionRecord.updatedAt);
+                        }
+                        if(strcmp(positionRecord.id, searchPosition) == 0){
+                            foundPosId = true;
+                        } else {
+                            error(23);
+                        }
+                    }
+                    fclose(positionTable);
+
+                    if(foundPosId){
+                        strcpy(new.positionId, getcw());  // mengambil posisi masukan user
+    
+                        inc(command);
+                        if(!eop(command)){
+                            if(strlen(getcw()) < sizeof(record.skillId)){
+                                
+                                skill skillRecord;
+                                FILE *skillTable;
+                                skillTable = fopen("tables/tskill.dat", "r");
+
+                                char searchPosition[10];
+                                strcpy(searchPosition, getcw());
+
+                                fscanf(skillTable, "%s %s %s %s %s", skillRecord.id, skillRecord.name, skillRecord.proficiency, skillRecord.createdAt, skillRecord.updatedAt);
+
+                                bool foundSklId = false;
+                                if(strcmp(skillRecord.id, IDDUMMY) == 0){
+                                    error(12);
+                                } else if (strcmp(searchPosition, IDDUMMY) == 0){
+                                    error(11);
+                                } else {
+                                    while((strcmp(skillRecord.id, IDDUMMY) != 0) && (strcmp(skillRecord.id, searchPosition) != 0)){
+                                        fscanf(skillTable, "%s %s %s %s %s\n", skillRecord.id, skillRecord.name, skillRecord.proficiency, skillRecord.createdAt, skillRecord.updatedAt);
+                                    }
+                                    if(strcmp(skillRecord.id, searchPosition) == 0){
+                                        foundSklId = true;
+                                    } else {
+                                        error(23);
+                                    }
+                                }
+                                fclose(skillTable);
+
+                                if(foundSklId){
+                                    strcpy(new.skillId, getcw());
+        
+                                    inc(command);
+                                    if(eop(command)){
+                                        if(strcmp(getcw(), "0") == 0 || strcmp(getcw(), "1") == 0){
+                                            sscanf(getcw(), "%d", &new.isSkilled);
+    
+                                            // mengambil tanggal dan waktu saat ini
+                                            strcpy(new.createdAt, dateTime);
+                                            strcpy(new.updatedAt, dateTime);
+                                
+                                            bool isDuplicate = false;   // cek id duplikat
+                                            // kondisi memasukkan rekaman baru ke dalam array
+                                            if(strcmp(new.id, temp[0].id) < 0){
+                                                // rekaman baru di paling depan
+                                                // geser semua isi array ke belakang
+                                                for(int i = recordSum - 1; i >= 0; i--){
+                                                    strcpy(temp[i+1].id, temp[i].id);
+                                                    strcpy(temp[i+1].positionId, temp[i].positionId);
+                                                    strcpy(temp[i+1].skillId, temp[i].skillId);
+                                                    temp[i+1].isSkilled = temp[i].isSkilled;
+                                                    strcpy(temp[i+1].createdAt, temp[i].createdAt);
+                                                    strcpy(temp[i+1].updatedAt, temp[i].updatedAt);
+                                                }
+                                                recordSum++;
+                                                strcpy(temp[0].id, new.id);
+                                                strcpy(temp[0].positionId, new.positionId);
+                                                strcpy(temp[0].skillId, new.skillId);
+                                                temp[0].isSkilled = new.isSkilled;
+                                                strcpy(temp[0].createdAt, new.createdAt);
+                                                strcpy(temp[0].updatedAt, new.updatedAt);
+                                            } else if (strcmp(new.id, temp[recordSum - 1].id) > 0){
+                                                // rekaman baru di paling belakang
+                                                strcpy(temp[recordSum].id, new.id);
+                                                strcpy(temp[recordSum].positionId, new.positionId);
+                                                strcpy(temp[recordSum].skillId, new.skillId);
+                                                temp[recordSum].isSkilled = new.isSkilled;
+                                                strcpy(temp[recordSum].createdAt, new.createdAt);
+                                                strcpy(temp[recordSum].updatedAt, new.updatedAt);
+                                                recordSum++;
+                                            } else {
+                                                // rekaman baru memiliki posisi di tengah
+                                                int i = 0;  // iterasi dan indeks
+                                                bool isStop = false;    // cek berhenti
+                                                // cari posisi
+                                                while((i < recordSum) && (!isStop)){
+                                                    if(strcmp(temp[i].id, new.id) == 0){
+                                                        // terdapat id yang redundan
+                                                        error(7);
+                                                        isDuplicate = true;
+                                                        isStop = true;
+                                                    } else if (strcmp(temp[i].id, new.id) > 0){
+                                                        isStop = true;
+                                                    } else {
+                                                        i++;
+                                                    }
+                                                }
+                                                if(!isDuplicate){
+                                                    // menggeserkan rekaman di posisi tengah
+                                                    for(int j = recordSum - 1; j >= i; j--){
+                                                        strcpy(temp[j+1].id, temp[j].id);
+                                                        strcpy(temp[j+1].positionId, temp[j].positionId);
+                                                        strcpy(temp[j+1].skillId, temp[j].skillId);
+                                                        temp[j+1].isSkilled = temp[j].isSkilled;
+                                                        strcpy(temp[j+1].createdAt, temp[j].createdAt);
+                                                        strcpy(temp[j+1].updatedAt, temp[j].updatedAt);
+                                                    }
+                                                    // memasukkan rekaman baru di posisi tengah
+                                                    strcpy(temp[i].id, new.id);
+                                                    strcpy(temp[i].positionId, new.positionId);
+                                                    strcpy(temp[i].skillId, new.skillId);
+                                                    temp[i].isSkilled = new.isSkilled;
+                                                    strcpy(temp[i].createdAt, new.createdAt);
+                                                    strcpy(temp[i].updatedAt, new.updatedAt);
+                                                    recordSum++;
+                                                }
+                                            }
+                                            if(!isDuplicate){
+                                                showTargetTable(recordSum, temp);
+                                                success(0);
+                                                // flush ke file
+                                                targetTable = fopen("tables/ttarget.dat", "w");
+                                                for(int i = 0; i < recordSum; i++){
+                                                    fprintf(targetTable, "%s %s %s %d %s %s\n", temp[i].id, temp[i].positionId, temp[i].skillId, temp[i].isSkilled, temp[i].createdAt, temp[i].updatedAt);
+                                                }
+                                                fprintf(targetTable, "%s", EOFTARGET);
+                                                fclose(targetTable);
+                                            }
+                                        } else {
+                                            error(30);
+                                        }
+                                    } else {
+                                        error(6);
+                                    }
+                                }
+                            } else {
+                                error(16);
+                            }
+                        } else {
+                            error(4);
+                        }
+                    }
+                } else {
+                    error(16);
+                }
+            } else {
+                error(4);
+            }
+        } else {
+            error(16);
+        }
+    } else {
+        error(4);
+    }
+}
+void updateTarget(char command[]){    // mengubah data
+    char dateTime[100];     // menyimpan tanggal dan waktu saat ini
+    timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
+
+    int recordSum = 0;      // jumlah rekaman di dalam tabel
+    target temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
+    target record, new;   // rekaman saat ini dan rekaman yang baru
+
+    FILE *targetTable;    // kaitan untuk mengakses file
+    targetTable = fopen("tables/ttarget.dat", "r"); // membuka file dengan mode read
+
+    // memulai proses pembacaan
+    fscanf(targetTable, "%s %s %s %d %s %s\n", record.id, record.positionId, record.skillId, &record.isSkilled, record.createdAt, record.updatedAt);
+    
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika EOF ditemukan atau data kosong
+        error(12);
+        fclose(targetTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].positionId, record.positionId);
+            strcpy(temp[recordSum].skillId, record.skillId);
+            temp[recordSum].isSkilled = record.isSkilled;
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(targetTable, "%s %s %s %d %s %s\n", record.id, record.positionId, record.skillId, &record.isSkilled, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+        
+        fclose(targetTable); // menutup file
+        
+        inc(command);
+        char search[50]; // cari nilai id
+        strcpy(search, getcw()); // mengambil id masukan user
+        
+        int i = 0;  // iterasi dan index
+        bool isFound = false;   // cek ditemukan
+        // proses pencarian
+        while(!isFound && i < recordSum){
+            if(strcmp(temp[i].id, search) == 0){
+                isFound = true;
+            } else {
+                i++;
+            }
+        }
+        
+        if(!isFound){
+            error(11);
+        } else {
+            if(!eop(command)){
+                inc(command);
+                if(!eop(command)){
+                    if(strlen(getcw()) < sizeof(record.positionId)){
+                        position positionRecord;
+
+                        FILE *positionTable;
+                        positionTable = fopen("tables/tposition.dat", "r");
+
+                        char search[10];
+                        strcpy(search, getcw());
+
+                        fscanf(positionTable, "%s %s %s %s", positionRecord.id, positionRecord.name, positionRecord.createdAt, positionRecord.updatedAt);
+
+                        bool foundPosId = false;
+                        if(strcmp(positionRecord.id, IDDUMMY) == 0){
+                            error(12);
+                        } else if (strcmp(search, IDDUMMY) == 0){
+                            error(11);
+                        } else {
+                            while((strcmp(positionRecord.id, IDDUMMY) != 0) && (strcmp(positionRecord.id, search) != 0)){
+                                fscanf(positionTable, "%s %s %s %s\n", positionRecord.id, positionRecord.name, positionRecord.createdAt, positionRecord.updatedAt);
+                            }
+                            if(strcmp(positionRecord.id, search) == 0){
+                                foundPosId = true;
+                            }
+                        }
+                        fclose(positionTable);
+
+                        if(foundPosId){
+                            strcpy(new.positionId, getcw());          // mengambil id posisi masukan user
+    
+                            inc(command);
+                            if(!eop(command)){
+                                if(strlen(getcw()) < sizeof(record.skillId)){
+                                    skill skillRecord;
+
+                                    FILE *skillTable;
+                                    skillTable = fopen("tables/tskill.dat", "r");
+
+                                    char search[10];
+                                    strcpy(search, getcw());
+
+                                    fscanf(skillTable, "%s %s %s %s %s", skillRecord.id, skillRecord.name, skillRecord.proficiency, skillRecord.createdAt, skillRecord.updatedAt);
+
+                                    bool foundSklId = false;
+                                    if(strcmp(skillRecord.id, IDDUMMY) == 0){
+                                        error(12);
+                                    } else if (strcmp(search, IDDUMMY) == 0){
+                                        error(11);
+                                    } else {
+                                        while((strcmp(skillRecord.id, IDDUMMY) != 0) && (strcmp(skillRecord.id, search) != 0)){
+                                            fscanf(skillTable, "%s %s %s %s %s\n", skillRecord.id, skillRecord.name, skillRecord.proficiency, skillRecord.createdAt, skillRecord.updatedAt);
+                                        }
+                                        if(strcmp(skillRecord.id, search) == 0){
+                                            foundSklId = true;
+                                        }
+                                    }
+                                    fclose(skillTable);
+
+                                    if(foundSklId){
+                                        strcpy(new.skillId, getcw());
+        
+                                        inc(command);
+                                        if(eop(command)){
+                                            if(strcmp(getcw(), "0") == 0 || strcmp(getcw(), "1") == 0){
+                                                sscanf(getcw(), "%d", &new.isSkilled);
+                                                strcpy(new.updatedAt, dateTime);    // mengubah tanggal diubah
+            
+                                                // mengubah menjadi nilai baru
+                                                strcpy(temp[i].positionId, new.positionId);
+                                                strcpy(temp[i].skillId, new.skillId);
+                                                temp[i].isSkilled = new.isSkilled;
+                                                strcpy(temp[i].updatedAt, new.updatedAt);
+                            
+                                                showTargetTable(recordSum, temp);
+                                                success(1);
+                                            } else {
+                                                error(30);
+                                            }
+                                        } else {
+                                            error(6);
+                                        }
+                                    } else {
+                                        error(23);
+                                    }
+                                } else {
+                                    error(16);
+                                }
+                            } else {
+                                error(4);
+                            }
+                        } else {
+                            error(23);
+                        }
+                    } else {
+                        error(16);
+                    }
+                } else {
+                    error(4);
+                }
+            } else {
+                error(13);
+            }
+        }
+        // flush ke file
+        targetTable = fopen("tables/ttarget.dat", "w");
+        for(int i = 0; i < recordSum; i++){
+            fprintf(targetTable, "%s %s %s %d %s %s\n", temp[i].id, temp[i].positionId, temp[i].skillId, temp[i].isSkilled, temp[i].createdAt, temp[i].updatedAt);
+        }
+        fprintf(targetTable, "%s", EOFTARGET);
+        fclose(targetTable);   
+    }
+}
+void deleteTarget(char command[]){    // menghapus data
+    int recordSum = 0;      // jumlah rekaman di dalam tabel
+    target temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
+    target record, new;   // rekaman saat ini dan rekaman yang baru
+
+    FILE *targetTable;    // kaitan untuk mengakses file
+    targetTable = fopen("tables/ttarget.dat", "r"); // membuka file dengan mode read
+
+    // memulai proses pembacaan
+    fscanf(targetTable, "%s %s %s %d %s %s\n", record.id, record.positionId, record.skillId, &record.isSkilled, record.createdAt, record.updatedAt);
+    
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika EOF ditemukan atau data kosong
+        error(12);
+        fclose(targetTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].positionId, record.positionId);
+            strcpy(temp[recordSum].skillId, record.skillId);
+            temp[recordSum].isSkilled = record.isSkilled;
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(targetTable, "%s %s %s %d %s %s\n", record.id, record.positionId, record.skillId, &record.isSkilled, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+
+        fclose(targetTable); // menutup file
+        
+        inc(command);
+        char search[50]; // cari nilai id
+        strcpy(search, getcw()); // mengambil id masukan user
+        
+        if(eop(command)){
+            int idx = 0;    // iterasi dan index
+            bool isFound = false;   // cek ditemukan
+            // proses pencarian 
+            while(!isFound && idx < recordSum){
+                if(strcmp(temp[idx].id, search) == 0){
+                    isFound = true;
+                } else {
+                    idx++;
+                }
+            }
+            
+            if(!isFound){
+                error(11);
+            } else {
+                // kondisi memasukkan ke dalam array
+                if(idx == 0){
+                    // rekaman dihapus di paling depan
+                    // geser semua isi array ke belakang
+                    for(int i = 0; i < recordSum - 1; i++){
+                        strcpy(temp[i].id, temp[i+1].id);
+                        strcpy(temp[i].positionId, temp[i+1].positionId);
+                        strcpy(temp[i].skillId, temp[i+1].skillId);
+                        temp[i].isSkilled = temp[i+1].isSkilled;
+                        strcpy(temp[i].createdAt, temp[i+1].createdAt);
+                        strcpy(temp[i].updatedAt, temp[i+1].updatedAt);
+                    }
+                    recordSum--;
+                } else if (idx == recordSum - 1){
+                    // rekaman dihapus di paling belakang
+                    recordSum--;
+                } else {
+                    // rekaman dihapus memiliki posisi di tengah
+                    int i = 0;  // iterasi dan index
+                    bool isStopped = false; // cek ditemukan
+                    // cari posisi
+                    while((i < recordSum) && !isStopped){
+                        if(i >= idx){
+                            isStopped = true;
+                        } else {
+                            i++;
+                        }
+                    }
+                    // menggeserkan rekaman di posisi tengah
+                    for(int j = i; j < recordSum - 1; j++){
+                        strcpy(temp[j].id, temp[j+1].id);
+                        strcpy(temp[j].positionId, temp[j+1].positionId);
+                        strcpy(temp[j].skillId, temp[j+1].skillId);
+                        temp[j].isSkilled = temp[j+1].isSkilled;
+                        strcpy(temp[j].createdAt, temp[j+1].createdAt);
+                        strcpy(temp[j].updatedAt, temp[j+1].updatedAt);
+                    }
+                    recordSum--;
+                }
+                showTargetTable(recordSum, temp);
+                success(2);
+            }
+            // flush ke file
+            targetTable = fopen("tables/ttarget.dat", "w");
+            for(int i = 0; i < recordSum; i++){
+                fprintf(targetTable, "%s %s %s %d %s %s\n", temp[i].id, temp[i].positionId, temp[i].skillId, temp[i].isSkilled, temp[i].createdAt, temp[i].updatedAt);
+            }
+            fprintf(targetTable, "%s", EOFTARGET);
+            fclose(targetTable);
+        } else {
+            error(14);
+        }
+    }
+}
+void guideTarget(){                   // buku panduan target
+    guideTitle();
+
+    printf("|                                                                                                    |\n");
+    printf("|   "WHITE"Tabel target digunakan untuk menyimpan data target pekerjaan yang diincar"CYAN"                        |\n");
+    printf("|                                                                                                    |\n");
+    printf("|   "BGREEN"STRUKTUR DATA"CYAN"                                                                                    |\n");
+    printf("|      "WHITE"1. id              : "CYAN"Kode unik                                                                |\n");
+    printf("|      "WHITE"2. id_posisi       : "CYAN"Kode unik dari nama posisi                                               |\n");
+    printf("|      "WHITE"3. id_skill        : "CYAN"Kode unik dari nama skill                                                |\n");
+    printf("|      "WHITE"4. sudah_dikuasai  : "CYAN"Status penguasaan (0 atau 1)                                             |\n");
+    printf("|      "WHITE"6. tanggal_dibuat  : "CYAN"Waktu data dibuat                                                        |\n");
+    printf("|      "WHITE"7. tanggal_diubah  : "CYAN"Waktu data diubah                                                        |\n");
+    printf("|                                                                                                    |\n");
+    printf("|   "BGREEN"PENGGUNAAN PERINTAH"CYAN"                                                                              |\n");
+    printf("|      "WHITE"1. Menampilkan data      : "BPURPLE"PRESENT FROM "BLUE"ttarget"YELLOW"$"CYAN"                                              |\n");
+    printf("|      "WHITE"2. Mencari data          : "BPURPLE"PRESENT FROM"BLUE" ttarget "BPURPLE"WHERE"CYAN" id"YELLOW"$"CYAN"                                     |\n");
+    printf("|      "WHITE"3. Menambahkan data      : "BPURPLE"SUBMIT TO "BLUE"ttarget "CYAN"id id_posisi id_skill sudah_dikuasai"YELLOW"$"CYAN"            |\n");
+    printf("|      "WHITE"4. Mengubah data         : "BPURPLE"CHANGE "BLUE"ttarget "CYAN"id id_posisi id_skill sudah_dikuasai"YELLOW"$"CYAN"               |\n");
+    printf("|      "WHITE"5. Menghapus data        : "BPURPLE"REMOVE FROM "BLUE"ttarget "CYAN"id"YELLOW"$"CYAN"                                            |\n");
+    printf("|      "WHITE"6. Menggabungkan tabel   : "BPURPLE"JOIN ON "BLUE"ttarget tposition tskill"YELLOW"$"CYAN"                                  |\n");
     printf("|                                                                                                    |\n");
 
     guideFooter();
