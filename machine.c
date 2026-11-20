@@ -1006,13 +1006,412 @@ void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data){
 
 // ui tabel join
 // tabel gabungan posisi, skill, dan target
-void showPositionSkillTarget(int maxTarName, int maxPosName, int maxSklName, int tarSum, int posSum, int sklSum, target* tarData, position* posData, skill* sklData){}
-// tabel gabungan organisasi, dan sertifikat
-void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int cerSum, int orgSum, certificate* cerData, organization* orgData){}
-// tabel gabungan organisasi, posisi, dan pengalaman
-void showOrganizationPositionExperience(int maxExpName, int maxOrgName, int maxPosName, int expSum, int orgSum, int posSum, experience* expData, organization* orgData, position* posData){}
-// atas belum dibuat
+void showPositionSkillTarget(int maxPosName, int maxSklName, int tarSum, int posSum, int sklSum, target* tarData, position* posData, skill* sklData){
+    // header table
+    printf(WHITE"+--------+-");
+    for(int i = 1; i <= maxPosName || i <= 6; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxSklName || i <= 5; i++){
+        printf("-");
+    }
+    printf("-+----------------+---------------------+---------------------+\n");
+    printf("| "BWHITE"ID"WHITE"     | "BWHITE"Posisi"WHITE" ");
+    for(int i = 1; i <= maxPosName && i <= maxPosName - 6; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Skill"WHITE" ");
+    for(int i = 1; i <= maxSklName && i <= maxSklName - 5; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Sudah_dikuasai"WHITE" | "BWHITE"Tanggal_dibuat"WHITE"      | "BWHITE"Tanggal_diubah"WHITE"      |\n");
+    printf("+--------+-");
+    for(int i = 1; i <= maxPosName || i <= 6; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxSklName || i <= 5; i++){
+        printf("-");
+    }
+    printf("-+----------------+---------------------+---------------------+\n");
 
+    bool isError = false; // jika ada nilai foreign yang tidak valid
+    // body table
+    for(int i = 0; i < tarSum; i++){
+        char posName[50];   // nama posisi jika ditemukan
+        int j = 0;          // iterasi
+        bool foundPos = false; // kondisi berhenti
+        // proses pencarian foreign key
+        do{
+            if(strcmp(tarData[i].positionId, posData[j].id) == 0){
+                strcpy(posName, posData[j].name);
+                foundPos = true;
+            }
+            j++;
+        } while(j < posSum && !foundPos);
+
+        char sklName[50];   // nama skill jika ditemukan
+        j = 0;              // iterasi
+        bool foundSkl = false; // kondisi berhenti
+        // proses pencarian foreign key
+        do{
+            if(strcmp(tarData[i].skillId, sklData[j].id) == 0){
+                strcpy(sklName, sklData[j].name);
+                foundSkl = true;
+            }
+            j++;
+        } while(j < sklSum && !foundSkl);
+
+        int lenMaxID = 6;
+        // ID
+        printf("| %s ", tarData[i].id);
+        for(int j = strlen(tarData[i].id); j < lenMaxID; j++){
+            printf(" ");
+        }
+        // POSISI
+        int lenPos = 6;
+        if(maxPosName > lenPos){
+            lenPos = maxPosName;
+        }
+        if(foundPos){
+            printf("| %s ", posName);
+            for(int j = strlen(posName); j < lenPos; j++){
+                printf(" ");
+            }
+        } else {
+            printf("| %s ", tarData[i].positionId);
+            for(int j = strlen(tarData[i].positionId); j < lenPos; j++){
+                printf(" ");
+            }
+            isError = true;
+        }
+        // SKILL
+        int lenSkl = 5;
+        if(maxSklName > lenSkl){
+            lenSkl = maxSklName;
+        }
+        if(foundSkl){
+            printf("| %s ", sklName);
+            for(int j = strlen(sklName); j < lenSkl; j++){
+                printf(" ");
+            }
+        } else {
+            printf("| %s ", tarData[i].skillId);
+            for(int j = strlen(tarData[i].skillId); j < lenSkl; j++){
+                printf(" ");
+            }
+            isError = true;
+        }
+        // STATUS PENGUASAAN
+        printf("| %d              ", tarData[i].isSkilled);
+        // TANGGAL DIBUAT & DIUBAH
+        printf("| %s | %s |\n", tarData[i].createdAt, tarData[i].updatedAt);
+    }
+    // footer table
+    printf("+--------+-");
+    for(int i = 1; i <= maxPosName || i <= 6; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxSklName| i <= 5; i++){
+        printf("-");
+    }
+    printf("-+----------------+---------------------+---------------------+\n"DEFAULT);
+
+    if(isError){
+        error(27);
+    }
+}
+// tabel gabungan organisasi, dan sertifikat
+void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int maxCred, int cerSum, int orgSum, certificate* cerData, organization* orgData){
+    // header table
+    printf(WHITE"+--------+-");
+    for(int i = 1; i <= maxCerName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxOrgName || i <= 10; i++){
+        printf("-");
+    }
+    printf("-+-----------------+------------------+-");
+    for(int i = 1; i <= maxCred || i <= 13; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxUrl || i <= 3; i++){
+        printf("-");
+    }
+    printf("-+---------------------+---------------------+\n");
+    printf("| "BWHITE"ID"WHITE"     |");
+    printf(" "BWHITE"Nama"WHITE" ");
+    for(int i = 1; i <= maxCerName && i <= maxCerName - 4; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Organisasi"WHITE" ");
+    for(int i = 1; i <= maxOrgName && i <= maxOrgName - 10; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Tanggal_dimulai"WHITE" | "BWHITE"Tanggal_berakhir"WHITE" ");
+    printf("| "BWHITE"ID_kredensial"WHITE" ");
+    for(int i = 1; i <= maxCred && i <= maxCred - 13; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Url"WHITE" ");
+    for(int i = 1; i <= maxUrl && i <= maxUrl - 3; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Tanggal_dibuat"WHITE"      | "BWHITE"Tanggal_diubah"WHITE"      |\n");
+    printf("+--------+-");
+    for(int i = 1; i <= maxCerName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxOrgName || i <= 10; i++){
+        printf("-");
+    }
+    printf("-+-----------------+------------------+-");
+    for(int i = 1; i <= maxCred || i <= 13; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxUrl || i <= 3; i++){
+        printf("-");
+    }
+    printf("-+---------------------+---------------------+\n");
+    
+    bool isError = false; // jika ada nilai foreign yang tidak valid
+    // body table
+    for(int i = 0; i < cerSum; i++){
+        char cerName[50];   // nama kategori jika ditemukan
+        int j = 0;          // iterasi
+        bool found = false; // kondisi berhenti
+        // proses pencarian foreign key
+        do{
+            if(strcmp(cerData[i].issuerId, orgData[j].id) == 0){
+                strcpy(cerName, orgData[j].name);
+                found = true;
+            }
+            j++;
+        } while(j < orgSum && !found);
+
+        int lenMaxID = 6, lenMaxDate = 15;
+        // ID
+        printf("| %s ", cerData[i].id);
+        for(int j = strlen(cerData[i].id); j < lenMaxID; j++){
+            printf(" ");
+        }
+        // NAMA
+        int nameLen = 4;
+        if(maxCerName > nameLen){
+            nameLen = maxCerName;
+        }
+        printf("| %s ", cerData[i].name);
+        for(int j = strlen(cerData[i].name); j < nameLen; j++){
+            printf(" ");
+        }
+        // ORGANISASI
+        int issuerLen = 10;
+        if(maxOrgName > issuerLen){
+            issuerLen = maxOrgName;
+        }
+        if(found){
+            printf("| %s ", cerName);
+            for(int j = strlen(cerName); j < issuerLen; j++){
+                printf(" ");
+            }
+        } else {
+            printf("| %s ", cerData[i].issuerId);
+            for(int j = strlen(cerData[i].issuerId); j < issuerLen; j++){
+                printf(" ");
+            }
+            isError = true;
+        }
+        // TANGGAL DIMULAI
+        int lenMaxStartDate = 15;
+        printf("| %s ", cerData[i].startDate);
+        for(int j = strlen(cerData[i].startDate); j < lenMaxStartDate; j++){
+            printf(" ");
+        }
+        // TANGGAL BERAKHIR
+        printf("| %s ", cerData[i].endDate);
+        int lenMaxEndDate = 16;
+        for(int j = strlen(cerData[i].endDate); j < lenMaxEndDate; j++){
+            printf(" ");
+        }
+        // KREDENSIAL
+        int credLen = 13;
+        if(maxCred > credLen){
+            credLen = maxCred;
+        }
+        printf("| %s ", cerData[i].url);
+        for(int j = strlen(cerData[i].url); j < credLen; j++){
+            printf(" ");
+        }
+        // URL
+        int urlLen = 3;
+        if(maxUrl > urlLen){
+            urlLen = maxUrl;
+        }
+        printf("| %s ", cerData[i].url);
+        for(int j = strlen(cerData[i].url); j < urlLen; j++){
+            printf(" ");
+        }
+        // TANGGAL DIBUAT & DIUBAH
+        printf("| %s | %s |\n", cerData[i].createdAt, cerData[i].updatedAt);
+    }
+    
+    // footer table
+    printf("+--------+-");
+    for(int i = 1; i <= maxCerName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxOrgName || i <= 10; i++){
+        printf("-");
+    }
+    printf("-+-----------------+------------------+-");
+    for(int i = 1; i <= maxCred || i <= 13; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxUrl || i <= 3; i++){
+        printf("-");
+    }
+    printf("-+---------------------+---------------------+\n"DEFAULT);
+
+    if(isError){
+        error(27);
+    }
+}
+// tabel gabungan organisasi, posisi, dan pengalaman
+void showOrganizationPositionExperience(int maxOrgName, int maxPosName, int expSum, int orgSum, int posSum, experience* expData, organization* orgData, position* posData){
+    // header table
+    printf(WHITE"+--------+-");
+    for(int i = 1; i <= maxOrgName || i <= 10; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxPosName || i <= 6; i++){
+        printf("-");
+    }
+    printf("-+-----------------+------------------+---------------------+---------------------+\n");
+    printf("| "BWHITE"ID"WHITE"     | "BWHITE"Organisasi"WHITE" ");
+    for(int i = 1; i <= maxOrgName && i <= maxOrgName - 10; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Posisi"WHITE" ");
+    for(int i = 1; i <= maxPosName && i <= maxPosName - 6; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Tanggal_dimulai"WHITE" | "BWHITE"Tanggal_berakhir"WHITE" | "BWHITE"Tanggal_dibuat"WHITE"      | "BWHITE"Tanggal_diubah"WHITE"      |\n");
+    printf("+--------+-");
+    for(int i = 1; i <= maxOrgName || i <= 10; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxPosName || i <= 6; i++){
+        printf("-");
+    }
+    printf("-+-----------------+------------------+---------------------+---------------------+\n");
+
+    bool isError = false; // jika ada nilai id_organisasi yang tidak valid
+    // body table
+    for(int i = 0; i < expSum; i++){
+        char orgName[50];   // nama organisasi jika ditemukan
+        int j = 0;          // iterasi
+        bool foundOrg = false; // kondisi berhenti
+        // proses pencarian foreign key
+        do{
+            if(strcmp(expData[i].organizationId, orgData[j].id) == 0){
+                strcpy(orgName, orgData[j].name);
+                foundOrg = true;
+            }
+            j++;
+        } while(j < orgSum && !foundOrg);
+
+        char posName[50];   // nama posisi jika ditemukan
+        j = 0;              // iterasi
+        bool foundPos = false; // kondisi berhenti
+        // proses pencarian foreign key
+        do{
+            if(strcmp(expData[i].positionId, posData[j].id) == 0){
+                strcpy(posName, posData[j].name);
+                foundPos = true;
+            }
+            j++;
+        } while(j < orgSum && !foundPos);
+
+        int lenMaxID = 6;
+        int lenMaxStartDate = 15;
+        int lenMaxEndDate = 16;
+        // ID
+        printf("| %s ", expData[i].id);
+        for(int j = strlen(expData[i].id); j < lenMaxID; j++){
+            printf(" ");
+        }
+        // ORGANISASI
+        int lenOrg = 10;
+        if(maxOrgName > lenOrg){
+            lenOrg = maxOrgName;
+        }
+        if(foundOrg){
+            printf("| %s ", orgName);
+            for(int j = strlen(orgName); j < lenOrg; j++){
+                printf(" ");
+            }
+        } else {
+            printf("| %s ", expData[i].organizationId);
+            for(int j = strlen(expData[i].organizationId); j < lenOrg; j++){
+                printf(" ");
+            }
+            isError = true;
+        }
+        // POSISI
+        int lenPos = 6;
+        if(maxPosName > lenPos){
+            lenPos = maxPosName;
+        }
+        if(foundPos){
+            printf("| %s ", posName);
+            for(int j = strlen(posName); j < lenPos; j++){
+                printf(" ");
+            }
+        } else {
+            printf("| %s ", expData[i].positionId);
+            for(int j = strlen(expData[i].positionId); j < lenPos; j++){
+                printf(" ");
+            }
+            isError = true;
+        }
+        // TANGGAL DIMULAI
+        printf("| %s ", expData[i].startDate);
+        for(int j = strlen(expData[i].startDate); j < lenMaxStartDate; j++){
+            printf(" ");
+        }
+        // TANGGAL BERAKHIR
+        printf("| %s ", expData[i].endDate);
+        for(int j = strlen(expData[i].endDate); j < lenMaxEndDate; j++){
+            printf(" ");
+        }
+        // TANGGAL DIBUAT & DIUBAH
+        printf("| %s | %s |\n", expData[i].createdAt, expData[i].updatedAt);
+    }
+    // footer table
+    printf("+--------+-");
+    for(int i = 1; i <= maxOrgName || i <= 10; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= maxPosName || i <= 6; i++){
+        printf("-");
+    }
+    printf("-+-----------------+------------------+---------------------+---------------------+\n"DEFAULT);
+
+    if(isError){
+        error(27);
+    }
+}
 // tabel gabungan kategori, dan proyek
 void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum, int catSum, project* proData, category* catData){
     // header table
@@ -1055,7 +1454,7 @@ void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum,
     }
     printf("-+---------------------+---------------------+\n");
     
-    bool isError = false; // jika ada nilai id_kategori yang tidak valid
+    bool isError = false; // jika ada nilai foreign yang tidak valid
     // body table
     for(int i = 0; i < proSum; i++){
         char catName[50];   // nama kategori jika ditemukan
@@ -5217,12 +5616,262 @@ void guideProject(){                   // buku panduan proyek
 }
 
 // perintah join
-void joinTargetPositionSkill(char command[]){}
-void joinCertificateOrganization(char command[]){}
-void joinExperienceOrganizationPosition(char command[]){}
-// atas belum dibuat
+void joinTargetPositionSkill(char command[]){               // menggabungkan tabel target, posisi, dan skill
+    int sklSum = 0;          // jumlah rekaman dalam tabel skill
+    skill tempSkl[MAX];      // array rekaman skill untuk ditampilkan
+    skill sklRecord;         // rekaman skill saat ini untuk disalin
 
-void joinProjectCategory(char command[]){   // menggabungkan tabel kategori dan proyek
+    FILE *skillTable;    // kaitan untuk mengakses file skill
+    skillTable = fopen("tables/tskill.dat", "r"); // membuka file skill dengan mode read
+    
+    // memulai proses pembacaan
+    fscanf(skillTable, "%s %s %s %s %s\n", sklRecord.id, sklRecord.name, sklRecord.proficiency, sklRecord.createdAt, sklRecord.updatedAt);
+
+    if(strcmp(sklRecord.id, IDDUMMY) == 0 || strcmp(sklRecord.id, "") == 0){
+        // jika ditemukan EOF atau data kosong
+        error(12);
+        fclose(skillTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array skill sampai ditemukan EOF
+        do{
+            strcpy(tempSkl[sklSum].id, sklRecord.id);
+            strcpy(tempSkl[sklSum].name, sklRecord.name);
+            strcpy(tempSkl[sklSum].proficiency, sklRecord.proficiency);
+            strcpy(tempSkl[sklSum].createdAt, sklRecord.createdAt);
+            strcpy(tempSkl[sklSum].updatedAt, sklRecord.updatedAt);
+            sklSum++;
+            fscanf(skillTable, "%s %s %s %s %s\n", sklRecord.id, sklRecord.name, sklRecord.proficiency, sklRecord.createdAt, sklRecord.updatedAt);
+        } while(strcmp(sklRecord.id, IDDUMMY) != 0);
+
+        fclose(skillTable); // menutup file skill
+
+        int posSum = 0;         // jumlah rekaman dalam tabel posisi
+        position tempPos[MAX];  // array rekaman posisi untuk ditampilkan
+        position posRecord;     // rekaman posisi saat ini untuk disalin
+
+        FILE *positionTable;    // kaitan untuk mengakses file posisi
+        positionTable = fopen("tables/tposition.dat", "r"); // membuka file posisi dengan mode read
+        
+        // memulai proses pembacaan
+        fscanf(positionTable, "%s %s %s %s\n", posRecord.id, posRecord.name, posRecord.createdAt, posRecord.updatedAt);
+
+        if(strcmp(posRecord.id, IDDUMMY) == 0 || strcmp(posRecord.id, "") == 0){
+            // jika ditemukan EOF atau data kosong
+            error(12);
+            fclose(positionTable);
+        } else {
+            // jika tidak ditemukan EOF dan data tidak kosong
+            // mengisi rekaman ke dalam array posisi sampai ditemukan EOF
+            do{
+                strcpy(tempPos[posSum].id, posRecord.id);
+                strcpy(tempPos[posSum].name, posRecord.name);
+                strcpy(tempPos[posSum].createdAt, posRecord.createdAt);
+                strcpy(tempPos[posSum].updatedAt, posRecord.updatedAt);
+                posSum++;
+                fscanf(positionTable, "%s %s %s %s\n", posRecord.id, posRecord.name, posRecord.createdAt, posRecord.updatedAt);
+            } while(strcmp(posRecord.id, IDDUMMY) != 0);
+
+            fclose(positionTable); // menutup file posisi
+
+            int tarSum = 0;      // jumlah rekaman dalam tabel target
+            target tempTar[MAX]; // array rekaman target untuk ditampilkan
+            target tarRecord;    // rekaman target saat ini untuk disalin
+
+            FILE *targetTable;    // kaitan untuk mengakses file target
+            targetTable = fopen("tables/ttarget.dat", "r"); // membuka file target dengan mode read
+            
+            // memulai proses pembacaan
+            fscanf(targetTable, "%s %s %s %d %s %s\n", tarRecord.id, tarRecord.positionId, tarRecord.skillId, &tarRecord.isSkilled, tarRecord.createdAt, tarRecord.updatedAt);
+
+            if(strcmp(tarRecord.id, IDDUMMY) == 0 || strcmp(tarRecord.id, "") == 0){
+                // jika ditemukan EOF atau data kosong
+                error(12);
+                fclose(targetTable);
+            } else {
+                // jika tidak ditemukan EOF dan data tidak kosong
+                // mengisi rekaman ke dalam array target sampai ditemukan EOF
+                do{
+                    strcpy(tempTar[tarSum].id, tarRecord.id);
+                    strcpy(tempTar[tarSum].positionId, tarRecord.positionId);
+                    strcpy(tempTar[tarSum].skillId, tarRecord.skillId);
+                    tempTar[tarSum].isSkilled = tarRecord.isSkilled;
+                    strcpy(tempTar[tarSum].createdAt, tarRecord.createdAt);
+                    strcpy(tempTar[tarSum].updatedAt, tarRecord.updatedAt);
+                    tarSum++;
+                    fscanf(targetTable, "%s %s %s %d %s %s\n", tarRecord.id, tarRecord.positionId, tarRecord.skillId, &tarRecord.isSkilled, tarRecord.createdAt, tarRecord.updatedAt);
+                } while(strcmp(tarRecord.id, IDDUMMY) != 0);
+
+                fclose(targetTable); // menutup file
+
+                // hasil join
+                showPositionSkillTarget(longestName(tempPos, posSum, 1), longestName(tempSkl, sklSum, 2), tarSum, posSum, sklSum, tempTar, tempPos, tempSkl);
+            }
+        }
+    }
+}
+void joinCertificateOrganization(char command[]){           // menggabungkan tabel organisasi dan sertifikat
+    int orgSum = 0;             // jumlah rekaman dalam tabel organisasi
+    organization tempOrg[MAX];  // array rekaman organisasi untuk ditampilkan
+    organization orgRecord;     // rekaman organisasi saat ini untuk disalin
+
+    FILE *organizationTable;    // kaitan untuk mengakses file organisasi
+    organizationTable = fopen("tables/torganization.dat", "r"); // membuka file organisasi dengan mode read
+    
+    // memulai proses pembacaan
+    fscanf(organizationTable, "%s %s %s %s\n", orgRecord.id, orgRecord.name, orgRecord.createdAt, orgRecord.updatedAt);
+
+    if(strcmp(orgRecord.id, IDDUMMY) == 0 || strcmp(orgRecord.id, "") == 0){
+        // jika ditemukan EOF atau data kosong
+        error(12);
+        fclose(organizationTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array organisasi sampai ditemukan EOF
+        do{
+            strcpy(tempOrg[orgSum].id, orgRecord.id);
+            strcpy(tempOrg[orgSum].name, orgRecord.name);
+            strcpy(tempOrg[orgSum].createdAt, orgRecord.createdAt);
+            strcpy(tempOrg[orgSum].updatedAt, orgRecord.updatedAt);
+            orgSum++;
+            fscanf(organizationTable, "%s %s %s %s\n", orgRecord.id, orgRecord.name, orgRecord.createdAt, orgRecord.updatedAt);
+        } while(strcmp(orgRecord.id, IDDUMMY) != 0);
+
+        fclose(organizationTable); // menutup file organisasi
+
+        int cerSum = 0;             // jumlah rekaman dalam tabel sertifikat
+        certificate temCer[MAX];    // array rekaman sertifikat untuk ditampilkan
+        certificate cerRecord;      // rekaman sertifikat saat ini untuk disalin
+
+        FILE *certificateTable;    // kaitan untuk mengakses file sertifikat
+        certificateTable = fopen("tables/tcertificate.dat", "r"); // membuka file sertifikat dengan mode read
+        
+        // memulai proses pembacaan
+        fscanf(certificateTable, "%s %s %s %s %s %s %s %s %s\n", cerRecord.id, cerRecord.name, cerRecord.issuerId, cerRecord.startDate, cerRecord.endDate, cerRecord.credentialId, cerRecord.url, cerRecord.createdAt, cerRecord.updatedAt);
+
+        if(strcmp(cerRecord.id, IDDUMMY) == 0 || strcmp(cerRecord.id, "") == 0){
+            // jika ditemukan EOF atau data kosong
+            error(12);
+            fclose(certificateTable);
+        } else {
+            // jika tidak ditemukan EOF dan data tidak kosong
+            // mengisi rekaman ke dalam array proyek sampai ditemukan EOF
+            do{
+                strcpy(temCer[cerSum].id, cerRecord.id);
+                strcpy(temCer[cerSum].name, cerRecord.name);
+                strcpy(temCer[cerSum].issuerId, cerRecord.issuerId);
+                strcpy(temCer[cerSum].startDate, cerRecord.startDate);
+                strcpy(temCer[cerSum].endDate, cerRecord.endDate);
+                strcpy(temCer[cerSum].credentialId, cerRecord.credentialId);
+                strcpy(temCer[cerSum].url, cerRecord.url);
+                strcpy(temCer[cerSum].createdAt, cerRecord.createdAt);
+                strcpy(temCer[cerSum].updatedAt, cerRecord.updatedAt);
+                cerSum++;
+                fscanf(certificateTable, "%s %s %s %s %s %s %s %s %s\n", cerRecord.id, cerRecord.name, cerRecord.issuerId, cerRecord.startDate, cerRecord.endDate, cerRecord.credentialId, cerRecord.url, cerRecord.createdAt, cerRecord.updatedAt);
+            } while(strcmp(cerRecord.id, IDDUMMY) != 0);
+
+            fclose(certificateTable); // menutup file
+
+            // hasil join
+            showOrganizationCertificate(longestName(temCer, cerSum, 5), longestUrl(temCer, cerSum, 5), longestName(tempOrg, orgSum, 4), longestCredential(temCer, cerSum), cerSum, orgSum, temCer, tempOrg);
+        }
+    }
+}
+void joinExperienceOrganizationPosition(char command[]){    // menggabungkan tabel pengalaman, organisasi, dan posisi
+    int orgSum = 0;                 // jumlah rekaman dalam tabel organisasi
+    organization tempOrg[MAX];      // array rekaman organisasi untuk ditampilkan
+    organization orgRecord;         // rekaman organisasi saat ini untuk disalin
+
+    FILE *organizationTable;    // kaitan untuk mengakses file organisasi
+    organizationTable = fopen("tables/torganization.dat", "r"); // membuka file organisasi dengan mode read
+    
+    // memulai proses pembacaan
+    fscanf(organizationTable, "%s %s %s %s\n", orgRecord.id, orgRecord.name, orgRecord.createdAt, orgRecord.updatedAt);
+
+    if(strcmp(orgRecord.id, IDDUMMY) == 0 || strcmp(orgRecord.id, "") == 0){
+        // jika ditemukan EOF atau data kosong
+        error(12);
+        fclose(organizationTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array organisasi sampai ditemukan EOF
+        do{
+            strcpy(tempOrg[orgSum].id, orgRecord.id);
+            strcpy(tempOrg[orgSum].name, orgRecord.name);
+            strcpy(tempOrg[orgSum].createdAt, orgRecord.createdAt);
+            strcpy(tempOrg[orgSum].updatedAt, orgRecord.updatedAt);
+            orgSum++;
+            fscanf(organizationTable, "%s %s %s %s\n", orgRecord.id, orgRecord.name, orgRecord.createdAt, orgRecord.updatedAt);
+        } while(strcmp(orgRecord.id, IDDUMMY) != 0);
+
+        fclose(organizationTable); // menutup file organisasi
+
+        int posSum = 0;         // jumlah rekaman dalam tabel posisi
+        position tempPos[MAX];  // array rekaman posisi untuk ditampilkan
+        position posRecord;     // rekaman posisi saat ini untuk disalin
+
+        FILE *positionTable;    // kaitan untuk mengakses file posisi
+        positionTable = fopen("tables/tposition.dat", "r"); // membuka file posisi dengan mode read
+        
+        // memulai proses pembacaan
+        fscanf(positionTable, "%s %s %s %s\n", posRecord.id, posRecord.name, posRecord.createdAt, posRecord.updatedAt);
+
+        if(strcmp(posRecord.id, IDDUMMY) == 0 || strcmp(posRecord.id, "") == 0){
+            // jika ditemukan EOF atau data kosong
+            error(12);
+            fclose(positionTable);
+        } else {
+            // jika tidak ditemukan EOF dan data tidak kosong
+            // mengisi rekaman ke dalam array posisi sampai ditemukan EOF
+            do{
+                strcpy(tempPos[posSum].id, posRecord.id);
+                strcpy(tempPos[posSum].name, posRecord.name);
+                strcpy(tempPos[posSum].createdAt, posRecord.createdAt);
+                strcpy(tempPos[posSum].updatedAt, posRecord.updatedAt);
+                posSum++;
+                fscanf(positionTable, "%s %s %s %s\n", posRecord.id, posRecord.name, posRecord.createdAt, posRecord.updatedAt);
+            } while(strcmp(posRecord.id, IDDUMMY) != 0);
+
+            fclose(positionTable); // menutup file posisi
+
+            int expSum = 0;          // jumlah rekaman dalam tabel pengalaman
+            experience tempExp[MAX]; // array rekaman pengalaman untuk ditampilkan
+            experience expRecord;    // rekaman pengalaman saat ini untuk disalin
+
+            FILE *experienceTable;    // kaitan untuk mengakses file pengalaman
+            experienceTable = fopen("tables/texperience.dat", "r"); // membuka file pengalaman dengan mode read
+            
+            // memulai proses pembacaan
+            fscanf(experienceTable, "%s %s %s %s %s %s %s\n", expRecord.id, expRecord.organizationId, expRecord.positionId, expRecord.startDate, expRecord.endDate, expRecord.createdAt, expRecord.updatedAt);
+
+            if(strcmp(expRecord.id, IDDUMMY) == 0 || strcmp(expRecord.id, "") == 0){
+                // jika ditemukan EOF atau data kosong
+                error(12);
+                fclose(experienceTable);
+            } else {
+                // jika tidak ditemukan EOF dan data tidak kosong
+                // mengisi rekaman ke dalam array pengalaman sampai ditemukan EOF
+                do{
+                    strcpy(tempExp[expSum].id, expRecord.id);
+                    strcpy(tempExp[expSum].organizationId, expRecord.organizationId);
+                    strcpy(tempExp[expSum].positionId, expRecord.positionId);
+                    strcpy(tempExp[expSum].startDate, expRecord.startDate);
+                    strcpy(tempExp[expSum].endDate, expRecord.endDate);
+                    strcpy(tempExp[expSum].createdAt, expRecord.createdAt);
+                    strcpy(tempExp[expSum].updatedAt, expRecord.updatedAt);
+                    expSum++;
+                    fscanf(experienceTable, "%s %s %s %s %s %s %s\n", expRecord.id, expRecord.organizationId, expRecord.positionId, expRecord.startDate, expRecord.endDate, expRecord.createdAt, expRecord.updatedAt);
+                } while(strcmp(expRecord.id, IDDUMMY) != 0);
+
+                fclose(experienceTable); // menutup file
+
+                // hasil join
+                showOrganizationPositionExperience(longestName(tempOrg, orgSum, 4), longestName(tempPos, posSum, 1), expSum, orgSum, posSum, tempExp, tempOrg, tempPos);
+            }
+        }
+    }
+}
+void joinProjectCategory(char command[]){                   // menggabungkan tabel kategori dan proyek
     int catSum = 0;         // jumlah rekaman dalam tabel kategori
     category tempCat[MAX];  // array rekaman kategori untuk ditampilkan
     category catRecord;     // rekaman kategori saat ini untuk disalin

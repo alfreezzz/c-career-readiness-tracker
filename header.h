@@ -133,13 +133,11 @@ void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data);     
 
 // ui tabel join
 // tabel gabungan posisi, skill, dan target
-void showPositionSkillTarget(int maxTarName, int maxPosName, int maxSklName, int tarSum, int posSum, int sklSum, target* tarData, position* posData, skill* sklData);
+void showPositionSkillTarget(int maxPosName, int maxSklName, int tarSum, int posSum, int sklSum, target* tarData, position* posData, skill* sklData);
 // tabel gabungan organisasi, dan sertifikat
-void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int cerSum, int orgSum, certificate* cerData, organization* orgData);
+void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int maxCred, int cerSum, int orgSum, certificate* cerData, organization* orgData);
 // tabel gabungan organisasi, posisi, dan pengalaman
-void showOrganizationPositionExperience(int maxExpName, int maxOrgName, int maxPosName, int expSum, int orgSum, int posSum, experience* expData, organization* orgData, position* posData);
-// atas belum dibuat
-
+void showOrganizationPositionExperience(int maxOrgName, int maxPosName, int expSum, int orgSum, int posSum, experience* expData, organization* orgData, position* posData);
 // tabel gabungan kategori, dan proyek
 void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum, int catSum, project* proData, category* catData);
 
@@ -203,6 +201,4 @@ void guideProject();                   // panduan proyek
 void joinTargetPositionSkill(char command[]);               // menggabungkan tabel target, posisi, dan skill
 void joinCertificateOrganization(char command[]);           // menggabungkan tabel sertifikat, dan organisasi
 void joinExperienceOrganizationPosition(char command[]);    // menggabungkan tabel pengalaman, organisasi, dan posisi
-// atas ini belum dibuat
-
 void joinProjectCategory(char command[]);                   // menggabungkan tabel kategori, dan proyek
