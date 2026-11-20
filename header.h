@@ -201,4 +201,6 @@ void guideProject();                   // panduan proyek
 void joinTargetPositionSkill(char command[]);               // menggabungkan tabel target, posisi, dan skill
 void joinCertificateOrganization(char command[]);           // menggabungkan tabel sertifikat, dan organisasi
 void joinExperienceOrganizationPosition(char command[]);    // menggabungkan tabel pengalaman, organisasi, dan posisi
+// atas ini belum dibuat
+
 void joinProjectCategory(char command[]);                   // menggabungkan tabel kategori, dan proyek

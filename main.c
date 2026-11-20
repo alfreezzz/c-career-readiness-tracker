@@ -56,7 +56,11 @@ int main(){
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
                             } else if (strcmp(getcw(), "texperience") == 0){
-                                return 5;
+                                if(!eop(command)){
+                                    postExperience(command);
+                                } else {
+                                    error(5);
+                                }
                             } else if (strcmp(getcw(), "tcategory") == 0){
                                 if(!eop(command)){
                                     postCategory(command);
@@ -111,7 +115,11 @@ int main(){
                     } else if (strcmp(getcw(), "tcertificate") == 0){
                         return 4;
                     } else if (strcmp(getcw(), "texperience") == 0){
-                        return 5;
+                        if(!eop(command)){
+                            updateExperience(command);
+                        } else {
+                            error(13);
+                        }
                     } else if (strcmp(getcw(), "tcategory") == 0){
                         if(!eop(command)){
                             updateCategory(command);
@@ -163,7 +171,11 @@ int main(){
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
                             } else if (strcmp(getcw(), "texperience") == 0){
-                                return 5;
+                                if(!eop(command)){
+                                    deleteExperience(command);
+                                } else {
+                                    error(9);
+                                }
                             } else if (strcmp(getcw(), "tcategory") == 0){
                                 if(!eop(command)){
                                     deleteCategory(command);
@@ -205,7 +217,7 @@ int main(){
                             } else if (strcmp(getcw(), "tcertificate") == 0){
                                 return 4;
                             } else if (strcmp(getcw(), "texperience") == 0){
-                                return 5;
+                                getExperience(command);
                             } else if (strcmp(getcw(), "tcategory") == 0){
                                 getCategory(command);
                             } else if (strcmp(getcw(), "tproject") == 0){
@@ -229,15 +241,251 @@ int main(){
                         if(!eop(command)){
                             inc(command);
                             if(strcmp(getcw(), "tposition") == 0){
-                                return 0;
+                                if(!eop(command)){
+                                    inc(command);
+                                    if(strcmp(getcw(), "tskill") == 0){
+                                        if(!eop(command)){
+                                            inc(command);
+                                            if(strcmp(getcw(), "ttarget") == 0){
+                                                if(eop(command)){
+                                                    joinTargetPositionSkill(command);
+                                                } else {
+                                                    error(14);
+                                                }
+                                            } else {
+                                                error(26);
+                                            }
+                                        } else {
+                                            error(28);
+                                        }
+                                    } else if (strcmp(getcw(), "ttarget") == 0){
+                                        if(!eop(command)){
+                                            inc(command);
+                                            if(strcmp(getcw(), "tskill") == 0){
+                                                if(eop(command)){
+                                                    joinTargetPositionSkill(command);
+                                                } else {
+                                                    error(14);
+                                                }
+                                            } else {
+                                                error(26);
+                                            }
+                                        } else {
+                                            error(28);
+                                        }
+                                    } else if (strcmp(getcw(), "torganization") == 0){
+                                        if(!eop(command)){
+                                            inc(command);
+                                            if(strcmp(getcw(), "texperience") == 0){
+                                                if(eop(command)){
+                                                    joinExperienceOrganizationPosition(command);
+                                                } else {
+                                                    error(14);
+                                                }
+                                            } else {
+                                                error(26);
+                                            }
+                                        } else {
+                                            error(28);
+                                        }
+                                    } else if (strcmp(getcw(), "texperience") == 0){
+                                        if(!eop(command)){
+                                            inc(command);
+                                            if(strcmp(getcw(), "torganization") == 0){
+                                                if(eop(command)){
+                                                    joinExperienceOrganizationPosition(command);
+                                                } else {
+                                                    error(14);
+                                                }
+                                            } else {
+                                                error(26);
+                                            }
+                                        } else {
+                                            error(28);
+                                        }
+                                    } else {
+                                        error(26);
+                                    }
+                                } else {
+                                    error(28);
+                                }
                             } else if (strcmp(getcw(), "tskill") == 0){
-                                return 1;
+                                if(!eop(command)){
+                                    inc(command);
+                                    if(strcmp(getcw(), "tposition") == 0){
+                                        if(!eop(command)){
+                                            inc(command);
+                                            if(strcmp(getcw(), "ttarget") == 0){
+                                                if(eop(command)){
+                                                    joinTargetPositionSkill(command);
+                                                } else {
+                                                    error(14);
+                                                }
+                                            } else {
+                                                error(26);
+                                            }
+                                        } else {
+                                            error(28);
+                                        }
+                                    } else if (strcmp(getcw(), "ttarget") == 0){
+                                        if(!eop(command)){
+                                            inc(command);
+                                            if(strcmp(getcw(), "tposition") == 0){
+                                                if(eop(command)){
+                                                    joinTargetPositionSkill(command);
+                                                } else {
+                                                    error(14);
+                                                }
+                                            } else {
+                                                error(26);
+                                            }
+                                        } else {
+                                            error(28);
+                                        }
+                                    } else {
+                                        error(26);
+                                    }
+                                } else {
+                                    error(28);
+                                }
                             } else if (strcmp(getcw(), "ttarget") == 0){
-                                return 2;
+                                if(!eop(command)){
+                                    inc(command);
+                                    if(strcmp(getcw(), "tposition") == 0){
+                                        if(!eop(command)){
+                                            inc(command);
+                                            if(strcmp(getcw(), "tskill") == 0){
+                                                if(eop(command)){
+                                                    joinTargetPositionSkill(command);
+                                                } else {
+                                                    error(14);
+                                                }
+                                            } else {
+                                                error(26);
+                                            }
+                                        } else {
+                                            error(28);
+                                        }
+                                    } else if (strcmp(getcw(), "tskill") == 0){
+                                        if(!eop(command)){
+                                            inc(command);
+                                            if(strcmp(getcw(), "tposition") == 0){
+                                                if(eop(command)){
+                                                    joinTargetPositionSkill(command);
+                                                } else {
+                                                    error(14);
+                                                }
+                                            } else {
+                                                error(26);
+                                            }
+                                        } else {
+                                            error(28);
+                                        }
+                                    } else {
+                                        error(26);
+                                    }
+                                } else {
+                                    error(28);
+                                }
                             } else if (strcmp(getcw(), "torganization") == 0){
-                                return 3;
+                                if(!eop(command)){
+                                    inc(command);
+                                    if(strcmp(getcw(), "tcertificate") == 0){
+                                        if(eop(command)){
+                                            joinCertificateOrganization(command);
+                                        } else {
+                                            error(14);
+                                        }
+                                    } else if (strcmp(getcw(), "texperience") == 0){
+                                        if(!eop(command)){
+                                            inc(command);
+                                            if(strcmp(getcw(), "tposition") == 0){
+                                                if(eop(command)){
+                                                    joinExperienceOrganizationPosition(command);
+                                                } else {
+                                                    error(14);
+                                                }
+                                            } else {
+                                                error(26);
+                                            }
+                                        } else {
+                                            error(28);
+                                        }
+                                    } else if (strcmp(getcw(), "tposition") == 0){
+                                        if(!eop(command)){
+                                            inc(command);
+                                            if(strcmp(getcw(), "texperience") == 0){
+                                                if(eop(command)){
+                                                    joinExperienceOrganizationPosition(command);
+                                                } else {
+                                                    error(14);
+                                                }
+                                            } else {
+                                                error(26);
+                                            }
+                                        } else {
+                                            error(28);
+                                        }
+                                    } else {
+                                        error(26);
+                                    }
+                                } else {
+                                    error(28);
+                                }
                             } else if (strcmp(getcw(), "tcertificate") == 0){
-                                return 4;
+                                if(!eop(command)){
+                                    inc(command);
+                                    if(strcmp(getcw(), "torganization") == 0){
+                                        if(eop(command)){
+                                            joinCertificateOrganization(command);
+                                        } else {
+                                            error(14);
+                                        }
+                                    } else {
+                                        error(26);
+                                    }
+                                } else {
+                                    error(28);
+                                }
+                            } else if (strcmp(getcw(), "texperience") == 0){
+                                if(!eop(command)){
+                                    inc(command);
+                                    if(strcmp(getcw(), "torganization") == 0){
+                                        if(!eop(command)){
+                                            inc(command);
+                                            if(strcmp(getcw(), "tposition") == 0){
+                                                if(eop(command)){
+                                                    joinExperienceOrganizationPosition(command);
+                                                } else {
+                                                    error(14);
+                                                }
+                                            } else {
+                                                error(26);
+                                            }
+                                        } else {
+                                            error(28);
+                                        }
+                                    } else if (strcmp(getcw(), "tposition") == 0){
+                                        if(!eop(command)){
+                                            inc(command);
+                                            if(strcmp(getcw(), "torganization") == 0){
+                                                if(eop(command)){
+                                                    joinExperienceOrganizationPosition(command);
+                                                } else {
+                                                    error(14);
+                                                }
+                                            } else {
+                                                error(26);
+                                            }
+                                        } else {
+                                            error(28);
+                                        }
+                                    } else {
+                                        error(26);
+                                    }
+                                } else {
+                                    error(28);
+                                }
                             } else if (strcmp(getcw(), "tcategory") == 0){
                                 if(!eop(command)){
                                     inc(command);
@@ -251,7 +499,7 @@ int main(){
                                         error(26);
                                     }
                                 } else {
-                                    error(14);
+                                    error(28);
                                 }
                             } else if (strcmp(getcw(), "tproject") == 0){
                                 if(!eop(command)){

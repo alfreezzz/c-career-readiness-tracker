@@ -445,9 +445,6 @@ void searchId(void* arr, int n, char* search, bool *found, int *idx, int type){ 
         }
     }
 }
-
-// ui tabel
-// https://stackoverflow.com/questions/75400003/is-there-a-way-to-make-a-single-function-operate-on-different-structures-having
 int longestName(void* data, int n, int type){
     char name[50];      // menyimpan name dari tipe bentukan yang digunakan
     int lenMaxName = 0; // panjang dari nama terpanjang
@@ -518,6 +515,9 @@ int longestUrl(void* data, int n, int type){
     }
     return lenMaxUrl;
 }
+
+// ui tabel
+// https://stackoverflow.com/questions/75400003/is-there-a-way-to-make-a-single-function-operate-on-different-structures-having
 void showPositionTable(int lenMaxName, int n, position* data){
     // header table
     printf(WHITE"+--------+-");
@@ -700,6 +700,51 @@ void showOrganizationTable(int lenMaxName, int n, organization* data){
     }
     printf("-+---------------------+---------------------+\n"DEFAULT);
 }
+void showExperienceTable(int n, experience* data){
+    // header table
+    printf(WHITE"+--------+---------------+-----------+-----------------+------------------+---------------------+---------------------+\n");
+    printf("| "BWHITE"ID"WHITE"     | "BWHITE"ID_organisasi"WHITE" | "BWHITE"ID_posisi"WHITE" | "BWHITE"Tanggal_dimulai"WHITE" | "BWHITE"Tanggal_berakhir"WHITE" | "BWHITE"Tanggal_dibuat"WHITE"      | "BWHITE"Tanggal_diubah"WHITE"      |\n");
+    printf("+--------+---------------+-----------+-----------------+------------------+---------------------+---------------------+\n");
+
+    // body table
+    for(int i = 0; i < n; i++){
+        int lenMaxID = 6;
+        int lenMaxOrgID = 13;
+        int lenMaxPosID = 9;
+        int lenMaxStartDate = 15;
+        int lenMaxEndDate = 16;
+        // ID
+        printf("| %s ", data[i].id);
+        for(int j = strlen(data[i].id); j < lenMaxID; j++){
+            printf(" ");
+        }
+        // ID ORGANISASI
+        printf("| %s ", data[i].organizationId);
+        for(int j = strlen(data[i].organizationId); j < lenMaxOrgID; j++){
+            printf(" ");
+        }
+        // ID POSISI
+        printf("| %s ", data[i].positionId);
+        for(int j = strlen(data[i].positionId); j < lenMaxPosID; j++){
+            printf(" ");
+        }
+        // TANGGAL DIMULAI
+        printf("| %s ", data[i].startDate);
+        for(int j = strlen(data[i].startDate); j < lenMaxStartDate; j++){
+            printf(" ");
+        }
+        // TANGGAL BERAKHIR
+        printf("| %s ", data[i].endDate);
+        for(int j = strlen(data[i].endDate); j < lenMaxEndDate; j++){
+            printf(" ");
+        }
+        // TANGGAL DIBUAT & DIUBAH
+        printf("| %s | %s |\n", data[i].createdAt, data[i].updatedAt);
+    }
+
+    // footer table
+    printf("+--------+---------------+-----------+-----------------+------------------+---------------------+---------------------+\n"DEFAULT);
+}
 void showCategoryTable(int lenMaxName, int n, category* data){
     // header table
     printf(WHITE"+--------+-");
@@ -807,7 +852,6 @@ void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data){
             printf(" ");
         }
         // TANGGAL SELESAI
-        int dateLen = 15;
         printf("| %s ", data[i].finishedDate);
         for(int j = strlen(data[i].finishedDate); j < lenMaxDate; j++){
             printf(" ");
@@ -832,6 +876,15 @@ void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data){
     }
     printf("-+-----------------+-------------+---------------------+---------------------+\n");
 }
+
+// ui tabel join
+// tabel gabungan posisi, skill, dan target
+void showPositionSkillTarget(int maxTarName, int maxPosName, int maxSklName, int tarSum, int posSum, int sklSum, target* tarData, position* posData, skill* sklData){}
+// tabel gabungan organisasi, dan sertifikat
+void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int cerSum, int orgSum, certificate* cerData, organization* orgData){}
+// tabel gabungan organisasi, posisi, dan pengalaman
+void showOrganizationPositionExperience(int maxExpName, int maxOrgName, int maxPosName, int expSum, int orgSum, int posSum, experience* expData, organization* orgData, position* posData){}
+// tabel gabungan kategori, dan proyek
 void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum, int catSum, project* proData, category* catData){
     // header table
     printf("+--------+-");
@@ -884,8 +937,6 @@ void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum,
             if(strcmp(proData[i].categoryId, catData[j].id) == 0){
                 strcpy(catName, catData[j].name);
                 found = true;
-            } else {
-                found = false;
             }
             j++;
         } while(j < catSum && !found);
@@ -1273,6 +1324,7 @@ void deletePosition(char command[]){    // menghapus data
 
             bool foundTarId = false;
             if(strcmp(targetRecord.id, IDDUMMY) != 0 && strcmp(search, IDDUMMY) != 0 && strcmp(targetRecord.id, "") != 0) {
+                // mencari id relasi
                 while((strcmp(targetRecord.id, IDDUMMY) != 0) && (strcmp(targetRecord.positionId, search) != 0)){
                     fscanf(targetTable, "%s %s %s %d %s %s", targetRecord.id, targetRecord.positionId, targetRecord.skillId, &targetRecord.isSkilled, targetRecord.createdAt, targetRecord.updatedAt);
                 }
@@ -1291,6 +1343,7 @@ void deletePosition(char command[]){    // menghapus data
             
             bool foundExpId = false;
             if(strcmp(experienceRecord.id, IDDUMMY) != 0 && strcmp(search, IDDUMMY) != 0 && strcmp(experienceRecord.id, "") != 0) {
+                // mencari id relasi
                 while((strcmp(experienceRecord.id, IDDUMMY) != 0) && (strcmp(experienceRecord.positionId, search) != 0)){
                     fscanf(experienceTable, "%s %s %s %s %s %s %s", experienceRecord.id, experienceRecord.organizationId, experienceRecord.positionId, experienceRecord.startDate, experienceRecord.endDate, experienceRecord.createdAt, experienceRecord.updatedAt);
                 }
@@ -1390,8 +1443,8 @@ void guidePosition(){                   // buku panduan posisi
 // perintah tabel skill
 void getSkill(char command[]){       // menampilkan data
     int recordSum = 0;  // jumlah rekaman dalam tabel
-    skill temp[MAX]; // array rekaman untuk ditampilkan
-    skill record;    // rekaman saat ini untuk disalin
+    skill temp[MAX];    // array rekaman untuk ditampilkan
+    skill record;       // rekaman saat ini untuk disalin
 
     FILE *skillTable;    // kaitan untuk mengakses file
     skillTable = fopen("tables/tskill.dat", "r"); // membuka file dengan mode read
@@ -1464,8 +1517,8 @@ void postSkill(char command[]){      // menambahkan data
     timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
     
     int recordSum = 0;      // jumlah rekaman di dalam tabel
-    skill temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
-    skill record, new;   // rekaman saat ini dan rekaman yang baru
+    skill temp[MAX];        // array rekaman untuk menggeserkan nilai rekaman baru
+    skill record, new;      // rekaman saat ini dan rekaman yang baru
     
     FILE *skillTable;    // kaitan untuk mengakses file
     skillTable = fopen("tables/tskill.dat", "r"); // membuka file dengan mode read
@@ -1607,8 +1660,8 @@ void updateSkill(char command[]){    // mengubah data
     timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
 
     int recordSum = 0;      // jumlah rekaman di dalam tabel
-    skill temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
-    skill record, new;   // rekaman saat ini dan rekaman yang baru
+    skill temp[MAX];        // array rekaman untuk menggeserkan nilai rekaman baru
+    skill record, new;      // rekaman saat ini dan rekaman yang baru
 
     FILE *skillTable;    // kaitan untuk mengakses file
     skillTable = fopen("tables/tskill.dat", "r"); // membuka file dengan mode read
@@ -1696,7 +1749,7 @@ void updateSkill(char command[]){    // mengubah data
     }
 }
 void deleteSkill(char command[]){    // menghapus data
-    int recordSum = 0;      // jumlah rekaman di dalam tabel
+    int recordSum = 0;   // jumlah rekaman di dalam tabel
     skill temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
     skill record, new;   // rekaman saat ini dan rekaman yang baru
 
@@ -1739,6 +1792,7 @@ void deleteSkill(char command[]){    // menghapus data
 
             bool foundTarId = false;
             if(strcmp(targetRecord.id, IDDUMMY) != 0 && strcmp(search, IDDUMMY) != 0 && strcmp(targetRecord.id, "") != 0) {
+                // mencari id relasi
                 while((strcmp(targetRecord.id, IDDUMMY) != 0) && (strcmp(targetRecord.positionId, search) != 0)){
                     fscanf(targetTable, "%s %s %s %d %s %s", targetRecord.id, targetRecord.positionId, targetRecord.skillId, &targetRecord.isSkilled, targetRecord.createdAt, targetRecord.updatedAt);
                 }
@@ -1841,8 +1895,8 @@ void guideSkill(){                   // buku panduan skill
 // perintah tabel target
 void getTarget(char command[]){       // menampilkan data
     int recordSum = 0;  // jumlah rekaman dalam tabel
-    target temp[MAX];  // array rekaman untuk ditampilkan
-    target record;     // rekaman saat ini untuk disalin
+    target temp[MAX];   // array rekaman untuk ditampilkan
+    target record;      // rekaman saat ini untuk disalin
 
     FILE *targetTable;    // kaitan untuk mengakses file
     targetTable = fopen("tables/ttarget.dat", "r"); // membuka file dengan mode read
@@ -1916,8 +1970,8 @@ void postTarget(char command[]){      // menambahkan data
     timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
     
     int recordSum = 0;      // jumlah rekaman di dalam tabel
-    target temp[MAX];      // array rekaman untuk menggeserkan nilai rekaman baru
-    target record, new;    // rekaman saat ini dan rekaman yang baru
+    target temp[MAX];       // array rekaman untuk menggeserkan nilai rekaman baru
+    target record, new;     // rekaman saat ini dan rekaman yang baru
     
     FILE *targetTable;    // kaitan untuk mengakses file
     targetTable = fopen("tables/ttarget.dat", "r"); // membuka file dengan mode read
@@ -1965,6 +2019,7 @@ void postTarget(char command[]){      // menambahkan data
                     } else if (strcmp(searchPosition, IDDUMMY) == 0){
                         error(11);
                     } else {
+                        // mencari id relasi
                         while((strcmp(positionRecord.id, IDDUMMY) != 0) && (strcmp(positionRecord.id, searchPosition) != 0)){
                             fscanf(positionTable, "%s %s %s %s\n", positionRecord.id, positionRecord.name, positionRecord.createdAt, positionRecord.updatedAt);
                         }
@@ -1998,6 +2053,7 @@ void postTarget(char command[]){      // menambahkan data
                                 } else if (strcmp(searchPosition, IDDUMMY) == 0){
                                     error(11);
                                 } else {
+                                    // mencari id relasi
                                     while((strcmp(skillRecord.id, IDDUMMY) != 0) && (strcmp(skillRecord.id, searchPosition) != 0)){
                                         fscanf(skillTable, "%s %s %s %s %s\n", skillRecord.id, skillRecord.name, skillRecord.proficiency, skillRecord.createdAt, skillRecord.updatedAt);
                                     }
@@ -2015,7 +2071,7 @@ void postTarget(char command[]){      // menambahkan data
                                     inc(command);
                                     if(eop(command)){
                                         if(strcmp(getcw(), "0") == 0 || strcmp(getcw(), "1") == 0){
-                                            sscanf(getcw(), "%d", &new.isSkilled);
+                                            sscanf(getcw(), "%d", &new.isSkilled);  // mengambil skill masukan user
     
                                             // mengambil tanggal dan waktu saat ini
                                             strcpy(new.createdAt, dateTime);
@@ -2129,7 +2185,7 @@ void updateTarget(char command[]){    // mengubah data
     char dateTime[100];     // menyimpan tanggal dan waktu saat ini
     timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
 
-    int recordSum = 0;      // jumlah rekaman di dalam tabel
+    int recordSum = 0;    // jumlah rekaman di dalam tabel
     target temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
     target record, new;   // rekaman saat ini dan rekaman yang baru
 
@@ -2191,6 +2247,7 @@ void updateTarget(char command[]){    // mengubah data
                         } else if (strcmp(search, IDDUMMY) == 0){
                             error(11);
                         } else {
+                            // mencari id relasi
                             while((strcmp(positionRecord.id, IDDUMMY) != 0) && (strcmp(positionRecord.id, search) != 0)){
                                 fscanf(positionTable, "%s %s %s %s\n", positionRecord.id, positionRecord.name, positionRecord.createdAt, positionRecord.updatedAt);
                             }
@@ -2237,8 +2294,8 @@ void updateTarget(char command[]){    // mengubah data
                                         inc(command);
                                         if(eop(command)){
                                             if(strcmp(getcw(), "0") == 0 || strcmp(getcw(), "1") == 0){
-                                                sscanf(getcw(), "%d", &new.isSkilled);
-                                                strcpy(new.updatedAt, dateTime);    // mengubah tanggal diubah
+                                                sscanf(getcw(), "%d", &new.isSkilled);  // mengambil id skill masukan user
+                                                strcpy(new.updatedAt, dateTime);        // mengubah tanggal diubah
             
                                                 // mengubah menjadi nilai baru
                                                 strcpy(temp[i].positionId, new.positionId);
@@ -2287,8 +2344,8 @@ void updateTarget(char command[]){    // mengubah data
 }
 void deleteTarget(char command[]){    // menghapus data
     int recordSum = 0;      // jumlah rekaman di dalam tabel
-    target temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
-    target record, new;   // rekaman saat ini dan rekaman yang baru
+    target temp[MAX];      // array rekaman untuk menggeserkan nilai rekaman baru
+    target record, new;    // rekaman saat ini dan rekaman yang baru
 
     FILE *targetTable;    // kaitan untuk mengakses file
     targetTable = fopen("tables/ttarget.dat", "r"); // membuka file dengan mode read
@@ -2411,9 +2468,9 @@ void guideTarget(){                   // buku panduan target
 
 // perintah tabel organisasi
 void getOrganization(char command[]){       // menampilkan data
-    int recordSum = 0;  // jumlah rekaman dalam tabel
-    organization temp[MAX]; // array rekaman untuk ditampilkan
-    organization record;    // rekaman saat ini untuk disalin
+    int recordSum = 0;       // jumlah rekaman dalam tabel
+    organization temp[MAX];  // array rekaman untuk ditampilkan
+    organization record;     // rekaman saat ini untuk disalin
 
     FILE *organizationTable;    // kaitan untuk mengakses file
     organizationTable = fopen("tables/torganization.dat", "r"); // membuka file dengan mode read
@@ -2484,7 +2541,7 @@ void postOrganization(char command[]){      // menambahkan data
     char dateTime[100];     // menyimpan tanggal dan waktu saat ini
     timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
     
-    int recordSum = 0;      // jumlah rekaman di dalam tabel
+    int recordSum = 0;          // jumlah rekaman di dalam tabel
     organization temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
     organization record, new;   // rekaman saat ini dan rekaman yang baru
     
@@ -2606,7 +2663,7 @@ void updateOrganization(char command[]){    // mengubah data
     char dateTime[100];     // menyimpan tanggal dan waktu saat ini
     timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
 
-    int recordSum = 0;      // jumlah rekaman di dalam tabel
+    int recordSum = 0;          // jumlah rekaman di dalam tabel
     organization temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
     organization record, new;   // rekaman saat ini dan rekaman yang baru
 
@@ -2679,7 +2736,7 @@ void updateOrganization(char command[]){    // mengubah data
     }
 }
 void deleteOrganization(char command[]){    // menghapus data
-    int recordSum = 0;      // jumlah rekaman di dalam tabel
+    int recordSum = 0;          // jumlah rekaman di dalam tabel
     organization temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
     organization record, new;   // rekaman saat ini dan rekaman yang baru
 
@@ -2721,6 +2778,7 @@ void deleteOrganization(char command[]){    // menghapus data
 
             bool foundCerId = false;
             if(strcmp(certificateRecord.id, IDDUMMY) != 0 && strcmp(search, IDDUMMY) != 0 && strcmp(certificateRecord.id, "") != 0) {
+                // mencari id relasi
                 while((strcmp(certificateRecord.id, IDDUMMY) != 0) && (strcmp(certificateRecord.issuerId, search) != 0)){
                     fscanf(certificateTable, "%s %s %s %s %s %s %s %s %s", certificateRecord.id, certificateRecord.name, certificateRecord.issuerId, certificateRecord.startDate, certificateRecord.endDate, certificateRecord.credentialId, certificateRecord.url, certificateRecord.createdAt, certificateRecord.updatedAt);
                 }
@@ -2739,6 +2797,7 @@ void deleteOrganization(char command[]){    // menghapus data
 
             bool foundExpId = false;
             if(strcmp(experienceRecord.id, IDDUMMY) != 0 && strcmp(search, IDDUMMY) != 0 && strcmp(experienceRecord.id, "") != 0) {
+                // mencari id relasi
                 while((strcmp(experienceRecord.id, IDDUMMY) != 0) && (strcmp(experienceRecord.organizationId, search) != 0)){
                     fscanf(experienceTable, "%s %s %s %s %s %s %s", experienceRecord.id, experienceRecord.organizationId, experienceRecord.organizationId, experienceRecord.startDate, experienceRecord.endDate, experienceRecord.createdAt, experienceRecord.updatedAt);
                 }
@@ -2869,6 +2928,588 @@ void guideCertificate(){                   // buku panduan sertifikat
 }
 
 // perintah tabel pengalaman
+void getExperience(char command[]){       // menampilkan data
+    int recordSum = 0;     // jumlah rekaman dalam tabel
+    experience temp[MAX];  // array rekaman untuk ditampilkan
+    experience record;     // rekaman saat ini untuk disalin
+
+    FILE *experienceTable;    // kaitan untuk mengakses file
+    experienceTable = fopen("tables/texperience.dat", "r"); // membuka file dengan mode read
+    
+    // memulai proses pembacaan
+    fscanf(experienceTable, "%s %s %s %s %s %s %s\n", record.id, record.organizationId, record.positionId, record.startDate, record.endDate, record.createdAt, record.updatedAt);
+
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika ditemukan EOF atau data kosong
+        error(12);
+        fclose(experienceTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].organizationId, record.organizationId);
+            strcpy(temp[recordSum].positionId, record.positionId);
+            strcpy(temp[recordSum].startDate, record.startDate);
+            strcpy(temp[recordSum].endDate, record.endDate);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(experienceTable, "%s %s %s %s %s %s %s\n", record.id, record.organizationId, record.positionId, record.startDate, record.endDate, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+
+        fclose(experienceTable); // menutup file
+
+        if(eop(command)){  // jika tidak melakukan pencarian
+            // menampilkan data
+            showExperienceTable(recordSum, temp);
+        } else {    // jika tidak melakukan pencarian
+            inc(command);
+            if(strcmp(getcw(), "WHERE") == 0){
+                if(!eop(command)){
+                    inc(command);
+                    if(eop(command)){
+                        char search[50];
+                        strcpy(search, getcw());
+                        
+                        if(strcmp(search, IDDUMMY) == 0){
+                            error(11);
+                        } else {
+                            int idx;            // indeks dan iterasi
+                            bool found = false; // cek ditemukan
+
+                            // proses pencarian
+                            searchId(temp, recordSum, search, &found, &idx, 6);
+                            
+                            if(found){  // jika data ditemukan
+                                experience foundData[1];
+                                foundData[0] = temp[idx];
+                                showExperienceTable(1, foundData);
+                            } else {
+                                error(11);
+                            }
+                        }
+                    } else {
+                        error(14);
+                    }
+                } else {
+                    error(15);
+                }
+            } else {
+                error(21);
+            }
+        }
+    }
+}
+void postExperience(char command[]){      // menambahkan data
+    char dateTime[100];     // menyimpan tanggal dan waktu saat ini
+    timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
+    
+    int recordSum = 0;         // jumlah rekaman di dalam tabel
+    experience temp[MAX];      // array rekaman untuk menggeserkan nilai rekaman baru
+    experience record, new;    // rekaman saat ini dan rekaman yang baru
+    
+    FILE *experienceTable;    // kaitan untuk mengakses file
+    experienceTable = fopen("tables/texperience.dat", "r"); // membuka file dengan mode read
+    
+    // memulai proses pembacaan
+    fscanf(experienceTable, "%s %s %s %s %s %s %s\n", record.id, record.organizationId, record.positionId, record.startDate, record.endDate, record.createdAt, record.updatedAt);
+
+    // jika tidak ditemukan EOF dan data tidak kosong
+    if(strcmp(record.id, IDDUMMY) != 0 && strcmp(record.id, "") != 0){
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].organizationId, record.organizationId);
+            strcpy(temp[recordSum].positionId, record.positionId);
+            strcpy(temp[recordSum].startDate, record.startDate);
+            strcpy(temp[recordSum].endDate, record.endDate);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(experienceTable, "%s %s %s %s %s %s %s\n", record.id, record.organizationId, record.positionId, record.startDate, record.endDate, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+    }
+    fclose(experienceTable); // menutup file
+    
+    inc(command);   
+    if(!eop(command)){
+        if(strlen(getcw()) < sizeof(record.id)){
+            strcpy(new.id, getcw());    // mengambil id masukan user
+    
+            inc(command);
+            if(!eop(command)){
+                if(strlen(getcw()) < sizeof(record.organizationId)){
+                    organization organizationRecord;
+
+                    FILE *organizationTable;
+                    organizationTable = fopen("tables/torganization.dat", "r");
+
+                    char search[10];
+                    strcpy(search, getcw());
+
+                    fscanf(organizationTable, "%s %s %s %s", organizationRecord.id, organizationRecord.name, organizationRecord.createdAt, organizationRecord.updatedAt);
+
+                    bool foundOrgId = false;
+                    if(strcmp(organizationRecord.id, IDDUMMY) == 0){
+                        error(12);
+                    } else if (strcmp(search, IDDUMMY) == 0){
+                        error(11);
+                    } else {
+                        // mencari id relasi 
+                        while((strcmp(organizationRecord.id, IDDUMMY) != 0) && (strcmp(organizationRecord.id, search) != 0)){
+                            fscanf(organizationTable, "%s %s %s %s\n", organizationRecord.id, organizationRecord.name, organizationRecord.createdAt, organizationRecord.updatedAt);
+                        }
+                        if(strcmp(organizationRecord.id, search) == 0){
+                            foundOrgId = true;
+                        } else {
+                            error(23);
+                        }
+                    }
+                    fclose(organizationTable);
+
+                    if(foundOrgId){
+                        strcpy(new.organizationId, getcw());  // mengambil organisasi masukan user
+    
+                        inc(command);
+                        if(!eop(command)){
+                            if(strlen(getcw()) < sizeof(record.positionId)){
+                                position positionRecord;
+
+                                FILE *positionTable;
+                                positionTable = fopen("tables/tposition.dat", "r");
+
+                                char search[10];
+                                strcpy(search, getcw());
+
+                                fscanf(positionTable, "%s %s %s %s", positionRecord.id, positionRecord.name, positionRecord.createdAt, positionRecord.updatedAt);
+
+                                bool foundPosId = false;
+                                if(strcmp(positionRecord.id, IDDUMMY) == 0){
+                                    error(12);
+                                } else if (strcmp(search, IDDUMMY) == 0){
+                                    error(11);
+                                } else {
+                                    // mencari id relasi
+                                    while((strcmp(positionRecord.id, IDDUMMY) != 0) && (strcmp(positionRecord.id, search) != 0)){
+                                        fscanf(positionTable, "%s %s %s %s\n", positionRecord.id, positionRecord.name, positionRecord.createdAt, positionRecord.updatedAt);
+                                    }
+                                    if(strcmp(positionRecord.id, search) == 0){
+                                        foundPosId = true;
+                                    } else {
+                                        error(23);
+                                    }
+                                }
+                                fclose(positionTable);
+                    
+                                if(foundPosId){
+                                    strcpy(new.positionId, getcw());    // mengambil posisi masukan user
+        
+                                    inc(command);
+                                    if(!eop(command)){
+                                        if(strlen(getcw()) < sizeof(record.startDate)){
+                                            strcpy(new.startDate, getcw()); // mengambil tanggal_dimulai masukan user
+        
+                                            inc(command);
+                                            if(eop(command)){
+                                                if(strlen(getcw()) < sizeof(record.endDate)){
+                                                    strcpy(new.endDate, getcw());   // mengambil tanggal_berakhir masukan user
+        
+                                                    // mengambil tanggal dan waktu saat ini
+                                                    strcpy(new.createdAt, dateTime);
+                                                    strcpy(new.updatedAt, dateTime);
+                                        
+                                                    bool isDuplicate = false;   // cek id duplikat
+                                                    // kondisi memasukkan rekaman baru ke dalam array
+                                                    if(strcmp(new.id, temp[0].id) < 0){
+                                                        // rekaman baru di paling depan
+                                                        // geser semua isi array ke belakang
+                                                        for(int i = recordSum - 1; i >= 0; i--){
+                                                            strcpy(temp[i+1].id, temp[i].id);
+                                                            strcpy(temp[i+1].organizationId, temp[i].organizationId);
+                                                            strcpy(temp[i+1].positionId, temp[i].positionId);
+                                                            strcpy(temp[i+1].startDate, temp[i].startDate);
+                                                            strcpy(temp[i+1].endDate, temp[i].endDate);
+                                                            strcpy(temp[i+1].createdAt, temp[i].createdAt);
+                                                            strcpy(temp[i+1].updatedAt, temp[i].updatedAt);
+                                                        }
+                                                        recordSum++;
+                                                        strcpy(temp[0].id, new.id);
+                                                        strcpy(temp[0].organizationId, new.organizationId);
+                                                        strcpy(temp[0].positionId, new.positionId);
+                                                        strcpy(temp[0].startDate, new.startDate);
+                                                        strcpy(temp[0].endDate, new.endDate);
+                                                        strcpy(temp[0].createdAt, new.createdAt);
+                                                        strcpy(temp[0].updatedAt, new.updatedAt);
+                                                    } else if (strcmp(new.id, temp[recordSum - 1].id) > 0){
+                                                        // rekaman baru di paling belakang
+                                                        strcpy(temp[recordSum].id, new.id);
+                                                        strcpy(temp[recordSum].organizationId, new.organizationId);
+                                                        strcpy(temp[recordSum].positionId, new.positionId);
+                                                        strcpy(temp[recordSum].startDate, new.startDate);
+                                                        strcpy(temp[recordSum].endDate, new.endDate);
+                                                        strcpy(temp[recordSum].createdAt, new.createdAt);
+                                                        strcpy(temp[recordSum].updatedAt, new.updatedAt);
+                                                        recordSum++;
+                                                    } else {
+                                                        // rekaman baru memiliki posisi di tengah
+                                                        int i = 0;  // iterasi dan indeks
+                                                        bool isStop = false;    // cek berhenti
+                                                        // cari posisi
+                                                        while((i < recordSum) && (!isStop)){
+                                                            if(strcmp(temp[i].id, new.id) == 0){
+                                                                // terdapat id yang redundan
+                                                                error(7);
+                                                                isDuplicate = true;
+                                                                isStop = true;
+                                                            } else if (strcmp(temp[i].id, new.id) > 0){
+                                                                isStop = true;
+                                                            } else {
+                                                                i++;
+                                                            }
+                                                        }
+                                                        if(!isDuplicate){
+                                                            // menggeserkan rekaman di posisi tengah
+                                                            for(int j = recordSum - 1; j >= i; j--){
+                                                                strcpy(temp[j+1].id, temp[j].id);
+                                                                strcpy(temp[j+1].organizationId, temp[j].organizationId);
+                                                                strcpy(temp[j+1].positionId, temp[j].positionId);
+                                                                strcpy(temp[j+1].startDate, temp[j].startDate);
+                                                                strcpy(temp[j+1].endDate, temp[j].endDate);
+                                                                strcpy(temp[j+1].createdAt, temp[j].createdAt);
+                                                                strcpy(temp[j+1].updatedAt, temp[j].updatedAt);
+                                                            }
+                                                            // memasukkan rekaman baru di posisi tengah
+                                                            strcpy(temp[i].id, new.id);
+                                                            strcpy(temp[i].organizationId, new.organizationId);
+                                                            strcpy(temp[i].positionId, new.positionId);
+                                                            strcpy(temp[i].startDate, new.startDate);
+                                                            strcpy(temp[i].endDate, new.endDate);
+                                                            strcpy(temp[i].createdAt, new.createdAt);
+                                                            strcpy(temp[i].updatedAt, new.updatedAt);
+                                                            recordSum++;
+                                                        }
+                                                    }
+                                                    if(!isDuplicate){
+                                                        showExperienceTable(recordSum, temp);
+                                                        success(0);
+                                                        // flush ke file
+                                                        experienceTable = fopen("tables/texperience.dat", "w");
+                                                        for(int i = 0; i < recordSum; i++){
+                                                            fprintf(experienceTable, "%s %s %s %s %s %s %s\n", temp[i].id, temp[i].organizationId, temp[i].positionId, temp[i].startDate, temp[i].endDate, temp[i].createdAt, temp[i].updatedAt);
+                                                        }
+                                                        fprintf(experienceTable, "%s", EOFEXPERIENCE);
+                                                        fclose(experienceTable);
+                                                    }
+                                                } else {
+                                                    error(16);
+                                                }
+                                            } else {
+                                                error(6);
+                                            }
+                                        } else {
+                                            error(16);
+                                        }
+                                    } else {
+                                        error(4);
+                                    }
+                                }
+                            } else {
+                                error(16);
+                            }
+                        } else {
+                            error(4);
+                        }
+                    }
+                } else {
+                    error(16);
+                }
+            } else {
+                error(4);
+            }
+        } else {
+            error(16);
+        }
+    } else {
+        error(4);
+    }
+}
+void updateExperience(char command[]){    // mengubah data
+    char dateTime[100];     // menyimpan tanggal dan waktu saat ini
+    timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
+
+    int recordSum = 0;        // jumlah rekaman di dalam tabel
+    experience temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
+    experience record, new;   // rekaman saat ini dan rekaman yang baru
+
+    FILE *experienceTable;    // kaitan untuk mengakses file
+    experienceTable = fopen("tables/texperience.dat", "r"); // membuka file dengan mode read
+
+    // memulai proses pembacaan
+    fscanf(experienceTable, "%s %s %s %s %s %s %s\n", record.id, record.organizationId, record.positionId, record.startDate, record.endDate, record.createdAt, record.updatedAt);
+    
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika EOF ditemukan atau data kosong
+        error(12);
+        fclose(experienceTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].organizationId, record.organizationId);
+            strcpy(temp[recordSum].positionId, record.positionId);
+            strcpy(temp[recordSum].startDate, record.startDate);
+            strcpy(temp[recordSum].endDate, record.endDate);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(experienceTable, "%s %s %s %s %s %s %s\n", record.id, record.organizationId, record.positionId, record.startDate, record.endDate, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+        
+        fclose(experienceTable); // menutup file
+        
+        inc(command);
+        char search[50]; // cari nilai id
+        strcpy(search, getcw()); // mengambil id masukan user
+        
+        int i = 0;  // iterasi dan index
+        bool isFound = false;   // cek ditemukan
+        // proses pencarian
+        searchId(temp, recordSum, search, &isFound, &i, 6);
+        
+        if(!isFound){
+            error(11);
+        } else {
+            if(!eop(command)){
+                inc(command);
+                if(!eop(command)){
+                    if(strlen(getcw()) < sizeof(record.organizationId)){
+                        organization organizationRecord;
+
+                        FILE *organizationTable;
+                        organizationTable = fopen("tables/torganization.dat", "r");
+
+                        char search[10];
+                        strcpy(search, getcw());
+
+                        fscanf(organizationTable, "%s %s %s %s", organizationRecord.id, organizationRecord.name, organizationRecord.createdAt, organizationRecord.updatedAt);
+
+                        bool foundOrgId = false;
+                        if(strcmp(organizationRecord.id, IDDUMMY) == 0){
+                            error(12);
+                        } else if (strcmp(search, IDDUMMY) == 0){
+                            error(11);
+                        } else {
+                            // mencari id relasi
+                            while((strcmp(organizationRecord.id, IDDUMMY) != 0) && (strcmp(organizationRecord.id, search) != 0)){
+                                fscanf(organizationTable, "%s %s %s %s\n", organizationRecord.id, organizationRecord.name, organizationRecord.createdAt, organizationRecord.updatedAt);
+                            }
+                            if(strcmp(organizationRecord.id, search) == 0){
+                                foundOrgId = true;
+                            } else {
+                                error(23);
+                            }
+                        }
+                        fclose(organizationTable);
+
+                        if(foundOrgId){
+                            strcpy(new.organizationId, getcw());          // mengambil organisasi masukan user
+    
+                            inc(command);
+                            if(!eop(command)){
+                                if(strlen(getcw()) < sizeof(record.positionId)){
+                                    position positionRecord;
+
+                                    FILE *positionTable;
+                                    positionTable = fopen("tables/tposition.dat", "r");
+
+                                    char search[10];
+                                    strcpy(search, getcw());
+
+                                    fscanf(positionTable, "%s %s %s %s", positionRecord.id, positionRecord.name, positionRecord.createdAt, positionRecord.updatedAt);
+
+                                    bool foundPosId = false;
+                                    if(strcmp(positionRecord.id, IDDUMMY) == 0){
+                                        error(12);
+                                    } else if (strcmp(search, IDDUMMY) == 0){
+                                        error(11);
+                                    } else {
+                                        // mencari id relasi
+                                        while((strcmp(positionRecord.id, IDDUMMY) != 0) && (strcmp(positionRecord.id, search) != 0)){
+                                            fscanf(positionTable, "%s %s %s %s\n", positionRecord.id, positionRecord.name, positionRecord.createdAt, positionRecord.updatedAt);
+                                        }
+                                        if(strcmp(positionRecord.id, search) == 0){
+                                            foundPosId = true;
+                                        } else {
+                                            error(23);
+                                        }
+                                    }
+                                    fclose(positionTable);
+
+                                    if(foundPosId){
+                                        strcpy(new.positionId, getcw());    // mencari posisi masukan user
+        
+                                        inc(command);
+                                        if(!eop(command)){
+                                            if(strlen(getcw()) < sizeof(record.startDate)){
+                                                strcpy(new.startDate, getcw()); // mengambil tanggal_dimulai masukan user
+        
+                                                inc(command);
+                                                if(eop(command)){
+                                                    if(strlen(getcw()) < sizeof(record.endDate)){
+                                                        strcpy(new.endDate, getcw());       // mengambil tanggal_berakhir masukan user
+                                                        strcpy(new.updatedAt, dateTime);    // mengubah tanggal diubah
+                    
+                                                        // mengubah menjadi nilai baru
+                                                        strcpy(temp[i].organizationId, new.organizationId);
+                                                        strcpy(temp[i].positionId, new.positionId);
+                                                        strcpy(temp[i].startDate, new.startDate);
+                                                        strcpy(temp[i].endDate, new.endDate);
+                                                        strcpy(temp[i].updatedAt, new.updatedAt);
+                                    
+                                                        showExperienceTable(recordSum, temp);
+                                                        success(1);
+                                                    } else {
+                                                        error(16);
+                                                    }
+                                                } else {
+                                                    error(6);
+                                                }
+                                            } else {
+                                                error(16);
+                                            }
+                                        } else {
+                                            error(4);
+                                        }
+                                    }
+                                } else {
+                                    error(16);
+                                }
+                            } else {
+                                error(4);
+                            }
+                        }
+                    } else {
+                        error(16);
+                    }
+                } else {
+                    error(4);
+                }
+            } else {
+                error(13);
+            }
+        }
+        // flush ke file
+        experienceTable = fopen("tables/texperience.dat", "w");
+        for(int i = 0; i < recordSum; i++){
+            fprintf(experienceTable, "%s %s %s %s %s %s %s\n", temp[i].id, temp[i].organizationId, temp[i].positionId, temp[i].startDate, temp[i].endDate, temp[i].createdAt, temp[i].updatedAt);
+        }
+        fprintf(experienceTable, "%s", EOFEXPERIENCE);
+        fclose(experienceTable);   
+    }
+}
+void deleteExperience(char command[]){    // menghapus data
+    int recordSum = 0;        // jumlah rekaman di dalam tabel
+    experience temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
+    experience record, new;   // rekaman saat ini dan rekaman yang baru
+
+    FILE *experienceTable;    // kaitan untuk mengakses file
+    experienceTable = fopen("tables/texperience.dat", "r"); // membuka file dengan mode read
+
+    // memulai proses pembacaan
+    fscanf(experienceTable, "%s %s %s %s %s %s %s\n", record.id, record.organizationId, record.positionId, record.startDate, record.endDate, record.createdAt, record.updatedAt);
+    
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika EOF ditemukan atau data kosong
+        error(12);
+        fclose(experienceTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].organizationId, record.organizationId);
+            strcpy(temp[recordSum].positionId, record.positionId);
+            strcpy(temp[recordSum].startDate, record.startDate);
+            strcpy(temp[recordSum].endDate, record.endDate);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(experienceTable, "%s %s %s %s %s %s %s\n", record.id, record.organizationId, record.positionId, record.startDate, record.endDate, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+
+        fclose(experienceTable); // menutup file
+        
+        inc(command);
+        char search[50]; // cari nilai id
+        strcpy(search, getcw()); // mengambil id masukan user
+        
+        if(eop(command)){
+            int idx = 0;    // iterasi dan index
+            bool isFound = false;   // cek ditemukan
+            // proses pencarian 
+            searchId(temp, recordSum, search, &isFound, &idx, 6);
+            
+            if(!isFound){
+                error(11);
+            } else {
+                // kondisi memasukkan ke dalam array
+                if(idx == 0){
+                    // rekaman dihapus di paling depan
+                    // geser semua isi array ke belakang
+                    for(int i = 0; i < recordSum - 1; i++){
+                        strcpy(temp[i].id, temp[i+1].id);
+                        strcpy(temp[i].organizationId, temp[i+1].organizationId);
+                        strcpy(temp[i].positionId, temp[i+1].positionId);
+                        strcpy(temp[i].startDate, temp[i+1].startDate);
+                        strcpy(temp[i].endDate, temp[i+1].endDate);
+                        strcpy(temp[i].createdAt, temp[i+1].createdAt);
+                        strcpy(temp[i].updatedAt, temp[i+1].updatedAt);
+                    }
+                    recordSum--;
+                } else if (idx == recordSum - 1){
+                    // rekaman dihapus di paling belakang
+                    recordSum--;
+                } else {
+                    // rekaman dihapus memiliki posisi di tengah
+                    int i = 0;  // iterasi dan index
+                    bool isStopped = false; // cek ditemukan
+                    // cari posisi
+                    while((i < recordSum) && !isStopped){
+                        if(i >= idx){
+                            isStopped = true;
+                        } else {
+                            i++;
+                        }
+                    }
+                    // menggeserkan rekaman di posisi tengah
+                    for(int j = i; j < recordSum - 1; j++){
+                        strcpy(temp[j].id, temp[j+1].id);
+                        strcpy(temp[j].organizationId, temp[j+1].organizationId);
+                        strcpy(temp[j].positionId, temp[j+1].positionId);
+                        strcpy(temp[j].startDate, temp[j+1].startDate);
+                        strcpy(temp[j].endDate, temp[j+1].endDate);
+                        strcpy(temp[j].createdAt, temp[j+1].createdAt);
+                        strcpy(temp[j].updatedAt, temp[j+1].updatedAt);
+                    }
+                    recordSum--;
+                }
+                showExperienceTable(recordSum, temp);
+                success(2);
+            }
+            // flush ke file
+            experienceTable = fopen("tables/texperience.dat", "w");
+            for(int i = 0; i < recordSum; i++){
+                fprintf(experienceTable, "%s %s %s %s %s %s %s\n", temp[i].id, temp[i].organizationId, temp[i].positionId, temp[i].startDate, temp[i].endDate, temp[i].createdAt, temp[i].updatedAt);
+            }
+            fprintf(experienceTable, "%s", EOFEXPERIENCE);
+            fclose(experienceTable);
+        } else {
+            error(14);
+        }
+    }
+}
 void guideExperience(){                   // buku panduan pengalaman
     guideTitle();
 
@@ -3210,6 +3851,7 @@ void deleteCategory(char command[]){    // menghapus data
 
             bool foundProId = false;
             if(strcmp(projectRecord.id, IDDUMMY) != 0 && strcmp(search, IDDUMMY) != 0 && strcmp(projectRecord.id, "") != 0) {
+                // mencari id relasi
                 while((strcmp(projectRecord.id, IDDUMMY) != 0) && (strcmp(projectRecord.categoryId, search) != 0)){
                     fscanf(projectTable, "%s %s %s %s %s %s %s", projectRecord.id, projectRecord.name, projectRecord.url, projectRecord.finishedDate, projectRecord.categoryId, projectRecord.createdAt, projectRecord.updatedAt);
                 }
@@ -3423,12 +4065,12 @@ void postProject(char command[]){      // menambahkan data
                     inc(command);
                     if(!eop(command)){
                         if(strlen(getcw()) < sizeof(record.url)){
-                            strcpy(new.url, getcw());
+                            strcpy(new.url, getcw());   // mengambil url masukan user
 
                             inc(command);
                             if(!eop(command)){
                                 if(strlen(getcw()) < sizeof(record.finishedDate)){
-                                    strcpy(new.finishedDate, getcw());
+                                    strcpy(new.finishedDate, getcw());  // mengambil tanggal_selesai masukan user
 
                                     inc(command);
                                     if(eop(command)){
@@ -3450,6 +4092,7 @@ void postProject(char command[]){      // menambahkan data
                                             } else if (strcmp(search, IDDUMMY) == 0){
                                                 error(11);
                                             } else {
+                                                // mencari id relasi
                                                 while((strcmp(categoryRecord.id, IDDUMMY) != 0) && (strcmp(categoryRecord.id, search) != 0)){
                                                     fscanf(categoryTable, "%s %s %s %s\n", categoryRecord.id, categoryRecord.name, categoryRecord.createdAt, categoryRecord.updatedAt);
                                                 }
@@ -3462,7 +4105,7 @@ void postProject(char command[]){      // menambahkan data
                                             fclose(categoryTable);
 
                                             if(foundCatId){
-                                                strcpy(new.categoryId, getcw());
+                                                strcpy(new.categoryId, getcw());    // mengambil kategori masukan user
     
                                                 // mengambil tanggal dan waktu saat ini
                                                 strcpy(new.createdAt, dateTime);
@@ -3587,8 +4230,8 @@ void updateProject(char command[]){    // mengubah data
     timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
 
     int recordSum = 0;      // jumlah rekaman di dalam tabel
-    project temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
-    project record, new;   // rekaman saat ini dan rekaman yang baru
+    project temp[MAX];      // array rekaman untuk menggeserkan nilai rekaman baru
+    project record, new;    // rekaman saat ini dan rekaman yang baru
 
     FILE *projectTable;    // kaitan untuk mengakses file
     projectTable = fopen("tables/tproject.dat", "r"); // membuka file dengan mode read
@@ -3638,12 +4281,12 @@ void updateProject(char command[]){    // mengubah data
                         inc(command);
                         if(!eop(command)){
                             if(strlen(getcw()) < sizeof(record.url)){
-                                strcpy(new.url, getcw());
+                                strcpy(new.url, getcw());   // mengambil url masukan user
 
                                 inc(command);
                                 if(!eop(command)){
                                     if(strlen(getcw()) < sizeof(record.finishedDate)){
-                                        strcpy(new.finishedDate, getcw());
+                                        strcpy(new.finishedDate, getcw());  // mengambil tanggal_selesai masukan user
 
                                         inc(command);
                                         if(eop(command)){
@@ -3665,6 +4308,7 @@ void updateProject(char command[]){    // mengubah data
                                                 } else if (strcmp(search, IDDUMMY) == 0){
                                                     error(11);
                                                 } else {
+                                                    // mencari id relasi
                                                     while((strcmp(categoryRecord.id, IDDUMMY) != 0) && (strcmp(categoryRecord.id, search) != 0)){
                                                         fscanf(categoryTable, "%s %s %s %s\n", categoryRecord.id, categoryRecord.name, categoryRecord.createdAt, categoryRecord.updatedAt);
                                                     }
@@ -3677,7 +4321,7 @@ void updateProject(char command[]){    // mengubah data
                                                 fclose(categoryTable);
 
                                                 if(foundCatId){
-                                                    strcpy(new.categoryId, getcw());
+                                                    strcpy(new.categoryId, getcw());    // mengambil kategori masukan user
                                                     strcpy(new.updatedAt, dateTime);    // mengubah tanggal diubah
                 
                                                     // mengubah menjadi nilai baru
@@ -3729,8 +4373,8 @@ void updateProject(char command[]){    // mengubah data
 }
 void deleteProject(char command[]){    // menghapus data
     int recordSum = 0;      // jumlah rekaman di dalam tabel
-    project temp[MAX];     // array rekaman untuk menggeserkan nilai rekaman baru
-    project record, new;   // rekaman saat ini dan rekaman yang baru
+    project temp[MAX];      // array rekaman untuk menggeserkan nilai rekaman baru
+    project record, new;    // rekaman saat ini dan rekaman yang baru
 
     FILE *projectTable;    // kaitan untuk mengakses file
     projectTable = fopen("tables/tproject.dat", "r"); // membuka file dengan mode read
@@ -3856,6 +4500,9 @@ void guideProject(){                   // buku panduan proyek
 }
 
 // perintah join
+void joinTargetPositionSkill(char command[]){}
+void joinCertificateOrganization(char command[]){}
+void joinExperienceOrganizationPosition(char command[]){}
 void joinProjectCategory(char command[]){   // menggabungkan tabel kategori dan proyek
     int catSum = 0;         // jumlah rekaman dalam tabel kategori
     category tempCat[MAX];  // array rekaman kategori untuk ditampilkan
@@ -3921,3 +4568,4 @@ void joinProjectCategory(char command[]){   // menggabungkan tabel kategori dan 
         }
     }
 }
+
