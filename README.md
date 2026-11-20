@@ -25,7 +25,7 @@ This project consists of 8 tables:
 5. `certificates` {id, name, issuerId, startDate, endDate, credentialId, url, createdAt, updatedAt} 
 6. `experiences` {id, organizationId, positionId, startDate, endDate, createdAt, updatedAt}
 7. `categories` {id, name, createdAt, updatedAt}
-8. `projects` {id, name, url, finishedDate, categoryId createdAt, updatedAt}
+8. `projects` {id, name, url, finishedDate, categoryId, createdAt, updatedAt}
 
 ## Project structures
 - `header.h` - library

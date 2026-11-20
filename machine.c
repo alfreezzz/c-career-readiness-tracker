@@ -515,6 +515,17 @@ int longestUrl(void* data, int n, int type){
     }
     return lenMaxUrl;
 }
+int longestCredential(certificate* data, int n){
+    int lenMaxCredential = strlen(data[0].credentialId); // panjang dari nama terpanjang
+    
+    for(int i = 1; i < n; i++){
+        // jika lebih kecil maka nilai diperbarui
+        if(lenMaxCredential < strlen(data[i].credentialId)){
+            lenMaxCredential = strlen(data[i].credentialId);
+        }
+    }
+    return lenMaxCredential;
+}
 
 // ui tabel
 // https://stackoverflow.com/questions/75400003/is-there-a-way-to-make-a-single-function-operate-on-different-structures-having
@@ -696,6 +707,122 @@ void showOrganizationTable(int lenMaxName, int n, organization* data){
     // footer table
     printf("+--------+-");
     for(int i = 1; i <= lenMaxName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+---------------------+---------------------+\n"DEFAULT);
+}
+void showCertificateTable(int lenMaxName, int lenMaxCredential, int lenMaxUrl, int n, certificate* data){
+    // header table
+    printf(WHITE"+--------+-");
+    for(int i = 1; i <= lenMaxName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+---------------+-----------------+------------------+-");
+    for(int i = 1; i <= lenMaxCredential || i <= 13; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= lenMaxUrl || i <= 3; i++){
+        printf("-");
+    }
+    printf("-+---------------------+---------------------+\n");
+    printf("| "BWHITE"ID"WHITE"     |");
+    printf(" "BWHITE"Nama"WHITE" ");
+    for(int i = 1; i <= lenMaxName && i <= lenMaxName - 4; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"ID_organisasi"WHITE" | "BWHITE"Tanggal_dimulai"WHITE" | "BWHITE"Tanggal_berakhir"WHITE" ");
+    printf("| "BWHITE"ID_kredensial"WHITE" ");
+    for(int i = 1; i <= lenMaxCredential && i <= lenMaxCredential - 13; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Url"WHITE" ");
+    for(int i = 1; i <= lenMaxUrl && i <= lenMaxUrl - 3; i++){
+        printf(" ");
+    }
+    printf("| "BWHITE"Tanggal_dibuat"WHITE"      | "BWHITE"Tanggal_diubah"WHITE"      |\n");
+    printf("+--------+-");
+    for(int i = 1; i <= lenMaxName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+---------------+-----------------+------------------+-");
+    for(int i = 1; i <= lenMaxCredential || i <= 13; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= lenMaxUrl || i <= 3; i++){
+        printf("-");
+    }
+    printf("-+---------------------+---------------------+\n");
+    
+    // body table
+    for(int i = 0; i < n; i++){
+        int lenMaxID = 6, lenMaxDate = 15;
+        // ID
+        printf("| %s ", data[i].id);
+        for(int j = strlen(data[i].id); j < lenMaxID; j++){
+            printf(" ");
+        }
+        // NAMA
+        int nameLen = 4;
+        if(lenMaxName > nameLen){
+            nameLen = lenMaxName;
+        }
+        printf("| %s ", data[i].name);
+        for(int j = strlen(data[i].name); j < nameLen; j++){
+            printf(" ");
+        }
+        // ID ORGANISASI
+        int issuerLen = 13;
+        printf("| %s ", data[i].issuerId);
+        for(int j = strlen(data[i].issuerId); j < issuerLen; j++){
+            printf(" ");
+        }
+        // TANGGAL DIMULAI
+        int lenMaxStartDate = 15;
+        printf("| %s ", data[i].startDate);
+        for(int j = strlen(data[i].startDate); j < lenMaxStartDate; j++){
+            printf(" ");
+        }
+        // TANGGAL BERAKHIR
+        printf("| %s ", data[i].endDate);
+        int lenMaxEndDate = 16;
+        for(int j = strlen(data[i].endDate); j < lenMaxEndDate; j++){
+            printf(" ");
+        }
+        // KREDENSIAL
+        int credLen = 13;
+        if(lenMaxCredential > credLen){
+            credLen = lenMaxCredential;
+        }
+        printf("| %s ", data[i].url);
+        for(int j = strlen(data[i].url); j < credLen; j++){
+            printf(" ");
+        }
+        // URL
+        int urlLen = 3;
+        if(lenMaxUrl > urlLen){
+            urlLen = lenMaxUrl;
+        }
+        printf("| %s ", data[i].url);
+        for(int j = strlen(data[i].url); j < urlLen; j++){
+            printf(" ");
+        }
+        // TANGGAL DIBUAT & DIUBAH
+        printf("| %s | %s |\n", data[i].createdAt, data[i].updatedAt);
+    }
+    
+    // footer table
+    printf("+--------+-");
+    for(int i = 1; i <= lenMaxName || i <= 4; i++){
+        printf("-");
+    }
+    printf("-+---------------+-----------------+------------------+-");
+    for(int i = 1; i <= lenMaxCredential || i <= 13; i++){
+        printf("-");
+    }
+    printf("-+-");
+    for(int i = 1; i <= lenMaxUrl || i <= 3; i++){
         printf("-");
     }
     printf("-+---------------------+---------------------+\n"DEFAULT);
@@ -884,6 +1011,8 @@ void showPositionSkillTarget(int maxTarName, int maxPosName, int maxSklName, int
 void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int cerSum, int orgSum, certificate* cerData, organization* orgData){}
 // tabel gabungan organisasi, posisi, dan pengalaman
 void showOrganizationPositionExperience(int maxExpName, int maxOrgName, int maxPosName, int expSum, int orgSum, int posSum, experience* expData, organization* orgData, position* posData){}
+// atas belum dibuat
+
 // tabel gabungan kategori, dan proyek
 void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum, int catSum, project* proData, category* catData){
     // header table
@@ -2896,6 +3025,594 @@ void guideOrganization(){                   // buku panduan organisasi
 }
 
 // perintah tabel sertifikat
+void getCertificate(char command[]){       // menampilkan data
+    int recordSum = 0;      // jumlah rekaman dalam tabel
+    certificate temp[MAX];  // array rekaman untuk ditampilkan
+    certificate record;     // rekaman saat ini untuk disalin
+
+    FILE *certificateTable;    // kaitan untuk mengakses file
+    certificateTable = fopen("tables/tcertificate.dat", "r"); // membuka file dengan mode read
+    
+    // memulai proses pembacaan
+    fscanf(certificateTable, "%s %s %s %s %s %s %s %s %s\n", record.id, record.name, record.issuerId, record.startDate, record.endDate, record.credentialId, record.url, record.createdAt, record.updatedAt);
+
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika ditemukan EOF atau data kosong
+        error(12);
+        fclose(certificateTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].name, record.name);
+            strcpy(temp[recordSum].issuerId, record.issuerId);
+            strcpy(temp[recordSum].startDate, record.startDate);
+            strcpy(temp[recordSum].endDate, record.endDate);
+            strcpy(temp[recordSum].credentialId, record.credentialId);
+            strcpy(temp[recordSum].url, record.url);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(certificateTable, "%s %s %s %s %s %s %s %s %s\n", record.id, record.name, record.issuerId, record.startDate, record.endDate, record.credentialId, record.url, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+
+        fclose(certificateTable); // menutup file
+
+        if(eop(command)){  // jika tidak melakukan pencarian
+            // menampilkan data
+            showCertificateTable(longestName(temp, recordSum, 5), longestCredential(temp, recordSum), longestUrl(temp, recordSum, 5), recordSum, temp);
+        } else {    // jika tidak melakukan pencarian
+            inc(command);
+            if(strcmp(getcw(), "WHERE") == 0){
+                if(!eop(command)){
+                    inc(command);
+                    if(eop(command)){
+                        char search[50];
+                        strcpy(search, getcw());
+                        
+                        if(strcmp(search, IDDUMMY) == 0){
+                            error(11);
+                        } else {
+                            int idx;            // indeks dan iterasi
+                            bool found = false; // cek ditemukan
+
+                            // proses pencarian
+                            searchId(temp, recordSum, search, &found, &idx, 5);
+                            
+                            if(found){  // jika data ditemukan
+                                certificate foundData[1];
+                                foundData[0] = temp[idx];
+                                showCertificateTable(strlen(temp[idx].name), strlen(temp[idx].credentialId), strlen(temp[idx].url), 1, foundData);
+                            } else {
+                                error(11);
+                            }
+                        }
+                    } else {
+                        error(14);
+                    }
+                } else {
+                    error(15);
+                }
+            } else {
+                error(21);
+            }
+        }
+    }
+}
+void postCertificate(char command[]){      // menambahkan data
+    char dateTime[100];     // menyimpan tanggal dan waktu saat ini
+    timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
+    
+    int recordSum = 0;          // jumlah rekaman di dalam tabel
+    certificate temp[MAX];      // array rekaman untuk menggeserkan nilai rekaman baru
+    certificate record, new;    // rekaman saat ini dan rekaman yang baru
+    
+    FILE *certificateTable;    // kaitan untuk mengakses file
+    certificateTable = fopen("tables/tcertificate.dat", "r"); // membuka file dengan mode read
+    
+    // memulai proses pembacaan
+    fscanf(certificateTable, "%s %s %s %s %s %s %s %s %s\n", record.id, record.name, record.issuerId, record.startDate, record.endDate, record.credentialId, record.url, record.createdAt, record.updatedAt);
+
+    // jika tidak ditemukan EOF dan data tidak kosong
+    if(strcmp(record.id, IDDUMMY) != 0 && strcmp(record.id, "") != 0){
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].name, record.name);
+            strcpy(temp[recordSum].issuerId, record.issuerId);
+            strcpy(temp[recordSum].startDate, record.startDate);
+            strcpy(temp[recordSum].endDate, record.endDate);
+            strcpy(temp[recordSum].credentialId, record.credentialId);
+            strcpy(temp[recordSum].url, record.url);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(certificateTable, "%s %s %s %s %s %s %s %s %s\n", record.id, record.name, record.issuerId, record.startDate, record.endDate, record.credentialId, record.url, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+    }
+    fclose(certificateTable); // menutup file
+    
+    inc(command);   
+    if(!eop(command)){
+        if(strlen(getcw()) < sizeof(record.id)){
+            strcpy(new.id, getcw());    // mengambil id masukan user
+    
+            inc(command);
+            if(!eop(command)){
+                if(strlen(getcw()) < sizeof(record.name)){
+                    strcpy(new.name, getcw());  // mengambil nama masukan user
+
+                    inc(command);
+                    if(!eop(command)){
+                        if(strlen(getcw()) < sizeof(record.issuerId)){
+                            organization organizationRecord;
+
+                            FILE *organizationTable;
+                            organizationTable = fopen("tables/torganization.dat", "r");
+
+                            char search[10];
+                            strcpy(search, getcw());
+
+                            fscanf(organizationTable, "%s %s %s %s", organizationRecord.id, organizationRecord.name, organizationRecord.createdAt, organizationRecord.updatedAt);
+
+                            bool foundOrgId = false;
+                            if(strcmp(organizationRecord.id, IDDUMMY) == 0){
+                                error(12);
+                            } else if (strcmp(search, IDDUMMY) == 0){
+                                error(11);
+                            } else {
+                                // mencari id relasi
+                                while((strcmp(organizationRecord.id, IDDUMMY) != 0) && (strcmp(organizationRecord.id, search) != 0)){
+                                    fscanf(organizationTable, "%s %s %s %s\n", organizationRecord.id, organizationRecord.name, organizationRecord.createdAt, organizationRecord.updatedAt);
+                                }
+                                if(strcmp(organizationRecord.id, search) == 0){
+                                    foundOrgId = true;
+                                } else {
+                                    error(23);
+                                }
+                            }
+                            fclose(organizationTable);
+
+                            if(foundOrgId){
+                                strcpy(new.issuerId, getcw());   // mengambil organisasi masukan user
+    
+                                inc(command);
+                                if(!eop(command)){
+                                    if(strlen(getcw()) < sizeof(record.startDate)){
+                                        strcpy(new.startDate, getcw());  // mengambil tanggal_dimulai masukan user
+    
+                                        inc(command);
+                                        if(!eop(command)){
+                                            if(strlen(getcw()) < sizeof(record.endDate)){
+                                                strcpy(new.endDate, getcw());    // mengambil tanggal_berakhir masukan user
+
+                                                inc(command);
+                                                if(!eop(command)){
+                                                    if(strlen(getcw()) < sizeof(record.credentialId)){
+                                                        strcpy(new.credentialId, getcw());  // mengambil kredensial id masukan user
+
+                                                        inc(command);
+                                                        if(eop(command)){
+                                                            if(strlen(getcw()) < sizeof(record.url)){
+                                                                strcpy(new.url, getcw());   // mengambil url masukan user
+
+                                                                // mengambil tanggal dan waktu saat ini
+                                                                strcpy(new.createdAt, dateTime);
+                                                                strcpy(new.updatedAt, dateTime);
+                                                    
+                                                                bool isDuplicate = false;   // cek id duplikat
+                                                                // kondisi memasukkan rekaman baru ke dalam array
+                                                                if(strcmp(new.id, temp[0].id) < 0){
+                                                                    // rekaman baru di paling depan
+                                                                    // geser semua isi array ke belakang
+                                                                    for(int i = recordSum - 1; i >= 0; i--){
+                                                                        strcpy(temp[i+1].id, temp[i].id);
+                                                                        strcpy(temp[i+1].name, temp[i].name);
+                                                                        strcpy(temp[i+1].issuerId, temp[i].issuerId);
+                                                                        strcpy(temp[i+1].startDate, temp[i].startDate);
+                                                                        strcpy(temp[i+1].endDate, temp[i].endDate);
+                                                                        strcpy(temp[i+1].credentialId, temp[i].credentialId);
+                                                                        strcpy(temp[i+1].url, temp[i].url);
+                                                                        strcpy(temp[i+1].createdAt, temp[i].createdAt);
+                                                                        strcpy(temp[i+1].updatedAt, temp[i].updatedAt);
+                                                                    }
+                                                                    recordSum++;
+                                                                    strcpy(temp[0].id, new.id);
+                                                                    strcpy(temp[0].name, new.name);
+                                                                    strcpy(temp[0].issuerId, new.issuerId);
+                                                                    strcpy(temp[0].startDate, new.startDate);
+                                                                    strcpy(temp[0].endDate, new.endDate);
+                                                                    strcpy(temp[0].credentialId, new.credentialId);
+                                                                    strcpy(temp[0].url, new.url);
+                                                                    strcpy(temp[0].createdAt, new.createdAt);
+                                                                    strcpy(temp[0].updatedAt, new.updatedAt);
+                                                                } else if (strcmp(new.id, temp[recordSum - 1].id) > 0){
+                                                                    // rekaman baru di paling belakang
+                                                                    strcpy(temp[recordSum].id, new.id);
+                                                                    strcpy(temp[recordSum].name, new.name);
+                                                                    strcpy(temp[recordSum].issuerId, new.issuerId);
+                                                                    strcpy(temp[recordSum].startDate, new.startDate);
+                                                                    strcpy(temp[recordSum].endDate, new.endDate);
+                                                                    strcpy(temp[recordSum].credentialId, new.credentialId);
+                                                                    strcpy(temp[recordSum].url, new.url);
+                                                                    strcpy(temp[recordSum].createdAt, new.createdAt);
+                                                                    strcpy(temp[recordSum].updatedAt, new.updatedAt);
+                                                                    recordSum++;
+                                                                } else {
+                                                                    // rekaman baru memiliki posisi di tengah
+                                                                    int i = 0;  // iterasi dan indeks
+                                                                    bool isStop = false;    // cek berhenti
+                                                                    // cari posisi
+                                                                    while((i < recordSum) && (!isStop)){
+                                                                        if(strcmp(temp[i].id, new.id) == 0){
+                                                                            // terdapat id yang redundan
+                                                                            error(7);
+                                                                            isDuplicate = true;
+                                                                            isStop = true;
+                                                                        } else if (strcmp(temp[i].id, new.id) > 0){
+                                                                            isStop = true;
+                                                                        } else {
+                                                                            i++;
+                                                                        }
+                                                                    }
+                                                                    if(!isDuplicate){
+                                                                        // menggeserkan rekaman di posisi tengah
+                                                                        for(int j = recordSum - 1; j >= i; j--){
+                                                                            strcpy(temp[j+1].id, temp[j].id);
+                                                                            strcpy(temp[j+1].name, temp[j].name);
+                                                                            strcpy(temp[j+1].issuerId, temp[j].issuerId);
+                                                                            strcpy(temp[j+1].startDate, temp[j].startDate);
+                                                                            strcpy(temp[j+1].endDate, temp[j].endDate);
+                                                                            strcpy(temp[j+1].credentialId, temp[j].credentialId);
+                                                                            strcpy(temp[j+1].url, temp[j].url);
+                                                                            strcpy(temp[j+1].createdAt, temp[j].createdAt);
+                                                                            strcpy(temp[j+1].updatedAt, temp[j].updatedAt);
+                                                                        }
+                                                                        // memasukkan rekaman baru di posisi tengah
+                                                                        strcpy(temp[i].id, new.id);
+                                                                        strcpy(temp[i].name, new.name);
+                                                                        strcpy(temp[i].issuerId, new.issuerId);
+                                                                        strcpy(temp[i].startDate, new.startDate);
+                                                                        strcpy(temp[i].endDate, new.endDate);
+                                                                        strcpy(temp[i].credentialId, new.credentialId);
+                                                                        strcpy(temp[i].url, new.url);
+                                                                        strcpy(temp[i].createdAt, new.createdAt);
+                                                                        strcpy(temp[i].updatedAt, new.updatedAt);
+                                                                        recordSum++;
+                                                                    }
+                                                                }
+                                                                if(!isDuplicate){
+                                                                    showCertificateTable(longestName(temp, recordSum, 5), longestCredential(temp, recordSum), longestUrl(temp, recordSum, 5), recordSum, temp);
+                                                                    success(0);
+                                                                    // flush ke file
+                                                                    certificateTable = fopen("tables/tcertificate.dat", "w");
+                                                                    for(int i = 0; i < recordSum; i++){
+                                                                        fprintf(certificateTable, "%s %s %s %s %s %s %s %s %s\n", temp[i].id, temp[i].name, temp[i].issuerId, temp[i].startDate, temp[i].endDate, temp[i].credentialId, temp[i].url, temp[i].createdAt, temp[i].updatedAt);
+                                                                    }
+                                                                    fprintf(certificateTable, "%s", EOFCERTIFICATE);
+                                                                    fclose(certificateTable);
+                                                                }
+                                                            }
+                                                        } else {
+                                                            error(6);
+                                                        }
+                                                    } else {
+                                                        error(16);
+                                                    }
+                                                } else {
+                                                    error(4);
+                                                }
+                                            } else {
+                                                error(16);
+                                            }
+                                        } else {
+                                            error(4);
+                                        }
+                                    } else {
+                                        error(16);
+                                    }
+                                } else {
+                                    error(4);
+                                }
+                            }
+                        } else {
+                            error(16);
+                        }
+                    } else {
+                        error(4);
+                    }
+                } else {
+                    error(16);
+                }
+            } else {
+                error(4);
+            }
+        } else {
+            error(16);
+        }
+    } else {
+        error(4);
+    }
+}
+void updateCertificate(char command[]){    // mengubah data
+    char dateTime[100];     // menyimpan tanggal dan waktu saat ini
+    timeStamp(dateTime);    // mengisi nilai dateTime dari fungsi timeStamp
+
+    int recordSum = 0;          // jumlah rekaman di dalam tabel
+    certificate temp[MAX];      // array rekaman untuk menggeserkan nilai rekaman baru
+    certificate record, new;    // rekaman saat ini dan rekaman yang baru
+
+    FILE *certificateTable;    // kaitan untuk mengakses file
+    certificateTable = fopen("tables/tcertificate.dat", "r"); // membuka file dengan mode read
+
+    // memulai proses pembacaan
+    fscanf(certificateTable, "%s %s %s %s %s %s %s %s %s\n", record.id, record.name, record.issuerId, record.startDate, record.endDate, record.credentialId, record.url, record.createdAt, record.updatedAt);
+    
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika EOF ditemukan atau data kosong
+        error(12);
+        fclose(certificateTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].name, record.name);
+            strcpy(temp[recordSum].issuerId, record.issuerId);
+            strcpy(temp[recordSum].startDate, record.startDate);
+            strcpy(temp[recordSum].endDate, record.endDate);
+            strcpy(temp[recordSum].credentialId, record.credentialId);
+            strcpy(temp[recordSum].url, record.url);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(certificateTable, "%s %s %s %s %s %s %s %s %s\n", record.id, record.name, record.issuerId, record.startDate, record.endDate, record.credentialId, record.url, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+        
+        fclose(certificateTable); // menutup file
+        
+        inc(command);
+        char search[50]; // cari nilai id
+        strcpy(search, getcw()); // mengambil id masukan user
+        
+        int i = 0;  // iterasi dan index
+        bool isFound = false;   // cek ditemukan
+        // proses pencarian
+        searchId(temp, recordSum, search, &isFound, &i, 5);
+        
+        if(!isFound){
+            error(11);
+        } else {
+            if(!eop(command)){
+                inc(command);
+                if(!eop(command)){
+                    if(strlen(getcw()) < sizeof(record.name)){
+                        strcpy(new.name, getcw());          // mengambil nama masukan user
+
+                        inc(command);
+                        if(!eop(command)){
+                            if(strlen(getcw()) < sizeof(record.issuerId)){
+                                organization organizationRecord;
+
+                                FILE *organizationTable;
+                                organizationTable = fopen("tables/torganization.dat", "r");
+
+                                char search[10];
+                                strcpy(search, getcw());
+
+                                fscanf(organizationTable, "%s %s %s %s", organizationRecord.id, organizationRecord.name, organizationRecord.createdAt, organizationRecord.updatedAt);
+
+                                bool foundOrgId = false;
+                                if(strcmp(organizationRecord.id, IDDUMMY) == 0){
+                                    error(12);
+                                } else if (strcmp(search, IDDUMMY) == 0){
+                                    error(11);
+                                } else {
+                                    // mencari id relasi
+                                    while((strcmp(organizationRecord.id, IDDUMMY) != 0) && (strcmp(organizationRecord.id, search) != 0)){
+                                        fscanf(organizationTable, "%s %s %s %s\n", organizationRecord.id, organizationRecord.name, organizationRecord.createdAt, organizationRecord.updatedAt);
+                                    }
+                                    if(strcmp(organizationRecord.id, search) == 0){
+                                        foundOrgId = true;
+                                    } else {
+                                        error(23);
+                                    }
+                                }
+                                fclose(organizationTable);
+
+                                if(foundOrgId){
+                                    strcpy(new.issuerId, getcw());   // mengambil organisasi masukan user
+    
+                                    inc(command);
+                                    if(!eop(command)){
+                                        if(strlen(getcw()) < sizeof(record.startDate)){
+                                            strcpy(new.startDate, getcw());  // mengambil tanggal_dimulai masukan user
+    
+                                            inc(command);
+                                            if(!eop(command)){
+                                                if(strlen(getcw()) < sizeof(record.endDate)){
+                                                    strcpy(new.endDate, getcw());    // mengambil tanggal_berakhir masukan user
+
+                                                    inc(command);
+                                                    if(!eop(command)){
+                                                        if(strlen(getcw()) < sizeof(record.credentialId)){
+                                                            strcpy(new.credentialId, getcw());  // mengambil kredensial id masukan user
+
+                                                            inc(command);
+                                                            if(eop(command)){
+                                                                if(strlen(getcw()) < sizeof(record.url)){
+                                                                    strcpy(new.url, getcw());           // mengambil url masukan user
+                                                                    strcpy(new.updatedAt, dateTime);    // mengubah tanggal diubah
+                
+                                                                    // mengubah menjadi nilai baru
+                                                                    strcpy(temp[i].name, new.name);
+                                                                    strcpy(temp[i].issuerId, new.issuerId);
+                                                                    strcpy(temp[i].startDate, new.startDate);
+                                                                    strcpy(temp[i].endDate, new.endDate);
+                                                                    strcpy(temp[i].credentialId, new.credentialId);
+                                                                    strcpy(temp[i].url, new.url);
+                                                                    strcpy(temp[i].updatedAt, new.updatedAt);
+                                                
+                                                                    showCertificateTable(longestName(temp, recordSum, 5), longestCredential(temp, recordSum), longestUrl(temp, recordSum, 5), recordSum, temp);
+                                                                    success(1);
+                                                                } else {
+                                                                    error(16);
+                                                                }
+                                                            } else {
+                                                                error(6);
+                                                            }
+                                                        } else {
+                                                            error(16);
+                                                        }
+                                                    } else {
+                                                        error(4);
+                                                    }
+                                                } else {
+                                                    error(16);
+                                                }
+                                            } else {
+                                                error(4);
+                                            }
+                                        } else {
+                                            error(16);
+                                        }
+                                    } else {
+                                        error(4);
+                                    }
+                                }
+                            } else {
+                                error(16);
+                            }
+                        } else {
+                            error(4);
+                        }
+                    } else {
+                        error(16);
+                    }
+                } else {
+                    error(4);
+                }
+            } else {
+                error(13);
+            }
+        }
+        // flush ke file
+        certificateTable = fopen("tables/tcertificate.dat", "w");
+        for(int i = 0; i < recordSum; i++){
+            fprintf(certificateTable, "%s %s %s %s %s %s %s %s %s\n", temp[i].id, temp[i].name, temp[i].issuerId, temp[i].startDate, temp[i].endDate, temp[i].credentialId, temp[i].url, temp[i].createdAt, temp[i].updatedAt);
+        }
+        fprintf(certificateTable, "%s", EOFCERTIFICATE);
+        fclose(certificateTable);   
+    }
+}
+void deleteCertificate(char command[]){    // menghapus data
+    int recordSum = 0;          // jumlah rekaman di dalam tabel
+    certificate temp[MAX];      // array rekaman untuk menggeserkan nilai rekaman baru
+    certificate record, new;    // rekaman saat ini dan rekaman yang baru
+
+    FILE *certificateTable;    // kaitan untuk mengakses file
+    certificateTable = fopen("tables/tcertificate.dat", "r"); // membuka file dengan mode read
+
+    // memulai proses pembacaan
+    fscanf(certificateTable, "%s %s %s %s %s %s %s %s %s\n", record.id, record.name, record.issuerId, record.startDate, record.endDate, record.credentialId, record.url, record.createdAt, record.updatedAt);
+    
+    if(strcmp(record.id, IDDUMMY) == 0 || strcmp(record.id, "") == 0){
+        // jika EOF ditemukan atau data kosong
+        error(12);
+        fclose(certificateTable);
+    } else {
+        // jika tidak ditemukan EOF dan data tidak kosong
+        // mengisi rekaman ke dalam array sampai ditemukan EOF
+        do{
+            strcpy(temp[recordSum].id, record.id);
+            strcpy(temp[recordSum].name, record.name);
+            strcpy(temp[recordSum].issuerId, record.issuerId);
+            strcpy(temp[recordSum].startDate, record.startDate);
+            strcpy(temp[recordSum].endDate, record.endDate);
+            strcpy(temp[recordSum].credentialId, record.credentialId);
+            strcpy(temp[recordSum].url, record.url);
+            strcpy(temp[recordSum].createdAt, record.createdAt);
+            strcpy(temp[recordSum].updatedAt, record.updatedAt);
+            recordSum++;
+            fscanf(certificateTable, "%s %s %s %s %s %s %s %s %s\n", record.id, record.name, record.issuerId, record.startDate, record.endDate, record.credentialId, record.url, record.createdAt, record.updatedAt);
+        } while(strcmp(record.id, IDDUMMY) != 0);
+
+        fclose(certificateTable); // menutup file
+        
+        inc(command);
+        char search[50]; // cari nilai id
+        strcpy(search, getcw()); // mengambil id masukan user
+        
+        if(eop(command)){
+            int idx = 0;    // iterasi dan index
+            bool isFound = false;   // cek ditemukan
+            // proses pencarian 
+            searchId(temp, recordSum, search, &isFound, &idx, 5);
+            
+            if(!isFound){
+                error(11);
+            } else {
+                // kondisi memasukkan ke dalam array
+                if(idx == 0){
+                    // rekaman dihapus di paling depan
+                    // geser semua isi array ke belakang
+                    for(int i = 0; i < recordSum - 1; i++){
+                        strcpy(temp[i].id, temp[i+1].id);
+                        strcpy(temp[i].name, temp[i+1].name);
+                        strcpy(temp[i].issuerId, temp[i+1].issuerId);
+                        strcpy(temp[i].startDate, temp[i+1].startDate);
+                        strcpy(temp[i].endDate, temp[i+1].endDate);
+                        strcpy(temp[i].credentialId, temp[i+1].credentialId);
+                        strcpy(temp[i].url, temp[i+1].url);
+                        strcpy(temp[i].createdAt, temp[i+1].createdAt);
+                        strcpy(temp[i].updatedAt, temp[i+1].updatedAt);
+                    }
+                    recordSum--;
+                } else if (idx == recordSum - 1){
+                    // rekaman dihapus di paling belakang
+                    recordSum--;
+                } else {
+                    // rekaman dihapus memiliki posisi di tengah
+                    int i = 0;  // iterasi dan index
+                    bool isStopped = false; // cek ditemukan
+                    // cari posisi
+                    while((i < recordSum) && !isStopped){
+                        if(i >= idx){
+                            isStopped = true;
+                        } else {
+                            i++;
+                        }
+                    }
+                    // menggeserkan rekaman di posisi tengah
+                    for(int j = i; j < recordSum - 1; j++){
+                        strcpy(temp[j].id, temp[j+1].id);
+                        strcpy(temp[j].name, temp[j+1].name);
+                        strcpy(temp[j].issuerId, temp[j+1].issuerId);
+                        strcpy(temp[j].startDate, temp[j+1].startDate);
+                        strcpy(temp[j].endDate, temp[j+1].endDate);
+                        strcpy(temp[j].credentialId, temp[j+1].credentialId);
+                        strcpy(temp[j].url, temp[j+1].url);
+                        strcpy(temp[j].createdAt, temp[j+1].createdAt);
+                        strcpy(temp[j].updatedAt, temp[j+1].updatedAt);
+                    }
+                    recordSum--;
+                }
+                showCertificateTable(longestName(temp, recordSum, 5), longestCredential(temp, recordSum), longestUrl(temp, recordSum, 5), recordSum, temp);
+                success(2);
+            }
+            // flush ke file
+            certificateTable = fopen("tables/tcertificate.dat", "w");
+            for(int i = 0; i < recordSum; i++){
+                fprintf(certificateTable, "%s %s %s %s %s %s %s %s %s\n", temp[i].id, temp[i].name, temp[i].issuerId, temp[i].startDate, temp[i].endDate, temp[i].credentialId, temp[i].url, temp[i].createdAt, temp[i].updatedAt);
+            }
+            fprintf(certificateTable, "%s", EOFCERTIFICATE);
+            fclose(certificateTable);
+        } else {
+            error(14);
+        }
+    }
+}
 void guideCertificate(){                   // buku panduan sertifikat
     guideTitle();
 
@@ -4503,6 +5220,8 @@ void guideProject(){                   // buku panduan proyek
 void joinTargetPositionSkill(char command[]){}
 void joinCertificateOrganization(char command[]){}
 void joinExperienceOrganizationPosition(char command[]){}
+// atas belum dibuat
+
 void joinProjectCategory(char command[]){   // menggabungkan tabel kategori dan proyek
     int catSum = 0;         // jumlah rekaman dalam tabel kategori
     category tempCat[MAX];  // array rekaman kategori untuk ditampilkan
@@ -4568,4 +5287,3 @@ void joinProjectCategory(char command[]){   // menggabungkan tabel kategori dan 
         }
     }
 }
-

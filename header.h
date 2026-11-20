@@ -122,14 +122,14 @@ int longestUrl(void* data, int n, int type);                                    
 int longestCredential(certificate* data, int n);                                // mencari krensial terpanjang
 
 // ui tabel
-void showPositionTable(int lenMaxName, int n, position* data);                      // tabel posisi
-void showSkillTable(int lenMaxName, int n, skill* data);                            // tabel skill
-void showTargetTable(int n, target* data);                                          // tabel target
-void showOrganizationTable(int lenMaxName, int n, organization* data);              // tabel organisasi
-void showCertificateTable(int lenMaxName, int lenMaxUrl, int n, certificate* data); // tabel sertifikat
-void showExperienceTable(int n, experience* data);                                  // tabel pengalaman
-void showCategoryTable(int lenMaxName, int n, category* data);                      // tabel kategori
-void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data);         // tabel proyek
+void showPositionTable(int lenMaxName, int n, position* data);                                            // tabel posisi
+void showSkillTable(int lenMaxName, int n, skill* data);                                                  // tabel skill
+void showTargetTable(int n, target* data);                                                                // tabel target
+void showOrganizationTable(int lenMaxName, int n, organization* data);                                    // tabel organisasi
+void showCertificateTable(int lenMaxName, int lenMaxCredential, int lenMaxUrl, int n, certificate* data); // tabel sertifikat
+void showExperienceTable(int n, experience* data);                                                        // tabel pengalaman
+void showCategoryTable(int lenMaxName, int n, category* data);                                            // tabel kategori
+void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data);                               // tabel proyek
 
 // ui tabel join
 // tabel gabungan posisi, skill, dan target
@@ -138,6 +138,8 @@ void showPositionSkillTarget(int maxTarName, int maxPosName, int maxSklName, int
 void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int cerSum, int orgSum, certificate* cerData, organization* orgData);
 // tabel gabungan organisasi, posisi, dan pengalaman
 void showOrganizationPositionExperience(int maxExpName, int maxOrgName, int maxPosName, int expSum, int orgSum, int posSum, experience* expData, organization* orgData, position* posData);
+// atas belum dibuat
+
 // tabel gabungan kategori, dan proyek
 void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum, int catSum, project* proData, category* catData);
 

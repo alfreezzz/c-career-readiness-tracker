@@ -16,6 +16,7 @@ int main(){
         // custom terminal prompt
         printf(GREEN "DBMS@alfreezzz" PURPLE " CIHUY32 " YELLOW "/c/career tracker" CYAN " (master)\n" DEFAULT);
         printf("$ ");
+        // printf(GREEN"DBMS@alfreezzz"DEFAULT": ");
         
         scanf("%300[^\n]s", command);   // mengambil masukkan user
         getchar();
@@ -54,7 +55,11 @@ int main(){
                                     error(5);
                                 }
                             } else if (strcmp(getcw(), "tcertificate") == 0){
-                                return 4;
+                                if(!eop(command)){
+                                    postCertificate(command);
+                                } else {
+                                    error(5);
+                                }
                             } else if (strcmp(getcw(), "texperience") == 0){
                                 if(!eop(command)){
                                     postExperience(command);
@@ -113,7 +118,11 @@ int main(){
                             error(13);
                         }
                     } else if (strcmp(getcw(), "tcertificate") == 0){
-                        return 4;
+                        if(!eop(command)){
+                            updateCertificate(command);
+                        } else {
+                            error(13);
+                        }
                     } else if (strcmp(getcw(), "texperience") == 0){
                         if(!eop(command)){
                             updateExperience(command);
@@ -169,7 +178,11 @@ int main(){
                                     error(9);
                                 }
                             } else if (strcmp(getcw(), "tcertificate") == 0){
-                                return 4;
+                                if(!eop(command)){
+                                    deleteCertificate(command);
+                                } else {
+                                    error(9);
+                                }
                             } else if (strcmp(getcw(), "texperience") == 0){
                                 if(!eop(command)){
                                     deleteExperience(command);
@@ -215,7 +228,7 @@ int main(){
                             } else if (strcmp(getcw(), "torganization") == 0){
                                 getOrganization(command);
                             } else if (strcmp(getcw(), "tcertificate") == 0){
-                                return 4;
+                                getCertificate(command);
                             } else if (strcmp(getcw(), "texperience") == 0){
                                 getExperience(command);
                             } else if (strcmp(getcw(), "tcategory") == 0){
