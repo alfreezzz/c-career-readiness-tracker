@@ -1,4 +1,12 @@
+>> run aplikasi
 chcp.com 65001
 gcc *.c -o main && ./main.exe
 
+>> input berhasil
+
+>> input error
+
+>> end aplikasi
+EXIT$
+atau (spesial)
 jangan lupa berkah dan bahagia hari ini$

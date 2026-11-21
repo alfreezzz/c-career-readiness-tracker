@@ -795,8 +795,8 @@ void showCertificateTable(int lenMaxName, int lenMaxCredential, int lenMaxUrl, i
         if(lenMaxCredential > credLen){
             credLen = lenMaxCredential;
         }
-        printf("| %s ", data[i].url);
-        for(int j = strlen(data[i].url); j < credLen; j++){
+        printf("| %s ", data[i].credentialId);
+        for(int j = strlen(data[i].credentialId); j < credLen; j++){
             printf(" ");
         }
         // URL
@@ -1008,30 +1008,30 @@ void showProjectTable(int lenMaxName, int lenMaxUrl, int n, project* data){
 // tabel gabungan posisi, skill, dan target
 void showPositionSkillTarget(int maxPosName, int maxSklName, int tarSum, int posSum, int sklSum, target* tarData, position* posData, skill* sklData){
     // header table
-    printf(WHITE"+--------+-");
-    for(int i = 1; i <= maxPosName || i <= 6; i++){
+    printf(WHITE"+-----------+-----------+-");
+    for(int i = 1; i <= maxPosName || i <= 11; i++){
         printf("-");
     }
-    printf("-+-");
-    for(int i = 1; i <= maxSklName || i <= 5; i++){
+    printf("-+----------+-");
+    for(int i = 1; i <= maxSklName || i <= 10; i++){
         printf("-");
     }
     printf("-+----------------+---------------------+---------------------+\n");
-    printf("| "BWHITE"ID"WHITE"     | "BWHITE"Posisi"WHITE" ");
-    for(int i = 1; i <= maxPosName && i <= maxPosName - 6; i++){
+    printf("| "BWHITE"ID_target"WHITE" | "BWHITE"ID_posisi"WHITE" | "BWHITE"Nama_posisi"WHITE" ");
+    for(int i = 1; i <= maxPosName && i <= maxPosName - 11; i++){
         printf(" ");
     }
-    printf("| "BWHITE"Skill"WHITE" ");
-    for(int i = 1; i <= maxSklName && i <= maxSklName - 5; i++){
+    printf("| "BWHITE"ID_skill"WHITE" | "BWHITE"Nama_skill"WHITE" ");
+    for(int i = 1; i <= maxSklName && i <= maxSklName - 10; i++){
         printf(" ");
     }
     printf("| "BWHITE"Sudah_dikuasai"WHITE" | "BWHITE"Tanggal_dibuat"WHITE"      | "BWHITE"Tanggal_diubah"WHITE"      |\n");
-    printf("+--------+-");
-    for(int i = 1; i <= maxPosName || i <= 6; i++){
+    printf("+-----------+-----------+-");
+    for(int i = 1; i <= maxPosName || i <= 11; i++){
         printf("-");
     }
-    printf("-+-");
-    for(int i = 1; i <= maxSklName || i <= 5; i++){
+    printf("-+----------+-");
+    for(int i = 1; i <= maxSklName || i <= 10; i++){
         printf("-");
     }
     printf("-+----------------+---------------------+---------------------+\n");
@@ -1063,14 +1063,20 @@ void showPositionSkillTarget(int maxPosName, int maxSklName, int tarSum, int pos
             j++;
         } while(j < sklSum && !foundSkl);
 
-        int lenMaxID = 6;
+        int lenMaxID = 9;
         // ID
         printf("| %s ", tarData[i].id);
         for(int j = strlen(tarData[i].id); j < lenMaxID; j++){
             printf(" ");
         }
+        // ID POSISI
+        int lenPosID = 9;
+        printf("| %s ", tarData[i].positionId);
+        for(int j = strlen(tarData[i].positionId); j < lenPosID; j++){
+            printf(" ");
+        }
         // POSISI
-        int lenPos = 6;
+        int lenPos = 11;
         if(maxPosName > lenPos){
             lenPos = maxPosName;
         }
@@ -1086,8 +1092,14 @@ void showPositionSkillTarget(int maxPosName, int maxSklName, int tarSum, int pos
             }
             isError = true;
         }
+        // ID SKILL
+        int lenSklID = 8;
+        printf("| %s ", tarData[i].skillId);
+        for(int j = strlen(tarData[i].skillId); j < lenSklID; j++){
+            printf(" ");
+        }
         // SKILL
-        int lenSkl = 5;
+        int lenSkl = 10;
         if(maxSklName > lenSkl){
             lenSkl = maxSklName;
         }
@@ -1109,12 +1121,12 @@ void showPositionSkillTarget(int maxPosName, int maxSklName, int tarSum, int pos
         printf("| %s | %s |\n", tarData[i].createdAt, tarData[i].updatedAt);
     }
     // footer table
-    printf("+--------+-");
-    for(int i = 1; i <= maxPosName || i <= 6; i++){
+    printf("+-----------+-----------+-");
+    for(int i = 1; i <= maxPosName || i <= 11; i++){
         printf("-");
     }
-    printf("-+-");
-    for(int i = 1; i <= maxSklName| i <= 5; i++){
+    printf("-+----------+-");
+    for(int i = 1; i <= maxSklName || i <= 10; i++){
         printf("-");
     }
     printf("-+----------------+---------------------+---------------------+\n"DEFAULT);
@@ -1126,12 +1138,12 @@ void showPositionSkillTarget(int maxPosName, int maxSklName, int tarSum, int pos
 // tabel gabungan organisasi, dan sertifikat
 void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int maxCred, int cerSum, int orgSum, certificate* cerData, organization* orgData){
     // header table
-    printf(WHITE"+--------+-");
+    printf(WHITE"+---------------+-");
     for(int i = 1; i <= maxCerName || i <= 4; i++){
         printf("-");
     }
-    printf("-+-");
-    for(int i = 1; i <= maxOrgName || i <= 10; i++){
+    printf("-+---------------+-");
+    for(int i = 1; i <= maxOrgName || i <= 15; i++){
         printf("-");
     }
     printf("-+-----------------+------------------+-");
@@ -1143,13 +1155,14 @@ void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int
         printf("-");
     }
     printf("-+---------------------+---------------------+\n");
-    printf("| "BWHITE"ID"WHITE"     |");
+    printf("| "BWHITE"ID_sertifikat"WHITE" |");
     printf(" "BWHITE"Nama"WHITE" ");
     for(int i = 1; i <= maxCerName && i <= maxCerName - 4; i++){
         printf(" ");
     }
-    printf("| "BWHITE"Organisasi"WHITE" ");
-    for(int i = 1; i <= maxOrgName && i <= maxOrgName - 10; i++){
+    printf("| "BWHITE"ID_organisasi"WHITE" ");
+    printf("| "BWHITE"Nama_organisasi"WHITE" ");
+    for(int i = 1; i <= maxOrgName && i <= maxOrgName - 15; i++){
         printf(" ");
     }
     printf("| "BWHITE"Tanggal_dimulai"WHITE" | "BWHITE"Tanggal_berakhir"WHITE" ");
@@ -1162,12 +1175,12 @@ void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int
         printf(" ");
     }
     printf("| "BWHITE"Tanggal_dibuat"WHITE"      | "BWHITE"Tanggal_diubah"WHITE"      |\n");
-    printf("+--------+-");
+    printf("+---------------+-");
     for(int i = 1; i <= maxCerName || i <= 4; i++){
         printf("-");
     }
-    printf("-+-");
-    for(int i = 1; i <= maxOrgName || i <= 10; i++){
+    printf("-+---------------+-");
+    for(int i = 1; i <= maxOrgName || i <= 15; i++){
         printf("-");
     }
     printf("-+-----------------+------------------+-");
@@ -1195,7 +1208,7 @@ void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int
             j++;
         } while(j < orgSum && !found);
 
-        int lenMaxID = 6, lenMaxDate = 15;
+        int lenMaxID = 13, lenMaxDate = 15;
         // ID
         printf("| %s ", cerData[i].id);
         for(int j = strlen(cerData[i].id); j < lenMaxID; j++){
@@ -1210,8 +1223,13 @@ void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int
         for(int j = strlen(cerData[i].name); j < nameLen; j++){
             printf(" ");
         }
+        int issuerIdLen = 13;
+        printf("| %s ", cerData[i].issuerId);
+        for(int j = strlen(cerData[i].issuerId); j < issuerIdLen; j++){
+            printf(" ");
+        }
         // ORGANISASI
-        int issuerLen = 10;
+        int issuerLen = 15;
         if(maxOrgName > issuerLen){
             issuerLen = maxOrgName;
         }
@@ -1244,8 +1262,8 @@ void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int
         if(maxCred > credLen){
             credLen = maxCred;
         }
-        printf("| %s ", cerData[i].url);
-        for(int j = strlen(cerData[i].url); j < credLen; j++){
+        printf("| %s ", cerData[i].credentialId);
+        for(int j = strlen(cerData[i].credentialId); j < credLen; j++){
             printf(" ");
         }
         // URL
@@ -1262,12 +1280,12 @@ void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int
     }
     
     // footer table
-    printf("+--------+-");
+    printf(WHITE"+---------------+-");
     for(int i = 1; i <= maxCerName || i <= 4; i++){
         printf("-");
     }
-    printf("-+-");
-    for(int i = 1; i <= maxOrgName || i <= 10; i++){
+    printf("-+---------------+-");
+    for(int i = 1; i <= maxOrgName || i <= 15; i++){
         printf("-");
     }
     printf("-+-----------------+------------------+-");
@@ -1287,30 +1305,30 @@ void showOrganizationCertificate(int maxCerName, int maxUrl, int maxOrgName, int
 // tabel gabungan organisasi, posisi, dan pengalaman
 void showOrganizationPositionExperience(int maxOrgName, int maxPosName, int expSum, int orgSum, int posSum, experience* expData, organization* orgData, position* posData){
     // header table
-    printf(WHITE"+--------+-");
-    for(int i = 1; i <= maxOrgName || i <= 10; i++){
+    printf(WHITE"+---------------+---------------+-");
+    for(int i = 1; i <= maxOrgName || i <= 15; i++){
         printf("-");
     }
-    printf("-+-");
-    for(int i = 1; i <= maxPosName || i <= 6; i++){
+    printf("-+-----------+-");
+    for(int i = 1; i <= maxPosName || i <= 11; i++){
         printf("-");
     }
     printf("-+-----------------+------------------+---------------------+---------------------+\n");
-    printf("| "BWHITE"ID"WHITE"     | "BWHITE"Organisasi"WHITE" ");
-    for(int i = 1; i <= maxOrgName && i <= maxOrgName - 10; i++){
+    printf("| "BWHITE"ID_pengalaman"WHITE" | "BWHITE"ID_organisasi"WHITE" | "BWHITE"Nama_organisasi"WHITE" ");
+    for(int i = 1; i <= maxOrgName && i <= maxOrgName - 15; i++){
         printf(" ");
     }
-    printf("| "BWHITE"Posisi"WHITE" ");
-    for(int i = 1; i <= maxPosName && i <= maxPosName - 6; i++){
+    printf("| "BWHITE"ID_posisi"WHITE" | "BWHITE"Nama_posisi"WHITE" ");
+    for(int i = 1; i <= maxPosName && i <= maxPosName - 11; i++){
         printf(" ");
     }
     printf("| "BWHITE"Tanggal_dimulai"WHITE" | "BWHITE"Tanggal_berakhir"WHITE" | "BWHITE"Tanggal_dibuat"WHITE"      | "BWHITE"Tanggal_diubah"WHITE"      |\n");
-    printf("+--------+-");
-    for(int i = 1; i <= maxOrgName || i <= 10; i++){
+    printf("+---------------+---------------+-");
+    for(int i = 1; i <= maxOrgName || i <= 15; i++){
         printf("-");
     }
-    printf("-+-");
-    for(int i = 1; i <= maxPosName || i <= 6; i++){
+    printf("-+-----------+-");
+    for(int i = 1; i <= maxPosName || i <= 11; i++){
         printf("-");
     }
     printf("-+-----------------+------------------+---------------------+---------------------+\n");
@@ -1342,7 +1360,7 @@ void showOrganizationPositionExperience(int maxOrgName, int maxPosName, int expS
             j++;
         } while(j < orgSum && !foundPos);
 
-        int lenMaxID = 6;
+        int lenMaxID = 13;
         int lenMaxStartDate = 15;
         int lenMaxEndDate = 16;
         // ID
@@ -1350,8 +1368,14 @@ void showOrganizationPositionExperience(int maxOrgName, int maxPosName, int expS
         for(int j = strlen(expData[i].id); j < lenMaxID; j++){
             printf(" ");
         }
+        // ID ORGANISASI
+        int lenOrgId = 13;
+        printf("| %s ", expData[i].organizationId);
+        for(int j = strlen(expData[i].organizationId); j < lenOrgId; j++){
+            printf(" ");
+        }
         // ORGANISASI
-        int lenOrg = 10;
+        int lenOrg = 15;
         if(maxOrgName > lenOrg){
             lenOrg = maxOrgName;
         }
@@ -1367,8 +1391,14 @@ void showOrganizationPositionExperience(int maxOrgName, int maxPosName, int expS
             }
             isError = true;
         }
+        // ID POSISI
+        int lenPosId = 9;
+        printf("| %s ", expData[i].positionId);
+        for(int j = strlen(expData[i].positionId); j < lenPosId; j++){
+            printf(" ");
+        }
         // POSISI
-        int lenPos = 6;
+        int lenPos = 11;
         if(maxPosName > lenPos){
             lenPos = maxPosName;
         }
@@ -1398,12 +1428,12 @@ void showOrganizationPositionExperience(int maxOrgName, int maxPosName, int expS
         printf("| %s | %s |\n", expData[i].createdAt, expData[i].updatedAt);
     }
     // footer table
-    printf("+--------+-");
-    for(int i = 1; i <= maxOrgName || i <= 10; i++){
+    printf("+---------------+---------------+-");
+    for(int i = 1; i <= maxOrgName || i <= 15; i++){
         printf("-");
     }
-    printf("-+-");
-    for(int i = 1; i <= maxPosName || i <= 6; i++){
+    printf("-+-----------+-");
+    for(int i = 1; i <= maxPosName || i <= 11; i++){
         printf("-");
     }
     printf("-+-----------------+------------------+---------------------+---------------------+\n"DEFAULT);
@@ -1415,7 +1445,7 @@ void showOrganizationPositionExperience(int maxOrgName, int maxPosName, int expS
 // tabel gabungan kategori, dan proyek
 void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum, int catSum, project* proData, category* catData){
     // header table
-    printf("+--------+-");
+    printf(WHITE"+-----------+-");
     for(int i = 1; i <= maxProName || i <= 4; i++){
         printf("-");
     }
@@ -1423,12 +1453,12 @@ void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum,
     for(int i = 1; i <= maxUrl || i <= 3; i++){
         printf("-");
     }
-    printf("-+-----------------+-");
-    for(int i = 1; i <= maxCatName || i <= 8; i++){
+    printf("-+-----------------+-------------+-");
+    for(int i = 1; i <= maxCatName || i <= 13; i++){
         printf("-");
     }
     printf("-+---------------------+---------------------+\n");
-    printf("| "BWHITE"ID"WHITE"     |");
+    printf("| "BWHITE"ID_proyek"WHITE" |");
     printf(" "BWHITE"Nama"WHITE" ");
     for(int i = 1; i <= maxProName && i <= maxProName - 4; i++){
         printf(" ");
@@ -1438,9 +1468,13 @@ void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum,
         printf(" ");
     }
     printf("| "BWHITE"Tanggal_selesai"WHITE" ");
-    printf("| "BWHITE"Kategori"WHITE" ");
+    printf("| "BWHITE"ID_kategori"WHITE" ");
+    printf("| "BWHITE"Nama_kategori"WHITE" ");
+    for(int i = 1; i <= maxCatName && i <= maxCatName - 13; i++){
+        printf(" ");
+    }
     printf("| "BWHITE"Tanggal_dibuat"WHITE"      | "BWHITE"Tanggal_diubah"WHITE"      |\n");
-    printf("+--------+-");
+    printf("+-----------+-");
     for(int i = 1; i <= maxProName || i <= 4; i++){
         printf("-");
     }
@@ -1448,8 +1482,8 @@ void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum,
     for(int i = 1; i <= maxUrl || i <= 3; i++){
         printf("-");
     }
-    printf("-+-----------------+-");
-    for(int i = 1; i <= maxCatName || i <= 8; i++){
+    printf("-+-----------------+-------------+-");
+    for(int i = 1; i <= maxCatName || i <= 13; i++){
         printf("-");
     }
     printf("-+---------------------+---------------------+\n");
@@ -1469,7 +1503,7 @@ void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum,
             j++;
         } while(j < catSum && !found);
 
-        int lenMaxID = 6, lenMaxDate = 15;
+        int lenMaxID = 9, lenMaxDate = 15;
         // ID
         printf("| %s ", proData[i].id);
         for(int j = strlen(proData[i].id); j < lenMaxID; j++){
@@ -1498,7 +1532,13 @@ void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum,
         for(int j = strlen(proData[i].finishedDate); j < lenMaxDate; j++){
             printf(" ");
         }
-        int catLen = 8;
+        // ID KATEGORI
+        int catIdLen = 11;
+        printf("| %s ", proData[i].categoryId);
+        for(int j = strlen(proData[i].categoryId); j < catIdLen; j++){
+            printf(" ");
+        }
+        int catLen = 13;
         if(maxCatName > catLen){
             catLen = maxCatName;
         }
@@ -1521,7 +1561,7 @@ void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum,
         printf("| %s | %s |\n", proData[i].createdAt, proData[i].updatedAt);
     }
     // footer table
-    printf("+--------+-");
+    printf("+-----------+-");
     for(int i = 1; i <= maxProName || i <= 4; i++){
         printf("-");
     }
@@ -1529,11 +1569,11 @@ void showCategoryProject(int maxProName, int maxUrl, int maxCatName, int proSum,
     for(int i = 1; i <= maxUrl || i <= 3; i++){
         printf("-");
     }
-    printf("-+-----------------+-");
-    for(int i = 1; i <= maxCatName || i <= 8; i++){
+    printf("-+-----------------+-------------+-");
+    for(int i = 1; i <= maxCatName || i <= 13; i++){
         printf("-");
     }
-    printf("-+---------------------+---------------------+\n");
+    printf("-+---------------------+---------------------+\n"DEFAULT);
 
     if(isError){
         error(27);
